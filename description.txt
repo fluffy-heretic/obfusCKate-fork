@@ -1,0 +1,172 @@
+[h1] [b] obfusCKate - Hidden info [/b] [/h1] 
+
+
+[h2]What this mod does:[/h2]
+This mod hides the information that the character you are playing [u] isn't expected to know [/u] like stats of an unknown character or exact chances for schemes, etc. This takes away the feeling of omniscience and delivers a more challenging and roleplay driven experience, more consistent with the game setting.
+
+[h2] Why this mod? [/h2]
+
+The fact that the player is omniscient (knows every single detail about the world and the characters on it) starting to make the game feel tedious for me. So, a couple of months ago I decided to make this mod with a more roleplaying experience in mind. Although I started creating this mod for myself, while I was working on it I thought that more people would enjoy it and so I decided to upload it. hen, after positive feedback and appreciation for this mod, I decided to continue expanding it. Months have passed and, with some ideas of my own and also thanks to the feedback I receive, I keep enhancing the mod (I hope) always with the same goal in mind: Roleplaying. 
+As I stated in response to the first comments when I first uploaded this mod, I never intended to make any money from it, but lately some people have been asking if they can donate or why don't I set up an account for donations. 
+Here it is. You can [url=https://www.buymeacoffee.com/jorgemmpedro] Buy me a coffee [/url] if you wish but, like I mentioned earlier, I work on the mod for enjoyment so, as long as I can, with or without the [url=https://www.buymeacoffee.com/jorgemmpedro] coffee [/url], if I feel the need to enhance this mod or perfect it, I will be working on it.
+
+[h2] Ok, so...what do you mean by "hiding information"? [/h2]
+Imagine you are playing as a Count in Ireland. Is your character supposed to know the personality of the Duke of Bohemia? And how about his skills? Not even his appearance. Unless, of course, your player character had some prior contact with the Duke of Bohemia or someone had shared some information about the Duke of Bohemia with your character.
+So, in its core, this mod hides that information for you untill you have a logical reason to have that information.
+
+[h2] How does it work, then? [/h2]
+Depending on the character, this mod hides the following character information:
+[list]
+[*]Portrait (optional - setting on game rules)
+[*]Skill exact values (shown in various ranges, depending of knowledge about character)
+[*]Personality traits & other traits
+[*]Personality description
+[*]Army composition 
+[*]Opinion (is shown with descritive words)
+[*]Opinion breakdown
+[*]Dread 
+[*]Sexual orientation
+[*]Age
+[*]Health
+[*]Known Languages
+[*]Gold, Prestige and Piety
+[*]Inheritable traits in marriages and chance of children
+[/list]
+So, if you don't have a reason to know the character you are inspecting, that information is not shown. 
+
+[h2] How does it work, then? Who and what information can I see? [/h2]
+Most of the characters, except the obvious, will have a tag on their player interaction menu that gives tells you how well you know that character [b][u]Known Characters[/u] [/b], [b][u]Your Acquaintance[/u] [/b] or [b][u]Basic Info[/u] [/b]:
+
+In game description: 
+[b][u]Known Characters[/u][/b]: [i]" You can say that you know X, either well or very well, because X is or was a part of your relations network or X is or was a part of your everyday life in some way (a guest, a courtier, etc)" [/i]
+
+You can see most of the information for these (of course, even for them, some information may be hidden if you don't have a valid reason to know it; ex: military strength or sexual orientation). The characters you know include your relations like family, friends, etc AND characters with whom you interact directly or have interacted sufficently to expect to know that information 
+
+
+[b][u]Your Acquaintance[/u][/b]: [i]" Although you don't know X well yet, you have more than basic knowledge about X, either because you met before, because of past interactions or because you have heard things about X from other people (ex: a famous person)" [/i]
+
+For these characters, some information is hidden, like personality traits, skill values have broader ranges, etc. These characters include, for example, someone with whom you have interacted more than the mere basic (is not someone you just seen on a feast but also you talked a little bit)
+
+[b][u]Basic Information[/u][/b]: [i]" Altough you may not know X very well yet, you have at least gathered some information about X, either because you have met, through interactions, schemes or because someone shared it with you." [/i]
+
+For these characters, most information is hidden, like skill values that are completely unknown. You will know nothing but the basic that you could tell just by looking at a person: approximate age, distinctive traits (ex: dwarf, scarred), etc. These characters are mainly someone you have seen at a feast or some close relation of your close relation (yes, it's expect that your friends tells you things about its family, children, etc).
+
+
+There are other special characters that, although you have never seen, it's expected you have heard something about, like [u]famous characters[/u] or [b][u]foreign kings or emperors[/u][/b]. For those, you will know a little more than the basic and a little less than if they were your acquaintance.
+
+Of course, for unknown characters, only name and titles they hold is shown.
+
+Also, certain positions give you access to information like being the marshal giving you information about military strength of your liege's vassals or being a steard giving gold information. Of course, if you are a Spymaster, you will have access to both of those informations and the same goes for regents.
+
+
+[h2] But wait...will I know that information forever? [/h2]
+Well, yes and no. 
+Of course, you are expected to remember your children (not always in real life but in CK3 there's nothing I can do)
+But...remember that courtier you knew and you dismissed and never again interacted with? Remember the spouse from whom you divorced and she fled for another court? Well, you will still retain the knowledge about them for a time (they are [b]Known Characters[/b] but after some time you will loose some knowledge about them (yes, people change) and they become mere [b]Acquaintances[/b]. And given further time, you will only retain their [b]Basic Information[/b], untill they become just another shade in the world of CKIII.
+Same happens for characters you met at a feast (don't expect your character to remember for years a random courtier who was part of an entourage at a feast). You will know their basic info for sometime but after that, they are again unknown to you.
+
+
+[h2] Then how do I get information from characters? [/h2]
+[list]
+[*]Interactions (like becoming a friend or sending emissaries)
+[*]Schemes (Befriend, seduce, etc). Works both ways, wheter the scheme is yours or you are the target.
+[*]Activities (Feasts, Playdates, Hunts)
+[*]Spying (A new scheme introduced by the mod
+[*]Rumours (see below)
+[*]By asking your guests and courtiers (see below)
+[*]Through close relations
+[/list]
+
+[b][u]How?[/u][/b]: 
+Almost every interaction in the game will provide with information about a character, be it through other people telling you or by means of activities, interactions (new and vanilla), schemes (new and vanilla) and some mechanics like:
+
+[b]Close relations[/b] when you establish some kind of new close relation with someone, it is expected that they tell you things about their life, including the people that are part of it. So, when marrying, making friends or lovers you will have basic information about their cloise relations (of course, rivals are excluded form this list since they wouldn't give you that info)
+
+[b]Send Emissary[/b] (allows you to send an emissary to someone's court to gather information on them; The information provided will depend on your Chancellor skill)
+
+[b]Request Military Info[/b]  (For most characters, their military information is hidden; you can try to ask them...or torture them if they are your prisoners)
+
+[b]Ask your advisors for advice[/b]  (Depending on your marshal skill, it will try to estimate the military strength of someone...but NEVER give exact values)
+
+[b]Ask information to newly arrived at court[/b] (When a guest or a new courtier joins your court, you will be informed that they can be asked information about the previous court they were. Of course, the information they give you, if they give any, will depend on their personality. Some will not want to talk about it while others will even tell you secrets. Also, information is cumulative so, if you ask about the same person to two different courtiers you will get MORE information than asking to only one)
+
+[b]Rumours[/b]: From time to time you will be informed that your character has heard a rumour about someone he doesn't know, like "X beauty is a subject of gossip". Characters of whom you heard rumours will have a inon on their portrait indicating that.
+
+[b]Activities[/b]: Invite (or attend) people to activities and you will meet them and then will have basic knowledge about them. With luck, you both interact more than just meet or you are a sociable person and so are they and you get more than the basic.
+
+[b]Spying[/b]: The spy scheme is a new scheme that is introduced and allows you to gather information on someone, like military info or secrets (of course, find secrets task was disabled or it would be redundant. Other schemes like befriend, seduce or romance have been refined (read tooltips in game) so there are some restritions (because a count in France wouldn't be able to try to seduce the Kaiserin of the HRE...unless they know each other). 
+
+See the post on detailed information and tips about the mod [url=https://steamcommunity.com/workshop/filedetails/discussion/2874007571/3757725715240157537/] here [/url] 
+
+[h2] Is there more information hidden? [/h2]
+Yes. A lot.
+[list]
+[*]Success chance and Secrecy (changed to Risk of Discovery) of schemes ( shown with descritive words)
+[*]Acceptance chance of interactions will be shown with descriptions instead of percentage
+[*]Some values of variable modifiers for opinions and interactions are hidden (no point in hiding fixed values)
+[*]Chances of event outcomes. Instead of "30% chance of" will show "May happen"
+[*]Other information that should't be known 
+[/list]
+
+[h2] I want a more hardcore experience [/h2]
+You can customize your experience on the game rules:
+
+[b]Show portraits[/b]: Enables or disables the portraits for unknown characters
+
+[b]Personality Traits[/b]: Hides personality traits (not description) for ALL characters in game except you. Other traits are shown
+
+[b]Character Opinions[/b]: Disables opinions of characters or only their breakdown for ALL characters in the game (This option synergizes with the options below)
+
+[b]Portrait express opinion[/b]: Enables the portraits of characters to show their facial and body expression match how they feel about the player. BUT, if you choose the option to be based on personality, treacherous characters will not change their expression, regardless of their opinion of you. (ex: Your "blackguard" vassal hates you but he will have an idle expresion...as he would if he loved you)
+
+[b]Portrait glow[/b]: Enables the glow on small portraits to match the colour od the player opinion about the player.
+
+
+[h2] Other features worth mentioning[/h2]
+
+This mod adds new lists to activity guests so, for example, you can turn a feast into a "bachelors ball".
+
+Personality description is only shown for [b]Known Characters[/b]. For [b]Acquaintances[/b] you will only know a basic description like "X looks cordial and polite" or "Y seems stingy and hysterical". For characters you just met you only have a first impression like "X seems a sociable person" or "Y seems introverted". 
+
+Most of the knowledge you get or outcomes from interactions and schemes will depend on your personality, target character personality and past interactions with them (yes, try to befriend someone you imprisoned or someone whom you stole their wife or title. They won't forget)
+
+[h2] Other things[/h2]
+
+I may have forgotten to list some features since there are a lot of new additions. If it comes up, I'll edit this post. 
+
+[h2] An important note [/h2]
+This mod tries to be as consistent as possible with "real life". Of course, it is not always possible due to:
+- game engine
+- my lack of coding knowledge (yes, I'm not a coder)
+- The game is supposed to be fun so, sometimes adding too much would make it bothersome or tedious ( i.e.: removing the penalties of traits on the opinion breakdown; since the penalties are fixed, by removing them, instead of the game becoming more immersive, would only make us google information to check what the penalty is for and ambitious person vs a content)
+
+Also, I tried with this mod to emphasize one of the aspects that I love in CK3 that is the fact that each character has a personality that makes them act in a given way. As such, the outcomes of schemes and interactions that were added depend mostly in the personality of the intervenients (i.e.: Not everyone will offer himself as an agent in a plot to spy...but you can be sure that most dishonorable characters will be willing to join. This is just an example.)
+
+
+[h2]Support[/h2] 
+
+You can [url=https://www.buymeacoffee.com/jorgemmpedro] Buy me a coffee [/url] if you wish
+
+[h2] [u] Compatibility[/u] [/h2]
+[b]This mod must be [u]last[/u] on load order [b]
+This mod is expected to be FULLY compatible with mods that only add flavour like RICE, etc
+This mod will most certainly have major compatibility issues with overhauls and mods that change the UI, game rules or schemes
+
+IMHO: I made this [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2991503511] Patch [/url] for compatibility with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2625307328]  In My Humble Opinion [/url]
+
+Crusader Wars: There is an option on the game rules that you can change if you are using Crusader wars mod. This only makes a minor change to the game and it's showing the martial skill of commanders in battle
+
+[h3]Additional notes:[/h3] 
+Tooltips in the game explain most changes
+
+[h3]Translation:[/h3]
+Text is fully localized so it will be easy to translate for anyone who wants it.
+the user Concubine Moon has made an update for chinese localization. Here:https://steamcommunity.com/sharedfiles/filedetails/?id=2875456658
+
+
+[h3] Read discussion thread for info on changes, add-ons and tips [/h3]
+
+
+
+
+

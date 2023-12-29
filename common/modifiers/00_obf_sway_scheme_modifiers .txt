@@ -1,0 +1,182 @@
+﻿### Sway Power modifiers
+
+sway_kings_or_above_modifier = {
+	icon = intrigue_positive
+	scheme_power = -5
+}
+
+sway_allies_modifier = {
+	icon = intrigue_positive
+	scheme_power = 5
+}
+
+sway_scheme_more_than_600000_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 22
+	scheme_success_chance = -30
+}
+sway_scheme_less_than_600000_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 29
+	scheme_success_chance = -25
+}
+
+sway_scheme_less_than_450000_modifier = {#34
+	icon = intrigue_positive
+	scheme_power = 5
+	scheme_success_chance = 5
+}
+
+sway_scheme_less_than_300000_modifier = {#39
+	icon = intrigue_positive
+	scheme_power = 5
+	scheme_success_chance = 10
+}
+sway_scheme_less_than_150000_modifier = {#43
+	icon = intrigue_positive
+	scheme_power = 4
+	scheme_success_chance = 10
+}
+sway_scheme_less_than_140000_modifier = {#45
+	icon = intrigue_positive
+	scheme_power = 2
+}
+sway_scheme_less_than_130000_modifier = {#48
+	icon = intrigue_positive
+	scheme_power = 3
+}
+sway_scheme_less_than_120000_modifier = {#51
+	icon = intrigue_positive
+	scheme_power = 3
+}
+sway_scheme_less_than_110000_modifier = {#54
+	icon = intrigue_positive
+	scheme_power = 3
+}
+sway_scheme_less_than_100000_modifier = {#57
+	icon = intrigue_positive
+	scheme_power = 3
+}
+sway_scheme_less_than_90000_modifier = {#60
+	icon = intrigue_positive
+	scheme_power = 3
+}
+sway_scheme_less_than_80000_modifier = {#64
+	icon = intrigue_positive
+	scheme_power = 4
+}
+sway_scheme_less_than_70000_modifier = {#69
+	icon = intrigue_positive
+	scheme_power = 5
+}
+sway_scheme_less_than_60000_modifier = {#74
+	icon = intrigue_positive
+	scheme_power = 5
+}
+sway_scheme_less_than_50000_modifier = {#80
+	icon = intrigue_positive
+	scheme_power = 6
+}
+sway_scheme_less_than_40000_modifier = {#87
+	icon = intrigue_positive
+	scheme_power = 7
+}
+sway_scheme_less_than_30000_modifier = {#95
+	icon = intrigue_positive
+	scheme_power = 8
+}
+sway_scheme_less_than_20000_modifier = {#106
+	icon = intrigue_positive
+	scheme_power = 11
+}
+sway_scheme_less_than_10000_modifier = {#120
+	icon = intrigue_positive
+	scheme_power = 120
+}
+
+### BENEVOLENT_INTENT
+
+sway_kings_or_above_benevolent_intent_perk_modifier = {
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+
+sway_allies_benevolent_intent_perk_modifier = {
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+
+sway_scheme_more_than_600000_benevolent_intent_perk_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 7.5
+}
+sway_scheme_less_than_600000_benevolent_intent_perk_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 10
+}
+
+sway_scheme_less_than_450000_benevolent_intent_perk_modifier = {#34
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+
+sway_scheme_less_than_300000_benevolent_intent_perk_modifier = {#39
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+sway_scheme_less_than_150000_benevolent_intent_perk_modifier = {#43
+	icon = intrigue_positive
+	scheme_power = 1.2
+}
+sway_scheme_less_than_140000_benevolent_intent_perk_modifier = {#45
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+sway_scheme_less_than_130000_benevolent_intent_perk_modifier = {#48
+	icon = intrigue_positive
+	scheme_power = 1
+}
+sway_scheme_less_than_120000_benevolent_intent_perk_modifier = {#51
+	icon = intrigue_positive
+	scheme_power = 1
+}
+sway_scheme_less_than_110000_benevolent_intent_perk_modifier = {#54
+	icon = intrigue_positive
+	scheme_power = 1
+}
+sway_scheme_less_than_100000_benevolent_intent_perk_modifier = {#57
+	icon = intrigue_positive
+	scheme_power = 1
+}
+sway_scheme_less_than_90000_benevolent_intent_perk_modifier = {#60
+	icon = intrigue_positive
+	scheme_power = 1
+}
+sway_scheme_less_than_80000_benevolent_intent_perk_modifier = {#64
+	icon = intrigue_positive
+	scheme_power = 1.2
+}
+sway_scheme_less_than_70000_benevolent_intent_perk_modifier = {#69
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+sway_scheme_less_than_60000_benevolent_intent_perk_modifier = {#74
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+sway_scheme_less_than_50000_benevolent_intent_perk_modifier = {#80
+	icon = intrigue_positive
+	scheme_power = 2
+}
+sway_scheme_less_than_40000_benevolent_intent_perk_modifier = {#87
+	icon = intrigue_positive
+	scheme_power = 2
+}
+sway_scheme_less_than_30000_benevolent_intent_perk_modifier = {#95
+	icon = intrigue_positive
+	scheme_power = 2.5
+}
+sway_scheme_less_than_20000_benevolent_intent_perk_modifier = {#106
+	icon = intrigue_positive
+	scheme_power = 4
+}

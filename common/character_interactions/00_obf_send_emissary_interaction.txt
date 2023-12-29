@@ -1,0 +1,315 @@
+﻿send_emissary_interaction = {
+	category = interaction_category_friendly
+	desc = send_emissary_interaction_desc
+	interface_priority = 150
+	common_interaction = yes
+	icon = agenda_icon
+		
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = no
+	send_name = send_emissary_interaction
+	greeting = positive
+	notification_text = SEND_EMISSARY_PROPOSAL
+	answer_accept_key = SEND_EMISSARY_ACCEPT 
+	answer_reject_key = SEND_EMISSARY_REJECT
+	
+	ai_maybe = yes
+	ai_min_reply_days = 15
+	ai_max_reply_days = 60
+	can_send_despite_rejection = yes
+	
+	cooldown_against_recipient = { years = 3 }
+	
+	is_shown = {
+		NOT = { scope:recipient = scope:actor }
+		NOT = { scope:recipient = {has_character_flag = emissary_sent}}
+		}
+	
+	is_valid_showing_failures_only = {
+	
+	custom_tooltip = {
+	text = "cant_send_emissary"
+	scope:actor = {
+		is_ai = no
+		is_adult = yes 
+		is_imprisoned = no
+		exists = cp:councillor_chancellor
+		}
+		
+		NOT = { scope:recipient = scope:actor }
+		
+		
+		scope:recipient = {
+			in_diplomatic_range = scope:actor 
+			is_imprisoned = no 
+			is_ruler = yes
+		NOR = { is_at_war_with = scope:actor
+				has_character_flag = emissary_sent
+				}
+			}
+		}
+	
+	}
+	
+	ai_accept = {
+		base = 0
+		
+		
+		## Gift
+		modifier = {
+			OR = {always = scope:send_emissary_small_gift
+			always = scope:send_emissary_medium_gift
+			always = scope:send_emissary_large_gift}
+			add = {
+				value = 0
+				if = {
+					limit = {always = scope:send_emissary_small_gift}
+				add = 15
+				}
+				else_if = {
+					limit = {always = scope:send_emissary_medium_gift}
+				add = 30
+				}
+				else_if = {
+					limit = {always = scope:send_emissary_large_gift}
+				add = 50
+				}
+				if = {
+					limit = {scope:recipient.ai_greed >= 0}
+				add = {
+					value = ai_greed
+					multiply = 0.3
+					}
+				}
+				if = {
+					limit = {scope:recipient.gold <= scope:recipient.yearly_character_income}
+				add = 25
+				}
+				if = {
+					limit = {scope:recipient.debt_level >= 0}
+				add = {
+					value = debt_level
+					add = 1
+					multiply = 5
+					}
+				}
+			}
+			desc = PT_AMOUNT_OF_GOLD_OFFERED
+		}
+		send_emissary_modifier = yes
+		
+	}
+	
+	auto_accept = {
+		custom_description = {
+			text = "spending_hook"
+			subject = scope:actor
+			object = scope:recipient
+			scope:hook = yes
+		}
+	}
+	# Send Options
+	## Small gift
+	send_option = {
+		is_shown = { scope:actor = { minor_gold_value_trigger = yes }}
+		is_valid = {NOR = {always = scope:send_emissary_medium_gift
+								always = scope:send_emissary_large_gift}}
+		flag = send_emissary_small_gift
+		localization = "SE_SMALL_GIFT" 
+	}
+	## Medium Sum
+	send_option = {
+		is_shown = { scope:actor = { medium_gold_value_trigger = yes }}
+		is_valid = {NOR = {always = scope:send_emissary_small_gift
+								always = scope:send_emissary_large_gift}}
+		flag = send_emissary_medium_gift
+		localization = "SE_MEDIUM_GIFT"
+	}
+	## Large Sum
+	send_option = {
+		is_shown = { scope:actor = { major_gold_value_trigger = yes }}
+		is_valid = {NOR = {always = scope:send_emissary_small_gift
+								always = scope:send_emissary_medium_gift}}
+		flag = send_emissary_large_gift
+		localization = "SE_LARGE_GIFT"
+	}
+	
+	send_option = {
+		is_valid = {
+			scope:actor = {
+				has_usable_hook = scope:recipient
+			}
+		}
+		flag = hook
+		localization = SCHEME_HOOK
+	}
+	should_use_extra_icon = {
+		scope:actor = { has_usable_hook = scope:recipient }
+	}
+	extra_icon = gfx/interface/icons/character_interactions/hook_icon.dds
+
+	send_options_exclusive = no
+	
+	on_accept = {
+		scope:actor = {
+				send_interface_toast = {
+				title = send_emissary_interaction.accept.actor.tt
+				left_icon = scope:recipient
+				custom_tooltip = { 
+				text = "send_emissary_interaction_effect"
+					}
+				}
+				
+				send_emissary_gift_cost_effect = yes
+				stress_impact = {
+					greedy = minor_stress_impact_gain
+				}
+			}
+		scope:recipient = {
+			add_opinion = {
+				modifier = chancellor_task_foreign_affairs_opinion
+				opinion = 25
+				target = scope:actor
+			}}
+		if = {
+			limit = {scope:actor = {cp:councillor_chancellor = {diplomacy < low_skill_rating}}}
+			scope:recipient = {
+			add_character_flag = {
+				flag = emissary_sent
+				years = 1
+				}
+			add_character_flag = {
+				flag = partially_spied
+				years = 3
+				}
+			}
+		}
+		else_if = {
+			limit = {scope:actor = {cp:councillor_chancellor = {diplomacy >= low_skill_rating
+																diplomacy < decent_skill_rating}}}
+			scope:recipient = {
+			add_character_flag = {
+				flag = emissary_sent
+				years = 1
+				}
+			add_character_flag = {
+				flag = partially_spied
+				years = 3
+				}
+			every_courtier_or_guest = {
+				limit = { 
+				OR = { is_consort_of = scope:recipient
+						is_heir_of = scope:recipient}
+						}
+				add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 3
+					}
+				}
+			cp:councillor_chancellor = {
+			add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 3
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {scope:actor = {cp:councillor_chancellor = {diplomacy >= decent_skill_rating
+																diplomacy < very_high_skill_rating}}}
+			scope:recipient = {
+			add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 6
+					}
+				add_character_flag = {
+					flag = partially_spied_2
+					years = 3
+					}
+			every_courtier_or_guest = {
+				limit = { 
+				OR = { is_consort_of = scope:recipient
+						is_close_family_of = scope:recipient
+						is_heir_of = scope:recipient
+						is_councillor_of = scope:recipient}
+						}
+				add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 3
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {scope:actor = {cp:councillor_chancellor = {diplomacy >= very_high_skill_rating}}}
+			scope:recipient = {
+			add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 6
+					}
+				add_character_flag = {
+					flag = partially_spied_2
+					years = 3
+					}
+			every_courtier_or_guest = {
+				limit = { 
+				OR = { is_consort_of = scope:recipient
+						is_close_family_of = scope:recipient
+						is_heir_of = scope:recipient
+						is_councillor_of = scope:recipient}
+						}
+				add_character_flag = {
+					flag = emissary_sent
+					years = 1
+					}
+				add_character_flag = {
+					flag = partially_spied
+					years = 6
+					}
+				add_character_flag = {
+					flag = partially_spied_2
+					years = 3
+					}
+				}
+			}
+		}
+	}
+	on_decline = { 
+		# Scope:actor gains some stress over the whole ordeal. 
+		scope:actor = {
+			
+			send_interface_toast = {
+				title = send_emissary_interaction.decline.actor.tt
+				left_icon = scope:recipient 
+				custom_tooltip = {
+				text = "send_emissary_interaction_refusal_effect"
+					}
+				add_stress = minor_stress_gain
+			}
+			
+		}
+	}
+	ai_will_do = {
+		base = 0
+		}
+}

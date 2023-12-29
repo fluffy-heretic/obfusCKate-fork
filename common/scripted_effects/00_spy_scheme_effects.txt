@@ -1,0 +1,619 @@
+﻿#Scripted effects relating to Spy scheme
+
+#####################################################################
+# EFFECT LIST
+#####################################################################
+# !!! Remember to add all new effects with a short description here !!!
+#
+#
+#
+######################################################################
+# EFFECTS
+######################################################################
+
+spy_scheme_discovery_chance_effect = {
+	if = {
+		limit = {
+			OR = {scope:target = {is_pool_character = yes}
+				AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+			scope:target.host = scope:owner}
+			NOT = {
+				exists = scope:scheme.var:had_self_court_discovery
+			}
+		} 
+		#Check if the scheme is happening against someone at owner's court or pool
+		#If owner's own court, check for discovery
+		random = {
+			chance = {
+				value = 0
+				if = {
+					limit = {scope:scheme = {is_scheme_exposed = no}
+							scope:scheme = {scheme_progress < 2}}
+				add = -200
+				}
+				if = {
+					limit = {scope:scheme = {is_scheme_exposed = no}}
+				add = spy_scheme_own_court_discovery_chance
+				}
+				if = {
+					limit = {
+					OR = {owner_spymaster_is_available_for_this_trigger = yes
+						scope:owner = {has_council_position = councillor_spymaster}}
+					scope:scheme = {scheme_number_of_agents > 2}}
+				add = {
+					value = scope:scheme.scheme_number_of_agents
+					multiply = 0.25
+					max = 6
+					}
+				}
+				else_if = {
+					limit = {
+					NOT = {scope:owner = {has_council_position = councillor_spymaster}}
+					owner_spymaster_is_available_for_this_trigger = no
+					scope:scheme = {scheme_number_of_agents > 0}}
+				add = {
+					value = scope:scheme.scheme_number_of_agents
+					multiply = 0.5
+					}
+				}
+				if = { 
+					limit = {
+					scope:scheme = {is_scheme_exposed = no}
+					scope:target = {probably_unintelligent_trigger = yes} }
+					multiply = 0.5
+					max = 2
+				}
+				if = {
+					limit = {scope:target = {probably_intelligent_trigger = yes}} 
+					multiply = 2
+					max = 20
+				}
+				if = {
+					limit = {scope:scheme = {is_scheme_exposed = yes}}
+				add = 100
+				}	
+			}
+
+			scope:scheme = {
+				set_variable = {
+					name = had_self_court_discovery
+					value = yes
+				}
+			}
+			scope:owner = { #Note that this fires for owner, not target
+				if = {
+					limit = {
+					scope:target = {is_pool_character = yes}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4005
+				}
+				if = {
+					limit = {
+					scope:target = {is_pool_character = no}
+					scope:target = {is_pool_guest_of = scope:owner}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4001
+				}
+				if = {
+					limit = {scope:target = {is_pool_character = no}
+					NOT = {AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}}
+						NOT = {scope:target = {is_pool_guest_of = scope:owner}}
+						scope:target = {age >= 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4001
+				}
+				if = {
+					limit = {scope:target = {is_pool_character = no}
+						NOT = {AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}}
+						NOT = {scope:target = {is_pool_guest_of = scope:owner}}
+						scope:target = {age < 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4002
+				}
+				if = {
+					limit = {
+						AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+						scope:target = {age >= 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4003
+				}
+				if = {
+					limit = {
+						AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+						scope:target = {age < 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4004
+				}
+				
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+			}
+		}
+	}
+
+	#Check for targets that have different courts than the scheme owner
+	else_if = {
+		if = {
+			limit = {owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+			NOT = {
+				AND = {scope:target = {is_vassal_of = scope:owner} #BARON VASSALS ARE COUNTED AS OWN COURT
+						scope:target = {highest_held_title_tier <= tier_barony}}}
+					 #BARON OR BELOW VASSALS
+				scope:target = {
+				exists = liege
+				liege = {NOT = {this = scope:owner}}
+				highest_held_title_tier <= tier_barony}
+
+			#Does the target have a Spymaster?
+			exists = scope:target.liege.cp:councillor_spymaster
+			}
+		#Save spymaster scope for later reference
+		scope:target.liege.cp:councillor_spymaster = {
+			save_scope_as = spymaster
+			}
+		}
+		
+		if = {
+			limit = {owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+			NOT = {
+				AND = {scope:target = {is_vassal_of = scope:owner} #BARON VASSALS ARE COUNTED AS OWN COURT
+						scope:target = {highest_held_title_tier = tier_barony}}
+						scope:target.host = scope:owner} #NOT IN OUR COURT
+			OR = {
+			scope:target = {#POOL GUESTS
+			exists = host
+			host = {NOT = {this = scope:owner}}}
+			scope:target = { #LIEGE
+			exists = host
+			scope:target = scope:target.host}
+			}
+			#Does the target have a Spymaster?
+			exists = scope:target.host.cp:councillor_spymaster
+			}
+		#Save spymaster scope for later reference
+		scope:target.host.cp:councillor_spymaster = {
+			save_scope_as = spymaster
+			}
+		}
+
+		if = {
+			limit = {
+				scope:scheme = {
+						scheme_progress > 2
+						is_scheme_exposed = no}
+				#Spymaster won't expose their own Scheme
+				#NOT = { scope:owner = scope:spymaster }
+				#Spymaster won't expose *your* (liege's) Scheme
+				#NOT = { scope:owner = scope:spymaster.liege }
+			}
+			random = {
+				chance = {
+				value = 1
+				if = {
+					limit = { OR = {
+								scope:scheme = {scheme_progress < 3
+								scheme_number_of_agents = 0 }}
+							OR = {
+								scope:scheme = {scheme_progress < 2
+								scheme_number_of_agents > 0 }}
+					}
+				add = -200
+				}
+				if = {
+					limit = {scope:scheme = {is_scheme_exposed = no}}
+				add = target_court_spymaster_spy_scheme_discovery_chance
+				}
+				if = {
+					limit = {scope:owner = scope:spymaster
+						scope:owner = {has_council_position = councillor_spymaster}
+					scope:scheme = {scheme_number_of_agents > 3}}
+				add = {
+					value = scope:scheme.scheme_number_of_agents
+					multiply = 0.5
+					max = 10
+					}
+				}
+				else_if = {
+					limit = {
+					NOT = { scope:owner = scope:spymaster }
+					scope:scheme = {scheme_number_of_agents > 0}}
+				add = {
+					value = scope:scheme.scheme_number_of_agents
+					multiply = 0.5
+					}
+				}
+				if = { 
+					limit = {scope:target = {probably_unintelligent_trigger = yes} }
+					multiply = 0.5
+					max = 2
+				}
+				if = {
+					limit = {scope:target = {probably_intelligent_trigger = yes}} 
+					multiply = 2
+					max = 20
+				}	
+			}
+
+				save_temporary_scope_value_as = {
+					name = discover_scheme
+					value = yes
+				}
+			}
+		}
+
+		#Discover agent or owner? We don't want both to happen at once
+		random_list = {
+			50 = { #AGENT
+				trigger = {owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+					NOR = { scope:spymaster = {is_scheming_against = {target = scope:target}}
+							scope:owner = scope:spymaster
+							exists = scope:scheme.var:had_self_court_discovery
+						}
+					is_scheme_exposed = yes #Agents should only be exposed if the scheme already is exposed
+					any_scheme_agent = {
+						agent_valid_to_be_discovered_by_spymaster = yes
+					}
+				}
+				random = {
+				chance = {
+					value = 1
+					if = {
+						limit = {
+						scope:scheme = {scheme_number_of_agents > 0}}
+					add = {
+						value = scope:scheme.scheme_number_of_agents
+						multiply = 0.5
+						}
+					}
+					if = {
+						limit = {
+						scope:scheme = {scheme_number_of_exposed_agents > 0}}
+					add = {
+						value = scope:scheme.scheme_number_of_exposed_agents
+						multiply = 2
+						}
+					}
+					if = { 
+						limit = {scope:spymaster = {probably_unintelligent_trigger = yes} }
+						multiply = 0.5
+					}
+					if = {
+						limit = {scope:spymaster = {probably_intelligent_trigger = yes}} 
+						add = 2
+					}
+					if = { 
+						limit = {scope:scheme = {
+								has_scheme_modifier = agents_being_discovered_modifier}}
+						add = 2.5
+					}
+					multiply = target_court_agent_discovery_chance
+					min = 2
+				}
+					save_temporary_scope_value_as = {
+						name = discover_agent
+						value = yes
+					}
+				}
+			}
+
+			50 = { #OWNER
+				trigger = {owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+					NOR = { NOT = {has_scheme_modifier = agents_being_discovered_modifier}
+								scope:scheme = {scheme_progress < 3
+								scheme_number_of_agents = 0 }
+							scope:spymaster = {is_scheming_against = {target = scope:target}}
+							scope:owner = scope:spymaster
+							exists = scope:scheme.var:had_self_court_discovery}
+					is_scheme_exposed = yes #Owner should only be exposed if the scheme already is exposed}
+				}
+				random = {
+					chance = {
+					value = 1
+					if = {
+						limit = {
+						scope:scheme = {scheme_number_of_agents > 0}}
+					add = {
+						value = scope:scheme.scheme_number_of_agents
+						multiply = 0.35
+						}
+					}
+					if = {
+						limit = {
+						scope:scheme = {scheme_number_of_exposed_agents > 0}}
+					add = {
+						value = scope:scheme.scheme_number_of_exposed_agents
+						multiply = 1.5
+						}
+					}
+					if = { 
+						limit = {scope:spymaster = {probably_unintelligent_trigger = yes} }
+						multiply = 0.5
+					}
+					if = {
+						limit = {scope:spymaster = {probably_intelligent_trigger = yes}} 
+						add = 2
+					}
+					if = { 
+						limit = {scope:scheme = {
+								has_scheme_modifier = agents_being_discovered_modifier}}
+						add = 2
+					}
+					multiply = target_court_owner_discovery_chance
+					min = 2
+				}
+					save_temporary_scope_value_as = {
+						name = discover_owner
+						value = yes
+					}
+				}
+			}
+		}
+
+		if = {
+			#Execution of scheme discovery
+			limit = {
+				exists = scope:discover_scheme
+			NOT = {
+				exists = scope:scheme.var:had_self_court_discovery
+			}
+			NOT = {
+				exists = scope:scheme.var:scheme_is_discovered
+			}
+			}
+			scope:target.host = {
+				trigger_event = spy_scheme_discovery.2001
+			}
+			scope:scheme = {
+				set_variable = {
+					name = scheme_is_discovered
+					value = yes
+				}
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+			}
+		}
+		else_if = {
+			#Execution of agent discovery
+			limit = {
+			scope:scheme = {is_scheme_exposed = yes}
+				exists = scope:discover_agent
+			}
+			random_scheme_agent = {
+				limit = {
+					is_alive = yes
+					agent_valid_to_be_discovered_by_spymaster = yes
+				}
+				weight = {
+					base = 1
+					modifier = {
+						add = -0.5
+						is_consort_of = scope:target
+					}
+				}
+				save_scope_as = agent
+			}
+			scope:target.host = {
+				trigger_event = spy_scheme_discovery.1001
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+			}
+		}
+		else_if = {
+			#Execution of owner discovery
+			limit = {
+			scope:scheme = {is_scheme_exposed = yes}
+				exists = scope:discover_owner
+				trigger_if = {
+					limit = {
+						exists = scope:spymaster
+					}
+					NOT = {
+						scope:spymaster = scope:owner
+					}
+				}
+			NOT = {
+				exists = scope:scheme.var:had_self_court_discovery
+			}
+			NOT = {
+				exists = scope:scheme.var:owner_is_discovered
+			}
+			}
+			scope:target.host = {
+				trigger_event = spy_scheme_discovery.1002
+			}
+			scope:scheme = {
+				set_variable = {
+					name = owner_is_discovered
+					value = yes
+				}
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+			}
+		}
+	}
+}
+
+spy_scheme_instant_discovery_effect = {
+	if = {
+		limit = {
+			OR = {scope:target = {is_pool_character = yes}
+				AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+			scope:target.host = scope:owner}
+			NOT = {
+				exists = scope:scheme.var:had_self_court_discovery
+			}
+		}
+		#Check if the scheme is happening against someone at owner's court or pool
+		#If owner's own court, check for discovery
+
+			scope:scheme = {
+				set_variable = {
+					name = had_self_court_discovery
+					value = yes
+				}
+			}
+			scope:owner = { #Note that this fires for owner, not target
+				if = {
+					limit = {
+					scope:target = {is_pool_character = yes}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4005
+				}
+				if = {
+					limit = {scope:target = {is_pool_character = no}
+					NOT = {AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}}
+						scope:target = {age >= 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4001
+				}
+				if = {
+					limit = {scope:target = {is_pool_character = no}
+						NOT = {AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}}
+						scope:target = {age < 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4002
+				}
+				if = {
+					limit = {
+						AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+						scope:target = {age >= 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4003
+				}
+				if = {
+					limit = {
+						AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+						scope:target = {age < 14}
+						scope:scheme = {
+							scheme_type = spy_character
+						}
+					}
+					trigger_event = spy_scheme_discovery.4004
+				}
+				
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+			}
+	}
+
+	#Check for targets that have different courts than the scheme owner
+	else_if = {
+		if = {
+			limit = {
+			NOT = {
+				AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+			scope:target.host = scope:owner}
+			#Does the target have a Spymaster?
+			exists = scope:target.host.cp:councillor_spymaster
+			}
+		#Save spymaster scope for later reference
+		scope:target.host.cp:councillor_spymaster = {
+			save_scope_as = spymaster
+			}
+		}
+		if = {
+			limit = {
+			NOT = {
+				AND = {scope:target = {is_vassal_of = scope:owner}
+						scope:target = {highest_held_title_tier = tier_barony}}
+			scope:target.liege = scope:owner}
+			#Does the target have a Spymaster?
+			exists = scope:target.liege.cp:councillor_spymaster
+			}
+		#Save spymaster scope for later reference
+		scope:target.liege.cp:councillor_spymaster = {
+			save_scope_as = spymaster
+			}
+		}
+
+		save_temporary_scope_value_as = {
+						name = discover_owner
+						value = yes
+				}
+		if = {
+			#Execution of owner discovery
+			limit = {
+			scope:scheme = {is_scheme_exposed = yes}
+				exists = scope:discover_owner
+				trigger_if = {
+					limit = {
+						exists = scope:spymaster
+					}
+					NOT = {
+						scope:spymaster = scope:owner
+					}
+				}
+			NOT = {
+				exists = scope:scheme.var:had_self_court_discovery
+			}
+			NOT = {
+				exists = scope:scheme.var:owner_is_discovered
+			}
+			}
+			scope:target.host = {
+				trigger_event = spy_scheme_discovery.1002
+			}
+			scope:scheme = {
+				set_variable = {
+					name = owner_is_discovered
+					value = yes
+				}
+			}
+			save_temporary_scope_value_as = {
+				name = discovery_event_happening
+				value = yes
+				}
+			}
+		}
+	}

@@ -1,0 +1,413 @@
+﻿
+macro = {
+	description = "Spy Interaction is shown"
+	definition = "SpyInteractionShown"
+	replace_with = "Character.IsPlayerInteractionShown('spy_character_interaction')"
+}
+
+macro = {
+	description = "Rumours interaction Shown"
+	definition = "RumoursShown"
+	replace_with = "Character.IsPlayerInteractionShown('has_heard_rumours_interaction')"
+}
+
+macro = {
+	description = "Emissary Interaction is shown"
+	definition = "EmissaryInteractionShown"
+	replace_with = "Character.IsPlayerInteractionShown('send_emissary_interaction')"
+}
+
+macro = {
+	description = "Request Military Information Interaction is shown"
+	definition = "RequestMilitaryInfoInteractionShown"
+	replace_with = "Character.IsPlayerInteractionShown('request_military_information_interaction')"
+}
+
+macro = {
+	description = "Character is known by player"
+	definition = "CharacterIsKnown"
+	replace_with = "And(Not(Character.IsLocalPlayer),Or(NormalCharacterIsKnown,DeceptiveCharacterIsKnown))"
+}
+
+macro = {
+	description = "Normal Character is known by player"
+	definition = "NormalCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('partially_spied_3_interaction')"
+}
+
+macro = {
+	description = "Deceptive Character is Known by player"
+	definition = "DeceptiveCharacterIsKnown"
+	replace_with = "Or(IllusoryWarriorCharacterIsKnown,Or(IllusoryScholarCharacterIsKnown,Or(IllusoryIntriguerCharacterIsKnown,Or(IllusoryAdministratorCharacterIsKnown,Or(IllusoryDiplomatCharacterIsKnown,HumbleCharacterIsKnown)))))"
+}
+
+macro = {
+	description = "Humble Character is Known by player"
+	definition = "HumbleCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('humble_character_interaction')"
+}
+macro = {
+	description = "Illusory Diplomat is Known by player"
+	definition = "IllusoryDiplomatCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('illusory_diplomat_interaction')"
+}
+macro = {
+	description = "Illusory Administrator is Known by player"
+	definition = "IllusoryAdministratorCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('illusory_administrator_interaction')"
+}
+macro = {
+	description = "Illusory Intriguer is Known by player"
+	definition = "IllusoryIntriguerCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('illusory_intriguer_interaction')"
+}
+macro = {
+	description = "Illusory Scholar is Known by player"
+	definition = "IllusoryScholarCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('illusory_scholar_interaction')"
+}
+macro = {
+	description = "Illusory Warrior is Known by player"
+	definition = "IllusoryWarriorCharacterIsKnown"
+	replace_with = "Character.IsPlayerInteractionShown('illusory_warrior_interaction')"
+}
+
+
+
+macro = {
+	description = "Character is acquaintance of player"
+	definition = "CharacterIsAcquaintance"
+	replace_with = "Character.IsPlayerInteractionShown('partially_spied_2_interaction')"
+}
+
+macro = {
+	description = "Player has basic information on character"
+	definition = "CharacterHasBasicInfo"
+	replace_with = "Character.IsPlayerInteractionShown('partially_spied_interaction')"
+}
+
+macro = {
+	description = "Portraits are enabled"
+	definition = "PortraitsEnabled"
+	replace_with = "Not(GetGameRules.HasRuleWithFlag('Show_portraits_disabled'))"
+}
+
+macro = {
+	description = "Personality traits are visible condition"
+	definition = "PersonalityTraitsVisible"
+	replace_with = "Not(GetGameRules.HasRuleWithFlag('hide_traits'))"
+}
+
+macro = {
+	description = "Personality traits are visible for children"
+	definition = "PersonalityTraitsVisibleForChildren"
+	replace_with = "And(Not(Character.IsAdult), Not(GetGameRules.HasRuleWithFlag('hide_children_traits')))"
+}
+
+macro = {
+	description = "Portraits are disabled"
+	definition = "PortraitsDisabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('Show_portraits_disabled')"
+}
+
+macro = {
+	description = "Player should see portrait idle when expressions are enabled"
+	definition = "PortraitShouldBeIdleWhenEnabled"
+	replace_with = "And(And(ExpressionsEnabled, PortraitsEnabled),Or(Or(Not(Character.IsAlive),Or(And(CharacterHasBasicInfo,Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Character.HasRelationTo(GetPlayer)))), Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))),Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer))))))"
+}
+
+macro = {
+	description = "Player should not see portrait when disabled"
+	definition = "PortraitNotVisibleWhenDisabled"
+	replace_with = "And(PortraitsDisabled,Not(Or(ObjectsEqual(Character.GetCurrentLocation,GetPlayer.GetCurrentLocation),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer )))))"
+}
+macro = {
+	description = "Player should not see portrait when disabled and expressions also disabled"
+	definition = "PortraitNotVisibleWhenDisabledAndExpressionsDisabled"
+	replace_with = "And(And(PortraitsDisabled,ExpressionsDisabled),Not(Or(ObjectsEqual(Character.GetCurrentLocation,GetPlayer.GetCurrentLocation),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(CharacterIsAcquaintance,CharacterIsKnown)), Character.HasRelationTo( GetPlayer )))))"
+}
+
+macro = {
+	description = "Player should see portrait when disabled"
+	definition = "PortraitVisibleWhenDisabled"
+	replace_with = "And(PortraitsDisabled,Or(ObjectsEqual(Character.GetCurrentLocation,GetPlayer.GetCurrentLocation),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer ))))"
+}
+
+macro = {
+	description = "Player should see portrait when disabled and expressions also disabled"
+	definition = "PortraitVisibleWhenDisabledAndExpressionsDisabled"
+	replace_with = "And(And(PortraitsDisabled,ExpressionsDisabled),Or(ObjectsEqual(Character.GetCurrentLocation,GetPlayer.GetCurrentLocation),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer ))))"
+}
+
+macro = {
+	description = "Express opinions enabled"
+	definition = "ExpressionsEnabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('express_opinion_enabled')"
+}
+
+macro = {
+	description = "Express opinions disabled"
+	definition = "ExpressionsDisabled"
+	replace_with = "Not(GetGameRules.HasRuleWithFlag('express_opinion_enabled'))"
+}
+
+macro = {
+	description = "opinion Glow Enabled"
+	definition = "GlowEnabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('opinion_glow_enabled')"
+}
+
+macro = {
+	description = "Express personality opinions disabled"
+	definition = "ExpressionsPersonalityEnabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('express_personality_opinion_enabled')"
+}
+
+macro = {
+	description = "Character should express opinion based on personality"
+	definition = "PortraitExpressOpinionBasedOnPersonality"
+	replace_with = "And(And(PortraitsEnabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+}
+macro = {
+	description = "Character should express opinion not based on personality"
+	definition = "PortraitExpressOpinionNotBasedOnPersonality"
+	replace_with = "And(And(PortraitsEnabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+}
+macro = {
+	description = "Character should express opinion based on personality when portraits disabled"
+	definition = "PortraitExpressOpinionBasedOnPersonalityPortraitsDisabled"
+	replace_with = "And(And(PortraitsDisabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+}
+macro = {
+	description = "Character should express opinion not based on personality when portraits disabled"
+	definition = "PortraitExpressOpinionNotBasedOnPersonalityPortraitsDisabled"
+	replace_with = "And(And(PortraitsDisabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+}
+
+macro = {
+	description = "Opinions are disabled"
+	definition = "OpinionsDisabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('opinions_disabled')"
+}
+
+macro = {
+	description = "Opinions breakdown disabled"
+	definition = "OpinionBreakdownEnabled"
+	replace_with = "Not(GetGameRules.HasRuleWithFlag('opinion_breakdown_disabled'))"
+}
+
+macro = {
+	description = "Character should show dread icon for liege"
+	definition = "CharacterShouldShowDreadIconForLiege"
+	replace_with = "And(Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)), Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))), Not(Character.IsDeadAndValid))"
+}
+
+macro = {
+	description = "Character should show opinion about liege"
+	definition = "CharacterShouldShowOpinionAboutLiege"
+	replace_with = "And(Not(OpinionsDisabled),And(Not(ObjectsEqual(Character.GetLiege,GetPlayer.Self)),And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Character.HasRelationTo(GetPlayer)))))"
+}
+
+macro = {
+	description = "Character should show known languages"
+	definition = "CharacterKnownLanguages"
+	replace_with = "And(GreaterThan_int32(GetDataModelSize(Character.GetKnownLanguages), '(int32)1'), Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer))))"
+}
+
+macro = {
+	description = "Player is supposed to know this character's age"
+	definition = "PlayerShouldKnowAge"
+	replace_with = "Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)), Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(And(Character.IsDeadAndValid,Character.HasRelationTo(GetPlayer)),Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))))"
+}
+macro = {
+	description = "Player should only know approximate age"
+	definition = "PlayerKnowsApproxAge"
+	replace_with = "Not(PlayerShouldKnowAge)"
+}
+macro = {
+	description = "Player should know health state"
+	definition = "PlayerKnowsHealth"
+	replace_with = "And(Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)), Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)))), Not(Character.IsDeadAndValid))"
+}
+
+macro = {
+	description = "Player should know skills"
+	definition = "SkillsAreKnown"
+	replace_with = "And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer))))"
+}
+
+macro = {
+	description = "Player should roughly know skills"
+	definition = "SkillsRoughlyKnown"
+	replace_with = "And(Not(Character.IsPlayer),And(Or(Not(SpyInteractionShown),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),CharacterIsAcquaintance)),Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer))))))"
+}
+macro = {
+	description = "Player should not know skills"
+	definition = "SkillsNotKnown"
+	replace_with = "And(Not(Character.IsPlayer),And(Not(Or(Not(SpyInteractionShown),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),CharacterIsAcquaintance))),Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer))))))"
+}
+macro = {
+	description = "Player should know prowess"
+	definition = "ProwessIsKnown"
+	replace_with = "And(Not(Character.IsPlayer),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer ))))"
+}
+
+macro = {
+	description = "Player should know how dreadful the character is"
+	definition = "HowDreadfulIsCharacter"
+	replace_with = "And(Character.HasLandedTitles, Or(ObjectsEqual(Character.GetTopLiege,GetPlayer.GetTopLiege),Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer ))))))"
+}
+
+macro = {
+	description = "Player should know gold"
+	definition = "HowRichIsCharacter"
+	replace_with = "Or(Or(Or(And(ObjectsEqual(Character.GetLiege.GetCouncillor( 'councillor_spymaster' ),GetPlayer),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler))),And(ObjectsEqual(Character.GetLiege.GetCouncillor( 'councillor_steward' ),GetPlayer),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Or(Or(Character.IsPlayerInteractionValid('kick_from_court_interaction'),Character.IsOtherLiegeOrAbove( GetPlayer )),Not(SpyInteractionShown))),Or(GetPlayer.IsDiarchOf( Character.GetLiege ),GetPlayer.IsDiarchOf( Character.Self)))"
+}
+
+macro = {
+	description = "Player should know prestige"
+	definition = "ShouldKnowPrestige"
+	replace_with = "Or(ObjectsEqual(Character.GetTopLiege,GetPlayer.GetTopLiege), Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer )))))"
+}
+macro = {
+	description = "Player should know piety"
+	definition = "ShouldKnowPiety"
+	replace_with = "Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)),Or(GreaterThanOrEqualTo_int32(Character.GetPietyLevel, '(int32)3'),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(CharacterIsAcquaintance,CharacterIsKnown)), Character.HasRelationTo( GetPlayer ))))"
+}
+
+macro = {
+	description = "Player should know Military Strength"
+	definition = "ShouldKnowArmy"
+	replace_with = "And(Character.HasLandedTitles,Or(Or(Character.IsPlayer, Or(Or(And(ObjectsEqual(Character.GetLiege.GetCouncillor( 'councillor_spymaster' ),GetPlayer),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler))),And(ObjectsEqual(Character.GetLiege.GetCouncillor( 'councillor_marshal' ),GetPlayer),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Or(Or(Not(RequestMilitaryInfoInteractionShown),Not(SpyInteractionShown)), Character.IsOtherLiegeOrAbove(GetPlayer)))),Or(GetPlayer.IsDiarchOf( Character.GetLiege ),GetPlayer.IsDiarchOf( Character.Self))))"
+}
+
+macro = {
+	description = "Player should know Personality"
+	definition = "ShouldKnowPersonality"
+	replace_with = "And(Not( Character.IsLocalPlayer ),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),CharacterIsKnown), Character.HasRelationTo( GetPlayer ))))"
+}
+
+macro = {
+	description = "Player should see all traits in lists"
+	definition = "ShowAllTraitsInList"
+	replace_with = "And(PersonalityTraitsVisible,And(And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))),Trait.IsValid))"
+}
+
+macro = {
+	description = "Player should see all traits in guest lists"
+	definition = "ShowAllTraitsInGuestList"
+	replace_with = "And(PersonalityTraitsVisible,And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))))"
+}
+
+macro = {
+	description = "Player should see personality traits in character window"
+	definition = "ShowPersonalityTraits"
+	replace_with = "And(PersonalityTraitsVisible,Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer))))"
+}
+
+macro = {
+	description = "Player should see other traits in character window"
+	definition = "ShowOtherTraits"
+	replace_with = "Or(Or(Not(EmissaryInteractionShown),Not(SpyInteractionShown)),Or(Or(GreaterThanOrEqualTo_int32(Character.GetPrestigeLevel, '(int32)3'),GreaterThanOrEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)5')),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer ))))"
+}
+macro = {
+	description = "Player should see opinion breakdown"
+	definition = "ShowOpinionBreakdown"
+	replace_with = "And(OpinionBreakdownEnabled, And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))))"
+}
+
+macro = {
+	description = "Player should see opinion"
+	definition = "ShowOpinion"
+	replace_with = "And(Not(OpinionsDisabled),And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)))))"
+}
+
+macro = {
+	description = "Character should show dread logic"
+	definition = "CharacterShouldShowDreadLogic"
+	replace_with = "And(And(Or(Not(SpyInteractionShown),And(Not(Character.IsPlayer),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer))))),Character.ShouldShowDreadEffectIcon),Not(Character.IsDeadAndValid))"
+}
+macro = {
+	description = "Player should see this portrait status icon"
+	definition = "PortraitIconVisible"
+	replace_with = "Or(ObjectsEqual(Character.GetCurrentLocation,GetPlayer.GetCurrentLocation),Or(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)),Or(Or(CharacterIsAcquaintance,CharacterIsKnown), CharacterHasBasicInfo)), Character.HasRelationTo( GetPlayer )))"
+}
+
+macro = {
+	description = "I should know my opinion"
+	definition = "ShowMyOpinion"
+	replace_with = "And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer))))"
+}
+
+macro = {
+	description = "I should know my opinion"
+	definition = "ShowModifiers"
+	replace_with = "Or(Character.IsLocalPlayer,And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(CharacterIsKnown,Character.HasRelationTo(GetPlayer)))))"
+}
+
+macro = {
+	description = "Dropdowns are enabled"
+	definition = "DropdownsEnabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('enable_dropdowns')"
+}
+
+
+macro = {
+	description = "Shortcut on character window"
+	definition = "KnownListShortcutEnabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('enable_shortcut_known_list')"
+}
+
+macro = {
+	description = "Known Characters list disabled"
+	definition = "KnownListShortcutBottomDisabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('disable_shortcut_bottom_known_list')"
+}
+
+macro = {
+	description = "Known Characters list disabled"
+	definition = "KnownListIsDisabled"
+	replace_with = "GetGameRules.HasRuleWithFlag('disable_completely')"
+}
+
+macro = {
+	description = "Meta Traits Are visible"
+	definition = "HideSomeMetaTraits"
+	replace_with = "And(GetGameRules.HasRuleWithFlag('hide_some_meta_traits'), Not(Or(EqualTo_string( Trait.GetKey, 'disloyal' ),Or(EqualTo_string( Trait.GetKey, 'loyal' ),Or(EqualTo_string( Trait.GetKey, 'infertile' ),EqualTo_string( Trait.GetKey, 'fecund' ))))))"
+}
+
+macro = {
+	description = "SomeMeta Traits Are visible"
+	definition = "HideMetaTraits"
+	replace_with = "And(GetGameRules.HasRuleWithFlag('hide_meta_traits'),Not(Or(EqualTo_string( Trait.GetKey, 'shrewd' ),Or(EqualTo_string( Trait.GetKey, 'dull' ),Or(EqualTo_string( Trait.GetKey, 'intellect_bad_1' ),Or(EqualTo_string( Trait.GetKey, 'intellect_bad_2' ),Or(EqualTo_string( Trait.GetKey, 'intellect_bad_3' ),Or(EqualTo_string( Trait.GetKey, 'intellect_good_1' ),Or(EqualTo_string( Trait.GetKey, 'intellect_good_2' ),Or(EqualTo_string( Trait.GetKey, 'intellect_good_3' ),Or(EqualTo_string( Trait.GetKey, 'disloyal' ),Or(EqualTo_string( Trait.GetKey, 'loyal' ),Or(EqualTo_string( Trait.GetKey, 'infertile' ),EqualTo_string( Trait.GetKey, 'fecund' ))))))))))))))"
+}
+
+macro = {
+	description = "Some Meta Traits Are visible"
+	definition = "ShowMetaTraits"
+	replace_with = "Not(Or(GetGameRules.HasRuleWithFlag('hide_meta_traits'),GetGameRules.HasRuleWithFlag('hide_some_meta_traits')))"
+}
+
+macro = {
+	description = "Trait is beauty"
+	definition = "TraitIsFacialBeauty"
+	replace_with = "Or(EqualTo_string( Trait.GetKey, 'beauty_bad_1' ),Or(EqualTo_string( Trait.GetKey, 'beauty_bad_2' ),Or(EqualTo_string( Trait.GetKey, 'beauty_bad_3' ),Or(EqualTo_string( Trait.GetKey, 'beauty_good_1' ),Or(EqualTo_string( Trait.GetKey, 'beauty_good_2' ),EqualTo_string( Trait.GetKey, 'beauty_good_3' ))))))"
+}
+
+macro = {
+	description = "Trait is physical Beauty"
+	definition = "TraitIsPhysicallBeauty"
+	replace_with = "Or(EqualTo_string( Trait.GetKey, 'athletic' ),Or(EqualTo_string( Trait.GetKey, 'physique_bad_1'),Or(EqualTo_string( Trait.GetKey, 'physique_bad_2'),Or(EqualTo_string( Trait.GetKey, 'physique_bad_3'),Or(EqualTo_string( Trait.GetKey, 'physique_good_1'),Or(EqualTo_string( Trait.GetKey, 'physique_good_2'),EqualTo_string( Trait.GetKey, 'physique_good_3')))))))"
+}
+
+macro = {
+	description = "Trait is other physicall trait"
+	definition = "TraitIsOtherPhysicallTrait"
+	replace_with = "Or(EqualTo_string( Trait.GetKey, 'disfigured' ),Or(EqualTo_string( Trait.GetKey, 'weak' ),Or(EqualTo_string( Trait.GetKey, 'strong' ),Or(EqualTo_string( Trait.GetKey, 'eunuch' ),Or(EqualTo_string( Trait.GetKey, 'one_legged'),Or(EqualTo_string( Trait.GetKey, 'one_eyed' ),Or(EqualTo_string( Trait.GetKey, 'scarred' ),Or(EqualTo_string( Trait.GetKey, 'bleeder' ), Or(EqualTo_string( Trait.GetKey, 'spindly' ),Or(EqualTo_string( Trait.GetKey, 'wheezing' ),Or(EqualTo_string( Trait.GetKey, 'hunchbacked' ),Or(EqualTo_string( Trait.GetKey, 'dwarf' ), Or(EqualTo_string( Trait.GetKey, 'clubfooted' ),Or(EqualTo_string( Trait.GetKey, 'scaly' ),Or(EqualTo_string( Trait.GetKey, 'giant' ),Or(EqualTo_string( Trait.GetKey, 'pure_blooded' ),Or(EqualTo_string( Trait.GetKey, 'stuttering' ),Or(EqualTo_string( Trait.GetKey, 'lisping' ),EqualTo_string( Trait.GetKey, 'albino' )))))))))))))))))))"
+}
+
+macro = {
+	description = "Hide non physical traits untill character meet"
+	definition = "HideNonPhysicalTraits"
+	replace_with = "Or(Or(ShouldKnowPersonality,ShowPersonalityTraits),Or(TraitIsFacialBeauty,Or(TraitIsPhysicallBeauty,TraitIsOtherPhysicallTrait)))"
+}

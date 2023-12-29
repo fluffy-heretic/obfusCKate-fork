@@ -1,0 +1,386 @@
+﻿#Events for Spy Outcomes
+
+namespace = spy_outcome
+ 
+##################################
+# SPY OUTCOME
+##################################
+
+
+spy_outcome.0001 = { #NORMAL SPY EVENT
+	title = spy_outcome.0001.t
+	desc = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier > tier_barony
+						}
+				}
+				desc = spy_outcome.0001_landed.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier <= tier_barony
+						}
+				}
+				 desc = spy_outcome.0001_unlanded.desc
+			}
+	}
+	theme = intrigue
+	override_background = { reference = throne_room  }
+	
+	left_portrait = {
+			character = scope:owner.cp:councillor_spymaster
+			animation = throne_room_messenger_3
+		}
+	right_portrait = {
+			character = scope:owner
+			animation = happiness
+		}
+	lower_left_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0001.a
+		scope:target.court_owner = {
+			every_courtier_or_guest = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+			}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+		}
+		scope:target = {
+			add_character_flag = {
+			flag = has_been_spied
+			years = 3
+			}
+			add_character_flag = {
+			flag = partially_spied
+			years = 3
+			}
+		}
+		
+		stress_impact = {
+							compassionate = minor_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+		}
+		scope:scheme = {end_scheme = yes}
+	}
+}
+
+spy_outcome.0002 = { #SECRET DISCOVERY EVENT
+	title = spy_outcome.0002.t
+	desc = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier > tier_barony
+						}
+				}
+				desc = spy_outcome.0002_landed.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier <= tier_barony
+						}
+				}
+				 desc = spy_outcome.0002_unlanded.desc
+			}
+	}
+	theme = intrigue
+	override_background = { reference = throne_room }
+	left_portrait = {
+			character = scope:owner.cp:councillor_spymaster
+			animation = throne_room_messenger_3
+		}
+	right_portrait = {
+			character = scope:owner
+			animation = toast_goblet
+		}
+	lower_left_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0002.a
+		scope:secret_to_reveal = {
+			reveal_to_without_events_effect = {
+				CHARACTER = scope:owner
+			}
+		}
+		scope:target.court_owner = {
+			every_courtier_or_guest = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+			}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+		}
+		scope:target = {
+			add_character_flag = {
+			flag = has_been_spied
+			years = 3
+			}
+			add_character_flag = {
+			flag = partially_spied
+			years = 3
+			}
+		}
+		stress_impact = {
+							compassionate = minor_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+		}
+		scope:scheme = {end_scheme = yes}
+	}
+}
+
+spy_outcome.0005 = { #NORMAL SPY EVENT SPYMASTER IS TARGET
+	title = spy_outcome.0001.t
+	desc = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier > tier_barony
+						}
+				}
+				desc = spy_outcome.0005_landed.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier <= tier_barony
+						}
+				}
+				 desc = spy_outcome.0005_unlanded.desc
+			}
+	}
+	theme = intrigue
+	override_background = { reference = study }
+	
+	right_portrait = {
+			character = scope:owner
+			animation = chancellor
+		}
+	lower_left_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0001.a
+		scope:target.court_owner = {
+			every_courtier_or_guest = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+			}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+		}
+		scope:target = {
+			add_character_flag = {
+			flag = has_been_spied
+			years = 3
+			}
+			add_character_flag = {
+			flag = partially_spied
+			years = 3
+			}
+		}
+		stress_impact = {
+							compassionate = minor_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+		}
+		scope:scheme = {end_scheme = yes}
+	}
+}
+
+spy_outcome.0006 = { #SECRET DISCOVERY EVENT SPYMASTER IS TARGET
+	title = spy_outcome.0002.t
+	desc = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier > tier_barony
+						}
+				}
+				desc = spy_outcome.0006_landed.desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						highest_held_title_tier <= tier_barony
+						}
+				}
+				 desc = spy_outcome.0006_unlanded.desc
+			}
+	}
+	theme = intrigue
+	override_background = { reference = study }
+
+	right_portrait = {
+			character = scope:owner
+			animation = toast_goblet
+		}
+	lower_left_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0002.a
+		scope:secret_to_reveal = {
+			reveal_to_without_events_effect = {
+				CHARACTER = scope:owner
+			}
+		}
+		scope:target.court_owner = {
+			every_courtier_or_guest = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+			}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 2
+				}
+		}
+		scope:target = {
+			add_character_flag = {
+			flag = has_been_spied
+			years = 3
+			}
+			add_character_flag = {
+			flag = partially_spied
+			years = 3
+			}
+		}
+		stress_impact = {
+							compassionate = minor_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+		}
+		scope:scheme = {end_scheme = yes}
+	}
+}
+
+spy_outcome.0003 = { #SCHEME COMPROMISED
+	title = spy_outcome.0003.t
+	desc = spy_outcome.0003.desc
+	theme = intrigue
+	override_background = { reference = throne_room }
+	left_portrait = {
+			character = scope:owner.cp:councillor_spymaster
+			animation = throne_room_bow_2
+		}
+	right_portrait = {
+			character = scope:owner
+			animation = stress
+		}
+	lower_center_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0003.a
+				
+		scope:scheme = {end_scheme = yes}
+			
+		}
+		
+	}
+spy_outcome.0004 = { #SCHEME COMPROMISED SPYMASTER IS TARGET
+	title = spy_outcome.0003.t
+	desc = spy_outcome.0004.desc
+	theme = intrigue
+	override_background = { reference = study }
+	right_portrait = {
+			character = scope:owner
+			animation = stress
+		}
+	lower_center_portrait = {
+		character = scope:target
+	}
+
+	option = {
+		name = spy_outcome.0003.a
+				
+		scope:scheme = {end_scheme = yes}
+			
+		}
+		
+	}
+
+########################
+# Target is dead
+########################
+
+spy_outcome.2000 = {
+	type = character_event
+	title = spy_outcome.2000.t
+	desc = spy_outcome.2000.desc
+	theme = intrigue
+
+	left_portrait = scope:target
+
+	trigger = {
+		scope:target = { is_alive = no }
+	}
+
+	immediate = {
+		custom_tooltip = spy_outcome.2000.a.tt
+	}
+
+	option = {
+		name = spy_outcome.2000.a
+	}
+}
+
+########################
+# Target has moved far away
+#
+########################
+
+spy_outcome.2500 = {
+	type = character_event
+	title = spy_outcome.2000.t
+	desc = spy_outcome.2500.desc
+	theme = murder_scheme
+
+	left_portrait = scope:target
+
+	trigger = {
+		scope:target = { 
+			NOT = { in_diplomatic_range = scope:owner }
+		}
+	}
+
+	option = {
+		name = spy_outcome.2500.a
+	}
+}

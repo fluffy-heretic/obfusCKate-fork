@@ -1,0 +1,21 @@
+﻿reflect_their_opinion = {
+
+}
+over_12_years_old = {
+
+}
+rumours = {
+
+}
+
+glow_matches_opinion = {
+
+}
+
+skill_masking = {
+
+}
+
+meta_traits = {
+
+}

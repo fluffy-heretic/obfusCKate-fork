@@ -1,0 +1,3224 @@
+﻿##Events for hostile scheme discovery
+
+namespace = spy_scheme_discovery
+
+#Agent discovered
+spy_scheme_discovery.1001 = {
+	type = character_event
+	title = hostile_scheme_discovery.1001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:agent = {
+						OR = {
+							has_friendly_relationship_with_root_trigger = yes
+							is_close_family_of = root
+							is_consort_of = root
+						}
+					}
+				}
+				desc = {
+					first_valid = {
+						triggered_desc = {
+						    trigger = {
+								scope:scheme = { scope:target = root }
+						    }
+						    desc = {
+						    	first_valid = {
+									triggered_desc = {
+										trigger = {
+											exists = scope:spymaster
+										}
+										desc = hostile_scheme_discovery.1001.close_relation
+									}
+									desc = hostile_scheme_discovery.1001.close_relation_no_spymaster
+								}
+						    }
+						}
+						desc = {
+							first_valid = {
+								triggered_desc = {
+									trigger = {
+										exists = scope:spymaster
+										scope:targeted_courtier = scope:spymaster
+									}
+									desc = hostile_scheme_discovery.1001.close_relation_spymaster_other_target
+								}
+								triggered_desc = {
+									trigger = {
+										exists = scope:spymaster
+									}
+									desc = hostile_scheme_discovery.1001.close_relation_other_target
+								}
+								desc = hostile_scheme_discovery.1001.close_relation_no_spymaster_other_target
+							}
+						}
+					}
+				}
+			}
+			desc = {
+				first_valid = {
+					triggered_desc = {
+					    trigger = {
+							scope:scheme = { scope:target = root }
+					    }
+					    desc = {
+					    	first_valid = {
+								triggered_desc = {
+									trigger = {
+										exists = scope:spymaster
+									}
+									desc = hostile_scheme_discovery.1001.desc
+								}
+								desc = hostile_scheme_discovery.1001.desc_no_spymaster
+							}
+					    }
+					}
+					desc = {
+						first_valid = {
+							triggered_desc = {
+								trigger = {
+									exists = scope:spymaster
+									scope:targeted_courtier = scope:spymaster
+								}
+								desc = hostile_scheme_discovery.1001.desc_other_target_spymaster
+							}
+							triggered_desc = {
+								trigger = {
+									exists = scope:spymaster
+								}
+								desc = hostile_scheme_discovery.1001.desc_other_target
+							}
+							desc = hostile_scheme_discovery.1001.desc_no_spymaster_other_target
+						}
+					}
+				}
+			}
+		}
+	}
+	theme = generic_intrigue_scheme
+	left_portrait = scope:spymaster
+	lower_left_portrait = {
+		trigger = {
+			NOT = { scope:targeted_courtier = scope:spymaster }
+		}
+		character = scope:targeted_courtier
+		animation = shock
+	}
+	right_portrait = scope:agent
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		if = {
+			limit = {
+				scope:scheme = {
+					scope:target = { NOT = { this = root } }
+				}
+			}
+			scope:scheme = {
+				scope:target = { save_scope_as = targeted_courtier }
+			}
+		}
+		scope:agent = {
+			add_character_flag = {
+				flag = use_stealth_clothes
+				days = 1
+			}
+		}
+	}
+
+	#Accuse and let go
+	option = {
+		name = hostile_scheme_discovery.1001.a
+		scope:scheme = {
+			expose_scheme_agent = scope:agent
+		}
+		scope:agent = {
+			add_prestige = medium_prestige_loss
+			add_opinion = {
+				target = root
+				modifier = accused_of_scheming_opinion
+			}
+		}
+		save_scope_value_as = {
+			name = agent_treatment
+			value = flag:accused
+		}
+		ai_chance = {
+			base = 40
+		}
+	}
+
+	#Accuse and imprison
+	option = {
+		name = hostile_scheme_discovery.1001.b
+		scope:scheme = {
+			expose_scheme_agent = scope:agent
+		}
+		scope:agent = {
+			add_prestige = medium_prestige_loss
+			add_opinion = {
+				target = root
+				modifier = accused_of_scheming_opinion
+			}
+		}
+		rightfully_imprison_character_effect = { #Exposing scheme agent above will add opinion making the imprisonment rightful
+			TARGET = scope:agent
+			IMPRISONER = root
+		}
+		save_scope_value_as = {
+			name = agent_treatment
+			value = flag:imprisoned
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	#Let them go
+	option = {
+		name = hostile_scheme_discovery.1001.c
+		scope:scheme = {
+			expose_scheme_agent = scope:agent
+		}
+		custom_tooltip = hostile_scheme_discovery.1001.c.tt
+		scope:agent = {
+			add_character_flag = {
+				flag = free_to_scheme
+				days = 1825
+			}
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				add = 20
+				has_trait = forgiving
+			}
+		}
+	}
+
+	after = {
+		#If the agent has not been let go, send notification to scheme owner
+		if = {
+			limit = {
+				exists = scope:agent_treatment
+			}
+			scope:owner = {
+				trigger_event = spy_scheme_discovery.3001
+			}
+		}
+	}
+}
+
+
+#Owner discovered
+spy_scheme_discovery.1002 = {
+	type = character_event
+	title = hostile_scheme_discovery.1002.t
+	desc = {
+		desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						exists = scope:spymaster
+					}
+					desc = hostile_scheme_discovery.1002.intro
+				}
+				desc = hostile_scheme_discovery.1002.intro_no_spymaster
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = murder
+					}
+				}
+				desc = hostile_scheme_discovery.1002.murder
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = abduct
+					}
+				}
+				desc = hostile_scheme_discovery.1002.abduction
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = elope
+					}
+				}
+				desc = hostile_scheme_discovery.1002.elope
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = steal_back_artifact
+					}
+				}
+				desc = hostile_scheme_discovery.1002.steal_back_artifact
+			}
+			desc = hostile_scheme_discovery.1002.fallback
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:target = root }
+				}
+				desc = hostile_scheme_discovery.2001.target_other
+			}
+			desc = hostile_scheme_discovery.2001.target_me
+		}
+	}
+	theme = generic_intrigue_scheme
+	left_portrait = scope:owner
+	right_portrait = scope:spymaster
+	lower_right_portrait = scope:targeted_courtier
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		if = {
+			limit = {
+				scope:scheme = {
+					scheme_target = { NOT = { this = root } }
+				}
+			}
+			scope:scheme = {
+				scheme_target = {
+					trigger_event = spy_scheme_discovery.1002
+					save_scope_as = targeted_courtier
+				}
+			}
+			
+		}
+	}
+
+	#
+	option = {
+		name = hostile_scheme_discovery.1002.a
+		show_as_tooltip = {
+			if = {
+				limit = { 
+					scope:scheme = {
+						scheme_type = spy_character
+					}
+				}
+				scope:target = {
+						add_opinion = {
+						target = scope:owner
+							modifier = suspicion_opinion
+							opinion = -30}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = { #Only send it from the host's event so that owner doesn't get duplication if the host and the target isn't the same person
+			limit = {
+				exists = scope:scheme.scheme_target
+				scope:scheme.scheme_target = { this = root }
+			}
+			scope:owner = { #Event for the owner that actually ends the scheme
+				trigger_event = spy_scheme_discovery.3003
+			}
+		}
+	}
+}
+#Owner discovered
+spy_scheme_discovery.1003 = {
+	type = character_event
+	title = hostile_scheme_discovery.1002.t
+	desc = hostile_scheme_discovery.1002.intro_no_spymaster
+	theme = generic_intrigue_scheme
+	left_portrait = scope:owner
+	lower_right_portrait = scope:targeted_courtier
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		if = {
+			limit = {
+				scope:scheme = {
+					scheme_target = { NOT = { this = root } }
+				}
+			}
+			scope:scheme = {
+				scheme_target = {
+					trigger_event = spy_scheme_discovery.1002
+					save_scope_as = targeted_courtier
+				}
+			}
+		}
+	}
+
+	#
+	option = {
+		name = hostile_scheme_discovery.1002.a
+		show_as_tooltip = {
+			if = {
+				limit = { 
+					scope:scheme = {
+						scheme_type = spy_character
+					}
+				}
+				scope:target = {
+						add_opinion = {
+						target = scope:owner
+							modifier = suspicion_opinion
+							opinion = -30}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = { #Only send it from the host's event so that owner doesn't get duplication if the host and the target isn't the same person
+			limit = {
+				exists = scope:scheme.scheme_target
+				scope:scheme.scheme_target = { this = root }
+			}
+			scope:owner = { #Event for the owner that actually ends the scheme
+				trigger_event = spy_scheme_discovery.3003
+			}
+		}
+	}
+}
+
+
+
+#Discover Scheme
+spy_scheme_discovery.2001 = {
+	type = character_event
+	title = hostile_scheme_discovery.1001.t
+	desc = {
+		desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						exists = scope:spymaster
+					}
+					desc = hostile_scheme_discovery.2001.intro
+				}
+				desc = hostile_scheme_discovery.2001.intro_no_spymaster
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = murder
+					}
+				}
+				desc = hostile_scheme_discovery.2001.murder
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = abduct
+					}
+				}
+				desc = hostile_scheme_discovery.2001.abduction
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = elope
+					}
+				}
+				desc = hostile_scheme_discovery.2001.elope
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {
+						scheme_type = steal_back_artifact
+					}
+				}
+				desc = hostile_scheme_discovery.2001.steal_back_artifact
+			}
+			desc = hostile_scheme_discovery.2001.fallback
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:target = root }
+					scope:target = scope:spymaster
+				}
+				desc = hostile_scheme_discovery.2001.target_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:target = root }
+				}
+				desc = hostile_scheme_discovery.2001.target_other
+			}
+			desc = hostile_scheme_discovery.2001.target_me
+		}
+	}
+	theme = generic_intrigue_scheme
+	left_portrait = {
+		character = scope:spymaster
+		animation = eavesdrop
+	}
+	right_portrait = {
+		trigger = {
+			NOT = { scope:target = scope:spymaster }
+		}
+		character = scope:target
+		animation = disbelief
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+	}
+
+	#Schemes are bad
+	option = {
+		name = hostile_scheme_discovery.2001.a
+		scope:scheme = {
+			expose_scheme = yes
+		}
+		scope:owner = {
+			trigger_event = spy_scheme_discovery.3002
+		}
+	}
+}
+
+
+
+#Agent discovery notification for scheme owner
+spy_scheme_discovery.3001 = {
+	type = character_event
+	title = spy_scheme_discovery.3001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					owner_spymaster_is_available_for_this_trigger = yes
+				}
+				desc = spy_scheme_discovery.3001.intro
+			}
+			triggered_desc = {
+				trigger = {
+					owner_spymaster_is_available_for_this_trigger = no
+				}
+				desc = spy_scheme_discovery.3001.intro_no_spymaster
+			}
+		}
+
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:agent_treatment = flag:imprisoned
+				}
+				desc = spy_scheme_discovery.3001.imprisoned
+			}
+			triggered_desc = {
+				trigger = {
+					scope:agent_treatment = flag:accused
+				}
+				desc = spy_scheme_discovery.3001.accused
+			}
+		}
+	}
+	theme = generic_intrigue_scheme
+	left_portrait = scope:agent
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		scope:target.court_owner = {
+			save_scope_as = court_owner
+		}
+		show_as_tooltip = {
+			rightfully_imprison_character_effect = {
+				TARGET = scope:agent
+				IMPRISONER = scope:target.court_owner
+			}
+		}
+		scope:agent = {
+			add_character_flag = {
+				flag = use_stealth_clothes
+				days = 1
+			}
+		}
+		if = {
+		limit = {scope:scheme = {
+					NOT = {has_scheme_modifier = agents_being_discovered_modifier}}}
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = agents_being_discovered_modifier
+				}
+			}
+		}			
+	}
+	
+	option = {
+		name = spy_scheme_discovery.3001.a
+	}
+}
+
+#Scheme discovery notification for scheme owner
+spy_scheme_discovery.3002 = {
+	type = character_event
+	title = spy_scheme_discovery.3002.t
+	desc = spy_scheme_discovery.3002.desc
+	theme = generic_intrigue_scheme
+	left_portrait = {
+		character = scope:target
+		triggered_animation = {
+			trigger = { ai_boldness > 25}
+			animation = anger
+		}
+		triggered_animation = {
+			trigger = { ai_boldness < 50 }
+			animation = paranoia
+		}
+		triggered_animation = {
+			trigger = { always = yes }
+			animation = worry
+		}
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_murder
+		if = {
+			limit = { exists = scope:target.court_owner }
+			scope:target.court_owner = {
+				save_scope_as = court_owner
+				if = {
+					limit = {
+						NOT = { scope:target = scope:court_owner }
+					}
+					save_scope_as = portrait
+				}
+			}
+		}
+		custom_tooltip = {
+		text = spy_scheme_discovery.3002.scheme_freezed
+		scope:scheme = {
+				add_scheme_progress = -3
+				scheme_freeze = { days = 90 }
+			}
+		}
+		scope:scheme = {
+			
+			add_scheme_modifier = {
+				type = more_vigilant_modifier
+				}
+			}
+		scope:target = {
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 2
+				}
+			}
+			scope:scheme = {
+				expose_scheme = yes
+			}
+	}
+
+	option = {
+		name = spy_scheme_discovery.3002.a
+	}
+}
+
+#Scheme owner discovery notification for scheme owner
+spy_scheme_discovery.3003 = {
+	type = character_event
+	title = spy_scheme_discovery.3003.t
+	desc = spy_scheme_discovery.3003.desc
+	theme = generic_intrigue_scheme
+	override_background = { reference = study }
+	right_portrait = {
+		character = scope:owner
+		triggered_animation = {
+			trigger = { scope:target.court_owner = {is_liege_or_above_of = scope:owner }
+			ai_boldness < 20}
+			animation = worry
+		}
+		triggered_animation = {
+			trigger = { ai_boldness < 50 }
+			animation = worry
+		}
+		triggered_animation = {
+			trigger = { ai_boldness > 35 }
+			animation = eyeroll
+		}
+		triggered_animation = {
+			trigger = { always = yes }
+			animation = chancellor
+		}
+	}
+	lower_left_portrait = {
+		character = scope:target
+	}
+	
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_murder
+		if = {
+			limit = { exists = scope:target.court_owner }
+			scope:target.court_owner = {
+				save_scope_as = court_owner
+				if = {
+					limit = {
+						NOT = { scope:target = scope:court_owner }
+					}
+					save_scope_as = portrait
+				}
+			}
+		}
+		scope:scheme = {
+			set_variable = {
+				name = you_have_been_exposed
+				value = yes
+				days = 3650
+			}
+		}
+		scope:owner = {
+			add_character_modifier = {
+				modifier = caught_spying_modifier
+				years = 4
+					}
+				}
+	}
+
+	option = {
+		name = hostile_scheme_discovery.3003.a
+
+				
+		if = { 
+				limit = { #landed vassal
+					scope:target = {
+						is_vassal_or_below_of = scope:owner
+						is_landed = yes
+						highest_held_title_tier > tier_barony
+						}
+				}
+
+			trigger_event = spy_scheme_discovery.3004
+		}
+		else_if = {
+				limit = { # courtier of vassal
+					scope:target = {
+						host = {is_vassal_or_below_of = scope:owner}
+						is_landed = no
+						}
+				}
+
+			trigger_event = spy_scheme_discovery.3005
+		}
+		else_if = {
+				limit = { #landed vassal of vassals
+					scope:target = {
+					liege = {is_vassal_or_below_of = scope:owner}
+						is_landed = yes
+					highest_held_title_tier = tier_barony
+						}
+				}
+
+			trigger_event = spy_scheme_discovery.3006
+		}
+		else_if = {
+			limit = { #your lieges
+					scope:target = {
+						is_liege_or_above_of = scope:owner
+					}
+				}
+			trigger_event = spy_scheme_discovery.3008
+		}
+		else_if = {
+			limit = { #your lieges
+					scope:target = {
+						liege = {is_liege_or_above_of = scope:owner}
+						highest_held_title_tier = tier_barony
+
+					}
+				}
+			trigger_event = spy_scheme_discovery.3008
+		}
+		else_if = {
+			limit = { #your lieges
+					scope:target = {
+						host = {is_liege_or_above_of = scope:owner}
+					}
+				}
+			trigger_event = spy_scheme_discovery.3008
+		}
+		else_if = {
+				limit = { #same realm or foreign not vassal
+					scope:target = {
+						NOT = {is_vassal_or_below_of = scope:owner}
+						NOT = {is_liege_or_above_of = scope:owner}
+						}
+				}
+
+			trigger_event = spy_scheme_discovery.3007
+		}
+		
+	}
+}
+############LETTERS FROM LIEGES ASKING TO STOP
+ 
+#Snooping on your landed vassal causes opinion loss
+spy_scheme_discovery.3004 = {
+	type = letter_event
+	opening = {
+		desc = spy_scheme_discovery.3004.opening
+	}
+	desc = spy_scheme_discovery.3004.desc
+	sender = scope:target
+
+	immediate = {
+		if = {
+			limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -30
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			add_character_modifier = {
+			modifier = caught_someone_spying_modifier
+			years = 4
+				}
+			}
+		}
+	}
+	
+	#Deny everything and continue
+	option = {
+		name = spy_scheme_discovery.3004.a
+		custom_tooltip = spy_scheme_discovery.3004.continue_snooping
+		scope:owner = {add_dread = miniscule_dread_gain}
+		if = {
+			limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_spied_on_me
+				years = 5
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = scheming_against_me
+				years = 5
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_refused_to_stop_spying
+				years = 5
+				}
+			}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+				every_vassal = {
+						limit ={
+							age >= 14
+							NOT = {is_scheming_against = {target = scope:target}}
+							is_landed = yes
+							NOT = {this = scope:owner.cp:councillor_spymaster}
+							NOT = {this = scope:target}
+							}
+								add_opinion = {
+									target = scope:owner
+									modifier = spied_on_other_vassal_opinion
+									}
+								add_opinion = {
+									target = scope:owner
+									modifier = suspicion_opinion
+									opinion = -15
+									}
+							}
+		
+						}
+					}
+					
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+				every_vassal = {
+						limit ={
+							age >= 14
+							NOT = {is_scheming_against = {target = scope:target}}
+							is_landed = yes
+							NOT = {this = scope:target}
+							}
+								add_opinion = {
+									target = scope:owner
+									modifier = spied_on_other_vassal_opinion
+									}
+								add_opinion = {
+									target = scope:owner
+									modifier = suspicion_opinion
+									opinion = -15
+									}
+							}
+		
+						}
+					}
+					
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+	}
+
+	#Promise it will stop
+	option = {
+		name = spy_scheme_discovery.3004.b
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = {
+		limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+			}
+		}
+		add_prestige = medium_prestige_loss
+		}
+	}
+
+#Snooping on your landed vassal courtiers or guests causes opinion loss
+spy_scheme_discovery.3005 = {
+	type = letter_event
+	opening = {
+		desc = spy_scheme_discovery.3005.opening
+	}
+	desc = spy_scheme_discovery.3005.desc
+	sender = scope:target.host
+
+	immediate = {
+		if = {
+		limit = {scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+				}
+			add_opinion = {
+					target = scope:owner
+					modifier = is_spying_on_me_opinion
+				}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+				}
+			}
+		scope:target.host = {
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+				}
+			}
+		}
+	}
+
+	#Deny everything and continue
+	option = {
+		name = spy_scheme_discovery.3005.a
+		custom_tooltip = spy_scheme_discovery.3004.continue_snooping
+		scope:owner = {add_dread = miniscule_dread_gain}
+		if = {
+			limit = {scope:target = {age >= 14}}
+			scope:target = {
+				add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+				add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_spied_on_me
+					years = 5
+				}
+				add_opinion = {
+					target = scope:owner
+					modifier = scheming_against_me
+					years = 5
+				}
+			}
+		}
+		if = {
+		limit = {scope:target.host = {age >= 14}}
+		scope:target.host = {
+			add_opinion = {
+				target = scope:owner
+				modifier = plotting_against_vassals_opinion
+				opinion = -30
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = intrusive_liege_opinion
+				years = 5
+				}
+			add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+			}
+		}
+		
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+			
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		}
+
+	#Promise it will stop
+	option = {
+		name = spy_scheme_discovery.3005.b
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = {
+		limit = {scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+			}
+		}
+		if = {
+		limit = {scope:target.host = {age >= 14}}
+		scope:target.host = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			}
+		}
+		add_prestige = medium_prestige_loss
+		}
+	}
+	
+#Snooping on your landed vassal barons causes opinion loss
+spy_scheme_discovery.3006 = {
+	type = letter_event
+	opening = {
+		desc = spy_scheme_discovery.3006.opening
+	}
+	desc = spy_scheme_discovery.3006.desc
+	sender = scope:target.liege
+
+	immediate = {
+		if = {
+		limit = {scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+				}
+			add_opinion = {
+					target = scope:owner
+					modifier = is_spying_on_me_opinion
+				}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+				}
+			}
+		scope:target.liege = {
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+				}
+			}
+		}
+	}
+
+	#Deny everything and continue
+	option = {
+		name = spy_scheme_discovery.3006.a
+		custom_tooltip = spy_scheme_discovery.3004.continue_snooping
+		scope:owner = {add_dread = miniscule_dread_gain}
+		if = {
+			limit = {scope:target = {age >= 14}}
+			scope:target = {
+				add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+				add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_spied_on_me
+					years = 5
+				}
+				add_opinion = {
+					target = scope:owner
+					modifier = scheming_against_me
+					years = 5
+				}
+			}
+		}
+		if = {
+		limit = {scope:target.liege = {age >= 14}}
+		scope:target.liege = {
+			add_opinion = {
+				target = scope:owner
+				modifier = plotting_against_vassals_opinion
+				opinion = -30
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = intrusive_liege_opinion
+				years = 5
+				}
+			add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+			}
+		}	
+		
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+	}
+
+	#Promise it will stop
+	option = {
+		name = spy_scheme_discovery.3006.b
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = {
+			limit = {scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+			}
+		}
+		if = {
+			limit = {scope:target.host = {age >= 14}}
+			scope:target.host = {
+				add_opinion = {
+					target = scope:owner
+					modifier = suspicion_opinion
+					opinion = -20
+				}
+			}
+		}
+		add_prestige = medium_prestige_loss
+		}
+	}
+
+#Snooping on someone not your vassal
+spy_scheme_discovery.3007 = {
+	type = letter_event
+	opening = {
+		desc = spy_scheme_discovery.3007.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						NOT = {is_liege_or_above_of = scope:owner}
+						NOT = {is_vassal_of = scope:owner}
+						highest_held_title_tier > tier_barony
+						}
+					 
+				}
+				desc =  spy_scheme_discovery.3007.target_is_liege_desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						NOT = {is_liege_or_above_of = scope:owner}
+						NOT = {is_vassal_of = scope:owner}
+						highest_held_title_tier <= tier_barony
+						}
+				}
+				 desc = spy_scheme_discovery.3007.target_is_not_liege_desc
+			}
+		}
+	}
+	sender = scope:sender
+
+	immediate = {
+		if = {
+			limit = { scope:target = {
+						NOT = {is_liege_or_above_of = scope:owner}
+						NOT = {is_vassal_of = scope:owner}
+						highest_held_title_tier > tier_barony
+							}
+						}
+		scope:target = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { scope:target = {
+						NOT = {is_liege_or_above_of = scope:owner}
+						NOT = {is_vassal_of = scope:owner}
+						highest_held_title_tier = tier_barony
+							}
+						}
+		scope:target.liege = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { scope:target = {
+						NOT = {is_liege_or_above_of = scope:owner}
+						NOT = {is_vassal_of = scope:owner}
+						is_landed = no
+							}
+						}
+		scope:target.host = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -35
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+					}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+				}
+			}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+					}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+				}
+			}
+		if = {
+			limit = { scope:sender = {is_allied_to = scope:owner}
+					scope:sender = {age >= 14}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = treachery_opinion
+					}
+				}
+			}
+		}
+
+	#Deny everything and continue
+	option = {
+		name = spy_scheme_discovery.3007.a
+		custom_tooltip = spy_scheme_discovery.3007.continue_snooping
+		scope:owner = {add_dread = miniscule_dread_gain}
+		if = {
+			limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_refused_to_stop_spying
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_spied_on_me
+				years = 8
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = scheming_against_me
+				years = 5
+				}
+			}
+		}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_refused_to_stop_spying
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = plotting_against_vassals_opinion
+				opinion = -25
+				}
+			}
+		}
+			
+		scope:sender = {
+		custom_tooltip = {
+			text = "every_direct_vassal_of_host_becomes_vigilant"
+			every_courtier_or_guest = {
+				limit ={
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			every_vassal_or_below = {
+				limit ={
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			}
+		}
+		
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+	}
+
+	#Promise it will stop
+	option = {
+		name = spy_scheme_discovery.3007.b
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = {
+		limit = { scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -25
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+			}
+		}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -30
+					}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+					}
+				}
+			}
+		add_prestige = medium_prestige_loss
+		}
+	}
+
+#Snooping on your liege domain
+
+spy_scheme_discovery.3008 = {
+	type = letter_event
+	opening = {
+		desc = spy_scheme_discovery.3008.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						is_liege_or_above_of = scope:owner
+						}
+				}
+				desc = spy_scheme_discovery.3008.target_is_liege_desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						liege = {is_liege_or_above_of = scope:owner}
+						highest_held_title_tier = tier_barony
+						}
+				}
+				 desc = spy_scheme_discovery.3008.target_is_not_liege_desc
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						host = {is_liege_or_above_of = scope:owner}
+						is_landed = no
+						}
+				}
+				 desc = spy_scheme_discovery.3008.target_is_not_liege_but_in_court_desc
+			}
+		}
+	}
+	sender = scope:sender
+
+	immediate = {
+		if = {
+			limit = { scope:target = {
+						is_liege_or_above_of = scope:owner
+							}
+					}
+		scope:target = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { scope:target = {
+						liege = {is_liege_or_above_of = scope:owner}
+						highest_held_title_tier = tier_barony
+						}
+					}
+		scope:target.liege = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { scope:target = {
+						host = {is_liege_or_above_of = scope:owner}
+						is_landed = no
+							}
+						}
+		scope:target.host = {
+			save_scope_as = sender
+				}
+			}
+		if = {
+			limit = { 
+			scope:target = {NOT = {is_liege_or_above_of = scope:owner}}
+			scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -35
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+					}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+				}
+			}
+		if = {
+			limit = { 
+			scope:target = {is_liege_or_above_of = scope:owner}
+			scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -35
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = spying_on_liege_opinion
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = plotting_against_liege_opinion
+				years = 5
+					}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+				}
+			}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+					}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+				}
+			}	
+		}
+		
+
+	#Deny everything and continue
+	option = {
+		name = spy_scheme_discovery.3008.a
+		custom_tooltip = spy_scheme_discovery.3008.continue_snooping
+		scope:owner = {add_dread = miniscule_dread_gain}
+		if = {
+			limit = { 
+			scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_refused_to_stop_spying
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_spied_on_me
+				years = 8
+			}
+			add_opinion = {
+				target = scope:owner
+				modifier = scheming_against_me
+				years = 5
+				}
+			}
+		}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_refused_to_stop_spying
+					}
+			add_opinion = {
+				target = scope:owner
+				modifier = plotting_against_vassals_opinion
+				opinion = -25
+				}
+			}
+		}
+		
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:sender = {
+		custom_tooltip = {
+			text = "every_direct_vassal_of_host_becomes_vigilant"
+			every_courtier_or_guest = {
+				limit ={
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			every_vassal_or_below = {
+				limit ={
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			}
+		}
+					
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:sender = {
+		custom_tooltip = {
+			text = "every_direct_vassal_of_host_becomes_vigilant"
+			every_courtier_or_guest = {
+					limit = {
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			every_vassal_or_below = {
+				limit ={
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spying_on_us_opinion
+					}
+				}
+			}
+		}
+					
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		if = {
+			limit = { scope:owner = {
+					OR = {
+						is_councillor_of = scope:target
+						is_councillor_of = scope:target.liege
+						is_councillor_of = scope:target.court_owner
+						}
+					}}
+		scope:sender = {
+			fire_councillor = scope:owner
+				}
+		scope:owner = {block_hiring_councillor_effect = { COURT_OWNER = scope:sender }}
+			}
+		
+	}
+	#Promise it will stop
+	option = {
+		name = spy_scheme_discovery.3008.b
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = {
+		limit = { 
+			scope:target = {NOT = {is_liege_or_above_of = scope:owner}}
+			scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -25
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+			}
+		}
+		if = {
+		limit = { 
+			scope:target = {is_liege_or_above_of = scope:owner}
+			scope:target = {age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -25
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = plotting_against_liege_opinion
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = spying_on_liege_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = schemed_against_me
+				years = 1
+				}
+			}
+		}
+		if = {
+			limit = { scope:sender = {age >= 14}
+			NOT = {scope:target = scope:sender}}
+		scope:sender = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -30
+					}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+					}
+				}
+			}
+		if = {
+			limit = { scope:owner = {is_councillor_of = scope:target}}
+		scope:sender = {
+			fire_councillor = scope:owner
+				}
+		scope:owner = {block_hiring_councillor_effect = { COURT_OWNER = scope:sender }}
+			}
+		add_prestige = medium_prestige_loss
+		}
+	}
+
+
+######################################
+# SCHEMES AT OWN COURT ARE DISCOVERED
+######################################
+
+#Reaction to Spying
+spy_scheme_discovery.4001 = {
+	type = character_event
+	title = spy_scheme_discovery.4001.t
+	desc = {
+		desc = spy_scheme_discovery.4001.opening
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						age >= 14
+						is_pool_guest_of = scope:owner
+						}
+				}
+				desc = spy_scheme_discovery.4001.guest
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						age < 14
+						is_pool_guest_of = scope:owner
+						}
+				}
+				desc = spy_scheme_discovery.4001.guest_minor
+			}
+			triggered_desc = {
+				trigger = {
+					scope:target = {
+						NOT = {is_pool_guest_of = scope:owner}
+						}
+				}
+				desc = spy_scheme_discovery.4001.end
+			}	
+	}
+	theme = generic_intrigue_scheme
+	override_background = { reference = throne_room }
+	right_portrait = {
+	character = scope:victim
+		triggered_animation = {
+			trigger = { scope:target = {
+						is_pool_guest_of = scope:owner
+						}}
+			animation = disapproval
+		}
+		triggered_animation = {
+			trigger = { scope:target = {
+						NOT = {is_pool_guest_of = scope:owner}
+						} }
+			animation = anger
+		}
+	}
+	left_portrait = {
+	character = scope:owner
+		triggered_animation = {
+			trigger = { scope:target = {
+						is_pool_guest_of = scope:owner
+						}}
+			animation = eyeroll
+		}
+		triggered_animation = {
+			trigger = { scope:target = {
+						NOT = {is_pool_guest_of = scope:owner}
+						} }
+			animation = stress
+		}
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		#Adult target dislikes you for spying
+		if = {
+			limit = {scope:target = { age >=14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+			save_scope_as = victim
+			}
+		}
+		if = {
+			limit = {
+			scope:target = {exists = father}
+			scope:target = { age < 14}
+			scope:target.father = { is_pool_guest_of = scope:owner}}
+		scope:target = {
+			father = {
+			save_scope_as = victim
+				}
+			}
+		}
+		if = {
+			limit = {NOT = {exists = scope:victim}
+			scope:target = {exists = mother}
+			scope:target = { age < 14}
+			scope:target.mother = { is_pool_guest_of = scope:owner}}
+		scope:target = {
+			mother = {
+			save_scope_as = victim
+				}
+			}
+		}
+		
+		if = {
+		limit = {NOT = {scope:target = {is_pool_guest_of = scope:owner}}}
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = more_vigilant_modifier
+				}
+			}
+		scope:owner = {
+			add_character_modifier = {
+				modifier = caught_spying_modifier
+				years = 4
+					}
+				}
+		}
+	}
+	
+	#End the Scheme
+	option = {
+		name = spy_scheme_discovery.4001.a
+		trigger = { scope:target = {OR = {
+		AND = {spy_victim_can_leave_the_court_trigger = no
+		is_pool_guest_of = scope:owner}
+		NOT = {is_pool_guest_of = scope:owner}}}}
+		scope:scheme = {
+			end_scheme = yes
+		}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+				}
+		}
+		add_prestige = medium_prestige_loss
+	}
+
+	#Keep it going
+	option = {
+		name = spy_scheme_discovery.4001.b
+		trigger = { scope:target = {OR = {
+		AND = {spy_victim_can_leave_the_court_trigger = no
+		is_pool_guest_of = scope:owner}
+		NOT = {is_pool_guest_of = scope:owner}}}}
+		add_dread = miniscule_dread_gain
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_spied_on_me
+				years = 5
+			}
+			add_opinion = {
+					target = scope:owner
+					modifier = scheming_against_me
+					years = 5
+				}
+			add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes
+						scope:target = {
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_courtier_or_guest_becomes_vigilant"
+			every_courtier_or_guest = {
+					limit ={
+						age >= 14
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {is_scheming_against = {target = scope:target}}
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}
+						NOT = {this = scope:target}}
+							add_opinion = {
+								target = scope:owner
+							modifier = voyeur_opinion
+							}
+							add_opinion = {
+								target = scope:owner
+								modifier = suspicion_opinion
+								opinion = -15
+							}
+						}
+					}
+				}
+			}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no
+						scope:target = {
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_courtier_or_guest_becomes_vigilant"
+			every_courtier_or_guest = {
+					limit ={
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}
+						NOT = {this = scope:target}}
+							add_opinion = {
+								target = scope:owner
+							modifier = voyeur_opinion
+							}
+							add_opinion = {
+								target = scope:owner
+								modifier = suspicion_opinion
+								opinion = -15
+							}
+						}
+					}
+				}
+			}
+		if = {	
+			limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		if = {	
+			limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+				
+		
+		
+		scope:scheme = {
+		expose_scheme = yes
+		}
+
+	}
+	#The guest and his family leave End the Scheme
+	option = {
+		name = spy_scheme_discovery.4001.c
+		trigger = { scope:target = {
+		spy_victim_can_leave_the_court_trigger = yes
+		is_pool_guest_of = scope:owner}}
+		scope:scheme = {
+			end_scheme = yes
+		}
+		if = { 
+		limit = { scope:target = { age >= 14}}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -30
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 3
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			}
+		}
+		scope:target = {
+			every_traveling_family_member = {
+			move_to_pool = yes
+				}
+			}
+		if = {	
+			limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		if = {	
+			limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+		}
+		add_prestige = minor_prestige_loss
+	}
+
+}
+
+spy_scheme_discovery.4002 = {
+	type = character_event
+	title = spy_scheme_discovery.4002.t
+	desc = {
+		desc = spy_scheme_discovery.4002.opening
+		desc = spy_scheme_discovery.4002.end
+	}
+	theme = generic_intrigue_scheme
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = scope:target
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = more_vigilant_modifier
+				}
+			}
+		scope:owner = {
+			add_character_modifier = {
+				modifier = caught_spying_modifier
+				years = 4
+					}
+				}
+	}
+
+	#End the Scheme
+	option = {
+		name = spy_scheme_discovery.4002.a
+		scope:scheme = {
+			end_scheme = yes
+		}
+		add_prestige = medium_prestige_loss
+	}
+
+	#Keep it going
+	option = {
+		name = spy_scheme_discovery.4002.b
+		add_dread = miniscule_dread_gain
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = yes
+				scope:target = {
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_courtier_or_guest_becomes_vigilant"
+			every_courtier_or_guest = {
+					limit ={
+						age >= 14
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {is_scheming_against = {target = scope:target}}
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}
+						NOT = {this = scope:target}}
+							add_opinion = {
+								target = scope:owner
+								modifier = suspicion_opinion
+								opinion = -30
+							}
+						}
+		
+					}
+				}
+			}
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = no
+				scope:target = {
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_courtier_or_guest_becomes_vigilant"
+			every_courtier_or_guest = {
+					limit ={
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+						NOT = {is_consort_of = scope:owner}
+						NOT = {is_close_family_of = scope:owner}
+						NOT = {this = scope:target}}
+							add_opinion = {
+								target = scope:owner
+								modifier = suspicion_opinion
+								opinion = -30
+							}
+						}
+		
+					}
+				}
+			}
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+			if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+				
+		scope:scheme = {
+		expose_scheme = yes
+		}
+
+	}
+}
+######################################
+# SCHEMES FOR BARON DIRECT VASSALS
+######################################
+
+#Reaction to Spying
+spy_scheme_discovery.4003 = {
+	type = character_event
+	title = spy_scheme_discovery.4001.t
+	desc = {
+		desc = spy_scheme_discovery.4001.opening
+		desc = spy_scheme_discovery.4001.end
+	}
+	theme = generic_intrigue_scheme
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = scope:target
+		animation = disgust
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = anger
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		#Adult target dislikes you for spying
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				opinion = -20
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			add_character_modifier = {
+				modifier = caught_someone_spying_modifier
+				years = 4
+					}
+			}
+			scope:scheme = {
+			add_scheme_modifier = {
+				type = more_vigilant_modifier
+				}
+			}
+			scope:owner = {
+			add_character_modifier = {
+				modifier = caught_spying_modifier
+				years = 4
+					}
+				}
+		}
+
+	#End the Scheme
+	option = {
+		name = spy_scheme_discovery.4001.a
+		scope:scheme = {
+			end_scheme = yes
+		}
+		scope:target = {
+			add_opinion = {
+				target = scope:owner
+				modifier = suspicion_opinion
+				opinion = -15
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = spied_on_me_opinion
+				years = 1
+			}
+			remove_opinion = {
+				target = scope:owner
+				modifier = is_spying_on_me_opinion
+				}
+			remove_opinion = {
+				target = scope:owner
+				modifier = angry_opinion
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = liege_scheming_against_me_opinion
+				years = 1
+			}
+		}
+		add_prestige = medium_prestige_loss
+	}
+
+	#Keep it going
+	option = {
+		name = spy_scheme_discovery.4001.b
+		add_dread = miniscule_dread_gain
+		scope:target = {
+			add_opinion = {
+					target = scope:owner
+					modifier = scheming_against_me
+					years = 5
+				}
+			add_opinion = {
+				target = scope:owner
+				modifier = opinion_scheme_spied_on_me
+				years = 5
+			}
+			add_opinion = {
+					target = scope:owner
+					modifier = opinion_scheme_refused_to_stop_spying
+				}
+		}
+		if = {
+			limit = {
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:target = {
+						NOT = {is_consort_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+			every_vassal = {
+					limit ={
+						age >= 14
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {is_scheming_against = {target = scope:target}}
+						is_landed = yes
+						NOT = {is_consort_of = scope:owner}
+						NOT = {this = scope:target}}
+					add_opinion = {
+						target = scope:owner
+						modifier = spied_on_other_vassal_opinion
+					}
+					add_opinion = {
+						target = scope:owner
+						modifier = suspicion_opinion
+						opinion = -15
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:target = {
+						NOT = {is_consort_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+			every_vassal = {
+					limit ={
+						age >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+						is_landed = yes
+						NOT = {is_consort_of = scope:owner}
+						NOT = {this = scope:target}}
+					add_opinion = {
+						target = scope:owner
+						modifier = spied_on_other_vassal_opinion
+					}
+					add_opinion = {
+						target = scope:owner
+						modifier = suspicion_opinion
+						opinion = -15
+						}
+					}
+				}
+			}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age  >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age  >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		
+		
+		scope:scheme = {
+		expose_scheme = yes
+		}
+	}
+}
+
+spy_scheme_discovery.4004 = {
+	type = character_event
+	title = spy_scheme_discovery.4002.t
+	desc = {
+		desc = spy_scheme_discovery.4002.opening
+		desc = spy_scheme_discovery.4002.end
+	}
+	theme = generic_intrigue_scheme
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = scope:target
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_murder
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = more_vigilant_modifier
+				}
+			}
+		scope:owner = {
+			add_character_modifier = {
+				modifier = caught_spying_modifier
+				years = 4
+					}
+				}
+	}
+
+	#End the Scheme
+	option = {
+		name = spy_scheme_discovery.4002.a
+		scope:scheme = {
+			end_scheme = yes
+		}
+		add_prestige = medium_prestige_loss
+	}
+
+	#Keep it going
+	option = {
+		name = spy_scheme_discovery.4002.b
+		add_dread = miniscule_dread_gain
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = yes
+			scope:target = {
+						NOT = {is_consort_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+			every_vassal = {
+				limit ={
+					age >= 14
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}
+					is_landed = yes
+					NOT = {is_consort_of = scope:owner}
+					NOT = {this = scope:target}}
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_other_vassal_opinion
+					}
+						add_opinion = {
+							target = scope:owner
+							modifier = suspicion_opinion
+							opinion = -15
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {owner_spymaster_is_available_for_this_trigger = no
+			scope:target = {
+						NOT = {is_consort_of = scope:owner}}}
+					
+		scope:owner = {
+			custom_tooltip = {
+			text = "every_direct_vassal_becomes_vigilant"
+			every_vassal = {
+				limit ={
+					age >= 14
+					NOT = {is_scheming_against = {target = scope:target}}
+					is_landed = yes
+					NOT = {is_consort_of = scope:owner}
+					NOT = {this = scope:target}}
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_other_vassal_opinion
+					}
+						add_opinion = {
+							target = scope:owner
+							modifier = suspicion_opinion
+							opinion = -15
+						}
+					}
+				}
+			}
+		}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner.cp:councillor_spymaster}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age  >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = no}
+		scope:target = {
+			every_close_family_member = {
+				limit ={
+						opinion = {
+							target = scope:target
+							value > 0
+							}
+						NOT = {this = scope:owner}
+						NOT = {this = scope:target}
+						age  >= 14
+						NOT = {is_scheming_against = {target = scope:target}}
+					}
+				add_opinion = {
+					target = scope:owner
+					modifier = spied_on_family_member_opinion
+					}
+				}
+			}
+			if = {
+				limit = {scope:target = {exists = primary_spouse}
+					scope:target.primary_spouse = {
+					opinion = {
+							target = scope:target
+							value > 0
+							}
+					NOT = {is_scheming_against = {target = scope:target}}}
+					scope:target = {NOT = {is_consort_of = scope:owner}}}
+					scope:target.primary_spouse = {
+						add_opinion = {
+							target = scope:owner
+							modifier = spied_on_spouse_opinion
+						}
+					}
+				}
+			}
+		
+		
+		scope:scheme = {
+		expose_scheme = yes
+		}
+	}
+}
+spy_scheme_discovery.4005 = {
+	type = character_event
+	title = spy_scheme_discovery.4005.t
+	desc = spy_scheme_discovery.4005.opening
+	theme = generic_intrigue_scheme
+	override_background = { reference = study }
+	lower_left_portrait = scope:target
+	right_portrait = {
+		character = scope:owner
+		animation = idle
+	}
+
+	#End the Scheme
+	option = {
+		name = spy_scheme_discovery.4005.a
+		hidden_effect = {
+			scope:scheme = {
+				end_scheme = yes
+			}
+		}
+	}
+}

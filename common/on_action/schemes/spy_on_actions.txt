@@ -1,0 +1,68 @@
+﻿spy_ongoing = {
+	# Events that can happen while spying someone.
+	trigger = {
+		exists = scope:scheme
+	}
+	
+	random_events = {
+		chance_of_no_event = {
+			value = 75
+			if = {
+				limit = {
+					scope:scheme = {scheme_number_of_agents > 0}
+				}
+				add = {
+				value = scope:scheme.scheme_number_of_agents 
+				multiply = -3
+				}
+			}
+			
+		}
+		
+		200 = 0
+		
+		################
+		## Spy Scheme events#
+		################
+		##Agents:
+		50 = spy_ongoing.1001 	########OK##### Pay gold for Scheme Progress
+		75 = spy_ongoing.1002 	#######OK##### Blackmailed with exposure
+		75 = spy_ongoing.1003 	#OWN COURT OK#### An extroverted/contrite agent is a little too loose-lipped
+		100 = spy_ongoing.1004 	# Second Thoughts
+		150 = spy_ongoing.1005	#  Drunkard Agent
+		100 = spy_ongoing.1006 	# A careless agent is a little... careless
+		200 = spy_ongoing.1007	# Lover is doubting
+		75 = spy_ongoing.1008 	#####OK##### Agent close to being discovered
+		100 = spy_ongoing.1009 	# Spymaster accepts spying
+		200 = spy_ongoing.1010 	#Marshal shares military information
+		
+		
+		##########TARGET:
+		200 = spy_ongoing.2001  	# Trusting target
+		150 = spy_ongoing.2002 	#OK### Drunkard target
+		
+		############DISCOVERY OF SECRETS
+		75 = spy_ongoing.3009 	### Discover a secret about someone else than your target
+		150 = spy_ongoing.3012 	###OK### Preliminary report on target
+		
+
+		##owner:
+		50 = spy_ongoing.3001 	#####OK#### Being Just Causes Stress
+		50 = spy_ongoing.3002 	#####OK#### Being Honest Causes Stress
+		##Other
+		100 = spy_ongoing.5015  	#####OK##### Lower their courtiers opinion of them and make them join
+		100 = intrigue_scheme_ongoing.5018 	# Target at war - send camp followers to them
+
+		100 = intrigue_scheme_ongoing.3010  # Translate letters yourself
+		
+		#############
+		# Lifestyle events
+		#############
+		100 = intrigue_scheme_lifestyle.1001 	########OK######### Opportunity for a general to set up a soldier spy ring
+		100 = intrigue_scheme_lifestyle.1002 	# Your soldier spy ring has been compromised!
+		100 = intrigue_scheme_lifestyle.3101 	# Convert informants in target´s court
+		100 = intrigue_scheme_lifestyle.3102 	# Informants are revealed!
+		100 = intrigue_scheme_lifestyle.3201 	# Intercept communication
+		100 = intrigue_scheme_lifestyle.3401 	####OK####### Convince courtier at target's court to inform on them
+	}
+}

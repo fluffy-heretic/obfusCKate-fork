@@ -1,0 +1,1305 @@
+﻿#### SPY SCHEME VALUES
+#Discovery Chances for spy schemes
+
+#####DISCOVERY CHANCE FOR AGENTS
+target_court_agent_discovery_base_chance = {
+add = scope:spymaster.intrigue
+add = 1
+divide = 3
+}
+
+target_court_agent_discovery_chance = {
+	add = target_court_agent_discovery_base_chance
+	if = {
+		limit = {
+			scope:spymaster = {is_performing_council_task = task_disrupt_schemes}
+		}
+		add = {
+			value = target_court_agent_discovery_base_chance
+			multiply = {			
+				value = target_court_spymaster_disrupt_spy_scheme_schemes_total_modifier
+				divide = 100
+			}
+		}
+	}
+	multiply = 0.5
+	min = 1
+}
+
+###DISCOVERY CHANCE OF OWNER
+target_court_owner_discovery_base_chance = {
+add = scope:spymaster.intrigue
+add = 1
+divide = 3
+}
+
+target_court_owner_discovery_chance = {
+	add = target_court_owner_discovery_base_chance
+	if = {
+		limit = {
+			scope:spymaster = {is_performing_council_task = task_disrupt_schemes}
+		}
+		add = {
+			value = target_court_owner_discovery_base_chance
+			multiply = {			
+				value = target_court_spymaster_disrupt_spy_scheme_schemes_total_modifier
+				divide = 100
+			}
+		}
+	}
+	multiply = 0.5
+	min = 1
+}
+
+#######DISCOVERY CHANCE ON OTHER COURTS
+target_court_spymaster_disrupt_schemes_spy_scheme_discovery_base = {
+	add = 10
+}
+
+target_court_spymaster_disrupt_schemes_spy_scheme_discovery_modifier = {
+	add = scope:spymaster.intrigue
+}
+
+target_court_spymaster_disrupt_schemes_spy_scheme_court_of_shadows_scheme_discovery_modifier_scale = {
+	value = 0
+	if = {
+		limit = {
+			scope:spymaster = {exists = liege
+			liege = { has_perk = court_of_shadows_perk }}
+		}
+		add = {
+			value = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_base
+			add = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_modifier
+			multiply = {
+				add = court_of_shadows_perk_percentage
+				divide = 100
+			}
+		}
+	}
+}
+
+target_court_spymaster_disrupt_schemes_spy_scheme_erudition_legacy_5_discovery_modifier_scale = {
+	value = 0
+	if = {
+		limit = {
+			scope:spymaster = {exists = liege
+								exists = liege.dynasty
+					liege.dynasty = { has_dynasty_perk = erudition_legacy_5 }}
+		}
+		add = {
+			value = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_base
+			add = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_modifier
+			multiply = {
+				add = erudition_legacy_5_percentage
+				divide = 100
+			}
+		}
+	}
+}
+
+
+target_court_spymaster_disrupt_spy_scheme_schemes_total_modifier = {
+	add = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_base
+	add = target_court_spymaster_disrupt_schemes_spy_scheme_discovery_modifier
+	add = target_court_spymaster_disrupt_schemes_spy_scheme_court_of_shadows_scheme_discovery_modifier_scale
+	add = target_court_spymaster_disrupt_schemes_spy_scheme_erudition_legacy_5_discovery_modifier_scale
+}
+
+target_court_spymaster_spy_scheme_discovery_base_chance = {
+		add = scope:spymaster.intrigue
+		divide = 2
+}
+
+target_court_spymaster_spy_scheme_discovery_chance = { #CHANCE
+	add = {
+	value = 0
+	if = { # Percentage bonus applied to the base chance
+		limit = {
+			exists = scope:spymaster
+			scope:spymaster = {NOT = {is_scheming_against = {target = scope:target}}}
+			NOT = { scope:owner = scope:spymaster }
+			scope:spymaster = {is_performing_council_task = task_disrupt_schemes}
+		}
+		add = {
+			value = target_court_spymaster_spy_scheme_discovery_base_chance
+			multiply = {			
+				value = target_court_spymaster_disrupt_spy_scheme_schemes_total_modifier
+				divide = 100
+			}
+		}
+	}
+	if = {
+		limit = { #SCOPE OWNER IS NOT SPYMASTER AND SPYMASTER IS NOT TARGET
+		exists = scope:spymaster
+		scope:spymaster = {NOT = {is_scheming_against = {target = scope:target}}}
+		NOT = { scope:owner = scope:spymaster }
+		}
+	add = target_court_spymaster_spy_scheme_discovery_base_chance
+	}
+	if = {
+		limit = { #SCOPE OWNER IS NOT SPYMASTER AND SPYMASTER IS TARGET
+		exists = scope:spymaster
+		scope:spymaster = scope:target
+		NOT = { scope:owner = scope:spymaster }
+		}
+	add = {
+		value = 0
+		add = {
+			value = scope:spymaster.intrigue
+			multiply = 0.25
+			}
+		}
+	}
+	if = { #TARGET 
+		limit = {
+		scope:target.intrigue > 0
+	}
+	add = {
+		value = 1
+		add = {
+			value = scope:target.intrigue
+			divide = 2
+			}
+		}
+	}
+	if = {#OWNER IS SPYMASTER
+		limit = {
+			exists = scope:spymaster
+			scope:owner = scope:spymaster 
+		scope:spymaster.intrigue > 0
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:spymaster.intrigue
+				divide = 2
+			}
+		}
+		min = 1
+	}
+	if = {#SPYMASTER OF OWNER
+		limit = {
+			scope:owner.cp:councillor_spymaster.intrigue > 0
+			owner_spymaster_is_available_for_this_trigger = yes
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:owner.cp:councillor_spymaster.intrigue
+				divide = 4
+			}
+		}
+		min = 1
+	}
+	if = {
+		limit = {
+			exists = scope:spymaster
+			scope:spymaster = {is_scheming_against = {target = scope:target}}
+		scope:spymaster.intrigue > 0
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:spymaster.intrigue
+				divide = 2
+			}
+		}
+		min = 1
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = paranoid
+			}
+		}
+	multiply = 1.35
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = calm
+			}
+		}
+	multiply = 1.10
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = arrogant
+			}
+		}
+	multiply = 0.9
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = trusting
+			}
+		}
+	multiply = 0.85
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = schemer
+			}
+		}
+	multiply = 1.25
+	}
+	if = {
+		limit = {
+		scope:target = {
+			OR = {
+			has_opinion_modifier = {
+				target = scope:owner
+				modifier = suspicion_opinion}
+			is_or_was_victim_of_scheme_trigger = yes
+				}
+			}
+		}
+		multiply = 1.5
+	}
+	divide = 2
+	min = 1
+	max = 12.5
+	}
+}
+
+spy_scheme_secrets_discovery_chance = {
+	add = {
+	value = 15
+	if = { 
+		limit = {scope:target = {has_personality_introverted_trigger = yes} }
+	add = -10
+	}
+	if = { 
+		limit = {scope:target = {has_personality_extroverted_trigger = yes} }
+	add = 10
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = contrite
+			}
+		}
+	add = 15
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = journaller
+			}
+		}
+	add = 7.5
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = drunkard
+			}
+		}
+	add = 5
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = rakish
+			}
+		}
+	add = 5
+	}
+	if = {
+		limit = {
+		scope:scheme = {
+			scheme_number_of_agents > 0
+			}
+	}
+	add = {
+		value = scope:scheme.scheme_number_of_agents
+		multiply = 5
+		}
+	}
+	if = {
+		limit = {
+			scope:owner.cp:councillor_spymaster = {has_perk = digging_for_dirt_perk} 
+			owner_spymaster_is_available_for_this_trigger = yes
+	}
+	add = 15
+	}
+	if = {
+		limit = {
+			scope:owner = {
+			has_council_position = councillor_spymaster
+			has_perk = digging_for_dirt_perk} 
+			owner_spymaster_is_available_for_this_trigger = no
+		}
+	add = 10
+	}
+	max = 100
+	min = 35
+	}
+}
+
+spy_scheme_own_court_discovery_chance = {
+	add = {
+	value = 1
+	if = {
+		limit = {
+		scope:target = {NOT ={has_council_position = councillor_spymaster}}
+		scope:target.intrigue > 0
+	}
+	add = {
+		value = 0
+		add = {
+			value = scope:target.intrigue
+			multiply = 1
+			}
+		}
+	}
+	else_if = {
+		limit = {
+		scope:target = {has_council_position = councillor_spymaster}
+		scope:target.intrigue > 0
+	}
+	add = {
+		value = 0
+		add = {
+			value = scope:target.intrigue
+			multiply = 1.25
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:owner.cp:councillor_spymaster.intrigue > 0
+			owner_spymaster_is_available_for_this_trigger = yes
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:owner.cp:councillor_spymaster.intrigue
+				multiply = 1
+			}
+		}
+		min = 1
+	}
+	else_if = {
+		limit = {
+			scope:owner.intrigue > 0
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {has_council_position = councillor_spymaster}
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:owner.intrigue
+				multiply = 0.75
+			}
+		}
+		min = 1
+	}
+	else_if = {
+		limit = {
+			scope:owner.intrigue > 0
+			owner_spymaster_is_available_for_this_trigger = no
+			NOT = {scope:owner = {has_council_position = councillor_spymaster}} 
+	}
+	subtract = {
+		value = 0
+			add = {
+				value = scope:owner.intrigue
+				multiply = 0.5
+			}
+		}
+		min = 1
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = paranoid
+			}
+		}
+	multiply = 1.35
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = calm
+			}
+		}
+	multiply = 1.10
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = arrogant
+			}
+		}
+	multiply = 0.9
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = trusting
+			}
+		}
+	multiply = 0.85
+	}
+	if = {
+		limit = {
+		scope:target = {
+			has_trait = schemer
+			}
+		}
+	multiply = 1.25
+	}
+	if = {
+		limit = {
+		scope:target = {
+			OR = {
+			has_opinion_modifier = {
+				target = scope:owner
+				modifier = suspicion_opinion}
+			is_or_was_victim_of_scheme_trigger = yes
+				}
+			}
+		}
+	multiply = 1.5
+	}
+	divide = 2
+	min = 1
+	max = 12.5
+	}
+}
+
+# BRIBES ORIGINAL BRIBE VALUE ADJUSTED FOR SPY SCHEME
+bribe_value = {
+	value = 50
+	if = {
+		limit = {
+			scope:recipient.ai_greed > 0
+		}
+		add = {
+			value = scope:recipient.ai_greed
+			divide = 4
+		}
+	}
+	if = {
+		limit = {
+		scope:scheme = {scheme_type = spy_character}
+		scope:recipient.agent_overall_success_chance > 0
+		}
+		multiply = scope:recipient.agent_overall_success_chance
+		divide = 100
+		min = 15
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+		scope:recipient = {has_council_position = councillor_spymaster
+							exists = liege
+							liege = scope:target}
+				}
+		multiply = 3
+		min = 60
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+				scope:recipient = {has_council_position = councillor_spymaster
+								exists = liege
+								NOT = {liege = scope:target}}
+				}
+		multiply = 1.5
+		min = 30
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+				scope:recipient = {has_council_position = councillor_marshal
+								exists = liege
+								liege = scope:target}
+				}
+		multiply = 2.5
+		min = 45
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+				scope:recipient = {
+								exists = liege
+								liege = scope:target
+				OR = {
+				primary_title.tier >= tier_county
+				has_any_court_position = yes
+				is_councillor = yes}
+				NOR = {has_council_position = councillor_marshal
+				has_council_position = councillor_spymaster}}
+			}
+		multiply = 2
+		min = 30
+	}
+	if = {
+		limit = {scope:scheme = {
+		is_scheme_exposed = yes
+		scheme_type = spy_character}	
+		}
+		multiply = 3
+		min = 60
+		max = 300
+	}
+	if = {
+		limit = {scope:scheme = {
+		OR = {has_scheme_modifier = agents_being_discovered_modifier
+					scheme_number_of_exposed_agents > 0}
+		scheme_type = spy_character}	
+		}
+		multiply = 2
+		min = 120
+		max = 500
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+				scope:recipient = {has_trait = disloyal}
+				}
+		divide = 5
+		min = 15
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+				scope:recipient = {has_trait = loyal}
+				}
+		multiply = 5
+		max = 500
+	}
+	if = {
+		limit = {scope:scheme = {scheme_type = spy_character}
+			scope:actor = {
+			exists = dynasty
+				dynasty = {
+						has_dynasty_perk = guile_legacy_2
+					}
+				}
+			}
+		multiply = 0.5
+		min = 15
+		}
+	if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:recipient = { is_landed = yes }
+			scope:recipient.primary_title.tier < tier_duchy
+		}
+		multiply = 2
+	}
+	else_if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:recipient.primary_title.tier >= tier_duchy
+		}
+		multiply = 3
+	}
+	
+	if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:recipient = {
+				liege = scope:actor
+				is_theocratic_lessee = yes
+			}
+			scope:actor.primary_title.tier < tier_duchy
+		}
+		multiply = 2
+	}
+	else_if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:recipient = {
+				liege = scope:actor
+				is_theocratic_lessee = yes
+			}
+			scope:actor.primary_title.tier >= tier_duchy
+		}
+		multiply = 3
+	}
+	
+	if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:actor = {
+				exists = dynasty
+				dynasty = {
+					has_dynasty_perk = guile_legacy_2
+				}
+			}
+		}
+		multiply = 0.5
+	}
+	
+	if = {
+		limit = {scope:scheme = {NOT = {scheme_type = spy_character}}
+			scope:recipient = {
+				OR = {
+					AND = {
+						is_landed = yes
+						has_government = tribal_government
+					}
+					AND = {
+						is_landed = no
+						exists = liege
+						liege = {
+							has_government = tribal_government
+						}
+					}
+					AND = {
+						is_landed = no
+						exists = host
+						host = {
+							has_government = tribal_government
+						}
+					}
+				}
+			}
+		}
+		multiply = 0.25
+		min = 5
+	}
+}
+
+# Values USED ON SPY SCHEME
+
+slander_gold_scale = {
+	add = intrigue
+	add = diplomacy
+	min = 1
+}
+
+slander_gold_value = {
+	value = 1300
+	divide = slander_gold_scale
+	max = 100
+	min = 30
+}
+
+honor_greed_compassion_scale = {
+	add = ai_greed
+	add = ai_honor
+	add = ai_compassion
+	divide = 20
+	
+}
+
+spy_bribe_acceptance_value = {
+add = {	
+	value = 0
+	if = {
+		limit = {
+			will_not_betray = yes
+		}
+		add = -1000
+	}
+	if = {
+		limit = {
+			has_trait = disloyal
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			has_opinion_modifier = {
+					modifier = heard_bad_rumours_opinion
+					target = scope:target
+			}
+		}
+		add = 100
+	}
+	if = {
+		limit = {
+			opinion = {
+				target = scope:target
+				value < low_negative_opinion
+				}
+		}
+		add = 25
+	}
+	if = {
+		limit = {
+			opinion = {
+				target = scope:target
+				value < medium_negative_opinion
+				}
+		}
+		add = 25
+	}
+	if = {
+		limit = {
+			opinion = {
+				target = scope:target
+				value < high_negative_opinion
+				}
+		}
+		add = 25
+	}
+	if = {
+		limit = {
+			ai_honor <= low_negative_ai_value
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			ai_compassion <= low_negative_ai_value
+		}
+		add = 30
+	}
+	if = {
+		limit = {
+			ai_rationality <= 0
+		}
+		add = 20
+	}
+	if = {
+		limit = {
+			ai_honor <= high_negative_ai_value
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			ai_compassion <= high_negative_ai_value
+		}
+		add = 30
+	}
+	if = {
+		limit = {
+			ai_rationality <= medium_negative_ai_value
+		}
+		add = 20
+	}
+	if = {
+		limit = {
+			will_betray_absolutely_anyone_regardless = yes
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			will_betray_anyone_because_needs_money = yes
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			will_betray_anyone_for_money = yes
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			will_betray_close_relation_liking_them_or_not = yes				
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			will_betray_anyone_he_doesnt_like_except_close_ones = yes
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			will_betray_close_relation_not_liking_them = yes
+		}
+		add = 75
+	}
+	if = {
+		limit = {
+			has_trait = loyal
+		}
+		add = -100
+	}
+	if = {
+		limit = {
+			ai_greed <= very_high_negative_ai_value
+		}
+		add = -25
+	}
+	if = {
+		limit = {
+			ai_greed >= medium_positive_ai_value
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			has_dread_level_towards = {
+					target = scope:target
+					level = 2
+					}
+		}
+		add = -2000
+	}
+	min = 10
+	}
+}
+
+agent_overall_skill_for_bribe_value = {
+add = {
+	value = 0
+		if = {
+			limit = {intrigue <= 4}
+		add = intrigue
+		}
+		else_if = {
+			limit = {intrigue >= 5
+					intrigue <= 8}
+		add = 7
+		}
+		else_if = {
+			limit = {intrigue >= 9}
+		add = intrigue
+		}
+		multiply = agent_overall_skill_calculus_value
+		divide = 10
+		max = 100
+		min = 10
+	}
+}
+
+agent_overall_skill_value = {
+add = {
+	value = 0
+		if = {
+			limit = {intrigue <= 4}
+		add = intrigue
+		}
+		else_if = {
+			limit = {intrigue >= 5
+					intrigue <= 8}
+		add = 7
+		}
+		else_if = {
+			limit = {intrigue >= 9}
+		add = intrigue
+		}
+		multiply = agent_overall_skill_calculus_value
+		divide = 10
+		max = 100
+	}
+}
+
+agent_overall_skill_calculus_value = {
+		add = {
+			value = 50
+				if = { #BAD TRAITS - 
+					limit = {has_bad_traits_for_spying_trigger = yes} 
+					add = -10
+					}
+				#######PERSONALITY
+				if = { #EXTROVERTED VS INTROVERTED +5-10
+					limit = {has_personality_introverted_trigger = yes} 
+					add = -10
+					}
+				if = { 
+					limit = {has_personality_extroverted_trigger = yes} 
+					add = 15
+					}
+				if = { 
+					limit = { NOT = {ai_energy = 0}} 
+					add = {
+						value = ai_energy
+						multiply = 0.05}
+					}
+				if = { 
+					limit = { has_trait = paranoid} 
+					add = -2.5
+					}
+				if = { 
+					limit = { is_seen_as_mad_or_avoidable_trigger = yes} 
+					add = -7.5
+					}
+				if = { 
+					limit = { is_a_unattractive_person_trigger = yes} 
+					add = -5
+					}
+				if = { 
+					limit = { is_a_attractive_person_trigger = yes} 
+					add = 5
+					}
+				#####LIFESTYLE 2
+				if = { 
+					limit = {has_trait = overseer} 
+					add = 2.5
+					}
+				if = { 
+					limit = {has_trait = strategist} 
+					add = 2.5
+					}
+				if = { 
+					limit = { has_trait = administrator} 
+					add = 2.5
+					}	
+				if = { #PERSUASION, ELUSION 5
+					limit = { is_a_persuasive_person_trigger = yes} 
+					add = 5
+					}
+				if = { #SCHEMING 5
+					limit = { is_a_amateur_schemer_person_trigger = yes}  
+					add = 5
+					}
+				if = { #INTELLIGENCE 6
+					limit = {probably_unintelligent_trigger = yes} 
+					add = -50
+					}
+				if = {
+					limit = {probably_intelligent_trigger = yes} 
+					add = 50
+					}
+					min = 10
+		} 
+}
+
+agent_overall_success_chance = {
+ add = {
+	value = 0 
+		if = { 
+			limit = {agent_can_be_recruited_trigger = no}
+			add = 0
+		}
+		else_if = { 
+			limit = {scope:target = {has_relation_guardian = prev}}
+			add = 100
+		}
+		else_if = { 
+			limit = {
+			is_parent_of = scope:target
+			scope:target = {
+				is_adult = no
+				}
+			}
+			add = 100
+		}
+		else_if = { 
+			limit = {
+				scope:target = { 
+				is_ruler = yes 
+				}  
+			has_council_position = councillor_spymaster
+			scope:target.cp:councillor_spymaster = this
+			}
+			add = 90
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = no
+				}
+			has_council_position = councillor_spymaster
+			scope:owner.cp:councillor_spymaster = this
+			}
+			add = 80
+		}
+		else_if = { 
+			limit = {
+				OR = {
+				has_relation_best_friend = scope:target
+				has_relation_soulmate = scope:target
+				has_secret_relation_soulmate = scope:target
+				}
+			}
+			add = 75
+		}
+		else_if = { 
+			limit = {
+				OR = {
+				is_spouse_of = scope:target
+				has_relation_lover = scope:target
+				has_secret_relation_lover = scope:target
+				}
+			}
+			add = 70
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = no
+				}
+			NOT = {scope:owner = scope:target.court_owner}
+			has_council_position = councillor_spymaster
+			exists = scope:target.court_owner.cp:councillor_spymaster
+			scope:target.court_owner.cp:councillor_spymaster = this
+			}
+			add = 70
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = yes
+				}
+			has_council_position = councillor_spymaster
+			scope:owner.cp:councillor_spymaster = this
+			}
+			add = 65
+		}
+		else_if = { 
+			limit = {
+				OR = {
+				has_relation_friend = scope:target
+				is_concubine_of = scope:target
+				is_close_family_of = scope:target
+				}
+			}
+			add = 60
+		}
+		else_if = { 
+			limit = {
+				has_court_position = bodyguard_court_position
+					is_court_position_employer = {
+					court_position = bodyguard_court_position
+					who = scope:target
+				}
+			}
+			add = 55
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = yes
+				}
+			has_council_position = councillor_marshal
+			scope:target.cp:councillor_marshal = this
+			}
+			add = 50
+		}
+		else_if = { 
+			limit = {
+			has_council_position = councillor_court_chaplain
+			scope:target.court_owner.cp:councillor_court_chaplain = this
+			}
+			add = 50
+		}
+		else_if = { 
+			limit = {
+				has_court_position = champion_court_position
+						is_court_position_employer = {
+							court_position = champion_court_position
+							who = scope:target
+				}
+			}
+			add = 45
+		}
+		else_if = { 
+			limit = {
+				OR = {
+				is_powerful_vassal_of = scope:target
+				is_knight_of = scope:target
+				is_councillor_of = scope:target
+				}
+			}
+			add = 40
+		}
+		
+		else_if = { 
+			limit = {
+				has_court_position = court_physician_court_position
+						is_court_position_employer = {
+							court_position = court_physician_court_position
+							who = scope:target
+					}
+			}
+			add = 40
+		}
+		else_if = { 
+			limit = {
+				has_court_position = court_jester_court_position
+						is_court_position_employer = {
+							court_position = court_jester_court_position
+							who = scope:target
+				}
+			}
+			add = 40
+		}
+		else_if = { 
+			limit = {
+				has_court_position = master_of_horse_court_position
+						is_court_position_employer = {
+							court_position = master_of_horse_court_position
+							who = scope:target
+				}
+			}
+			add = 35
+		}
+		else_if = { 
+			limit = {
+				has_court_position = master_of_hunt_court_position
+						is_court_position_employer = {
+							court_position = master_of_hunt_court_position
+							who = scope:target
+				}
+			}
+			add = 35
+		}
+		else_if = { 
+			limit = {
+				has_court_position = high_almoner_court_position
+						is_court_position_employer = {
+							court_position = high_almoner_court_position
+							who = scope:target
+				}
+			}
+			add = 35
+		}
+		else_if = { 
+			limit = {
+				has_court_position = seneschal_court_position
+						is_court_position_employer = {
+							court_position = seneschal_court_position
+							who = scope:target
+				}
+			}
+			add = 35
+		}
+		else_if = { 
+			limit = {
+				has_court_position = cupbearer_court_position
+						is_court_position_employer = {
+							court_position = cupbearer_court_position
+							who = scope:target
+				}
+			}
+			add = 35
+		}
+		
+		else_if = { 
+			limit = {
+				has_court_position = antiquarian_court_position
+						is_court_position_employer = {
+							court_position = antiquarian_court_position
+							who = scope:target
+				}
+			}
+			add = 30
+		}
+		
+		else_if = { 
+			limit = {
+				has_court_position = court_tutor_court_position
+						is_court_position_employer = {
+							court_position = court_tutor_court_position
+							who = scope:target
+				}
+			}
+			add = 30
+		}
+		
+		else_if = { 
+			limit = {
+				has_court_position = royal_architect_court_position
+						is_court_position_employer = {
+							court_position = royal_architect_court_position
+							who = scope:target
+				}
+			}
+			add = 30
+		}
+		
+		
+		else_if = { 
+			limit = {
+				has_court_position = court_poet_court_position
+						is_court_position_employer = {
+							court_position = court_poet_court_position
+							who = scope:target
+				}
+			}
+			add = 30
+		}
+		else_if = { 
+			limit = {
+				has_court_position = lady_in_waiting_court_position
+						is_court_position_employer = {
+							court_position = lady_in_waiting_court_position
+							who = scope:target
+				}
+			}
+			add = 25
+		}
+		
+		else_if = { 
+			limit = { #FELLOW COURTIER
+				scope:target = {
+				is_ruler = no
+				exists = court_owner
+				}
+				is_courtier_of = scope:target.court_owner
+			}
+			add = 30
+		}		
+		else_if = { 
+			limit = { #AGENT IS GUEST TARGET IS COURTIER
+				scope:target = {
+				is_ruler = no
+				exists = court_owner
+				}
+				is_courtier_of = scope:target.court_owner
+				is_foreign_court_or_pool_guest_of = scope:target.court_owner
+			}
+			add = 25
+		}
+		
+		else_if = { 
+			limit = {
+				is_ruler = yes
+				is_vassal_of = scope:target
+			}
+			add = 25
+		}
+		else_if = { 
+			limit = {
+				is_extended_family_of = scope:target
+			}
+			add = 25
+		}
+		else_if = { 
+			limit = {
+				exists = court_owner
+				exists = scope:target.court_owner
+				scope:target.court_owner = scope:owner
+				court_owner = scope:owner
+			}
+			add = 25
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = no
+				exists = court_owner
+				} 
+				is_vassal_of = scope:target.court_owner
+				is_ruler = yes
+			}
+			add = 20
+		}
+		else_if = { 
+			limit = {
+				is_courtier_of = scope:target
+			}
+			add = 15
+		}
+		else_if = { 
+			limit = {
+				scope:target = {
+				is_ruler = no
+				exists = court_owner
+				}
+			is_foreign_court_or_pool_guest_of = scope:target.court_owner
+			}
+			add = 10
+		}
+		else_if = { 
+			limit = {
+				 OR = {
+				 is_at_same_location = scope:target
+				 is_allied_to = scope:target
+				 }
+			}
+			add = 10
+		}		
+	}
+	multiply = agent_overall_skill_value
+	divide = 100
+	max = 100
+	min	= 5
+}
+

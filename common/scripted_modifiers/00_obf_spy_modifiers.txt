@@ -1,0 +1,2237 @@
+﻿spy_scheme_owner_base_chance_modifier = {
+		
+		
+	first_valid = { # Essentially the Base for owner
+		modifier = {
+			add = 100
+			scope:target = {
+				has_relation_guardian = scope:owner
+			}
+			desc = "SCHEME_I_AM_GUARDIAN"
+		}
+		modifier = {
+			add = 100
+			scope:owner = scope:target.court_owner
+			scope:target = {
+				is_child_of = scope:owner
+				is_adult = no
+			}
+			desc = OBF_my_child
+		}
+		modifier = {
+			add = 90
+				exists = scope:target.cp:councillor_spymaster
+			scope:owner = scope:target.cp:councillor_spymaster
+			desc = "SCHEME_I_AM_SPYMASTER"
+		}
+		modifier = {
+			add = 85
+			scope:owner = {
+				has_relation_best_friend = scope:target
+			}
+			desc = "OBF_he_is_my_friend"
+		}
+		modifier = {
+			add = 80
+			scope:owner = {
+			OR = {
+				has_relation_soulmate = scope:target
+				has_secret_relation_soulmate = scope:target
+				}
+			}
+			desc = "SCHEME_TARGET_IS_LOVER"
+		}
+		modifier = {
+			add = 75
+			scope:target = {
+				is_landed = no
+			}
+				exists = scope:target.host.cp:councillor_spymaster
+				scope:owner = scope:target.host.cp:councillor_spymaster
+			desc = "SCHEME_I_AM_SPYMASTER_OF_HOST"
+		}
+		modifier = {
+			add = 70
+			scope:owner = {
+				has_relation_friend = scope:target
+			}
+			desc = "OBF_he_is_my_friend"
+		}
+		modifier = {
+			add = 60
+			scope:target = {
+				is_landed = yes
+			}
+			exists = scope:target.liege.cp:councillor_spymaster
+			scope:owner = scope:target.liege.cp:councillor_spymaster
+			
+			desc = "SCHEME_I_AM_SPYMASTER_OF_LIEGE"
+		}
+		modifier = {
+			add = 50
+				exists = scope:target.cp:councillor_marshal
+			scope:owner = scope:target.cp:councillor_marshal
+			desc = "OBF_you_are_marshal"
+		}
+		modifier = {
+			add = 40
+			scope:owner = {
+				is_spouse_of = scope:target
+			}
+			desc = "SCHEME_TARGET_IS_SPOUSE"
+		}
+		modifier = {
+			add = 40
+			scope:owner = {
+				OR = {
+				has_relation_lover = scope:target
+				has_secret_relation_lover = scope:target
+				}
+			}
+			desc = "SCHEME_TARGET_IS_LOVER"
+		}
+		modifier = {
+			add = 40
+			scope:target = {
+				is_ruler = no
+			}
+			scope:owner = { has_council_position = councillor_spymaster}
+			scope:owner = scope:target.court_owner
+			desc = "OBF_I_am_a_professional_spymaster"
+		}
+		modifier = {
+			add = 40
+			scope:target = {
+				is_vassal_of = scope:owner
+			}
+			scope:owner = { has_council_position = councillor_spymaster}
+			desc = "OBF_I_am_a_professional_spymaster"
+		}
+		modifier = {
+			add = 30
+			scope:target = {
+				is_ruler = no
+			}
+			exists = scope:target.court_owner
+			scope:target.court_owner = scope:owner
+			desc = "SCHEME_TARGET_IN_MY_COURT"
+		}
+		modifier = {
+			add = 20
+			scope:owner = {
+				is_close_family_of = scope:target
+			}
+			desc = "SCHEME_TARGET_IS_CLOSE_FAMILY"
+		}
+		modifier = {
+			add = 20
+			scope:owner = {
+				is_councillor_of = scope:target
+			}
+			desc = "SCHEME_I_AM_COUNCILLOR"
+		}
+		modifier = {
+			add = 15
+			scope:owner = { has_council_position = councillor_spymaster}
+			desc = "OBF_I_am_a_professional_spymaster"
+		}
+		modifier = {
+			add = 15
+			scope:target = {
+				is_ruler = yes
+				is_vassal_of = scope:owner
+			}
+			desc = OBF_is_my_vassal
+		}
+		modifier = {
+			add = 10
+			scope:owner = {
+				is_powerful_vassal_of = scope:target
+			}
+			desc = OBF_I_am_powerful_vassal
+		}
+		modifier = {
+			add = 10
+			scope:owner = {
+				is_allied_to = scope:target
+			}
+			desc = OBF_is_ally
+		}	
+		modifier = {
+			add = 5
+			scope:owner = {
+				is_vassal_of = scope:target
+			}
+			desc = OBF_I_am_vassal
+		}	
+	}
+	first_valid = { # Essentially the Base for Spymaster
+		modifier = {
+			add = 90
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:target = {
+				has_relation_guardian = scope:owner.cp:councillor_spymaster
+			}
+			desc = "OBF_spymaster_is_guardian"
+		}
+		
+		modifier = {
+			add = 70
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+				has_relation_best_friend = scope:target
+			}
+			desc = "OBF_spymaster_is_friend"
+		}
+		
+		modifier = {
+			add = 60
+			owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = yes
+			desc = "OBF_scheme_in_spymaster_domain"
+		}
+		
+		modifier = {
+			add = 50
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+				has_relation_friend = scope:target
+			}
+			desc = "OBF_spymaster_is_friend"
+		}
+	}
+}
+
+spy_scheme_owner_education_and_lifestyle_chance_modifier = {####DON'T USE
+ 	
+	#OWNER AND SPYMASTER EDUCATION AND LIFESTYLE
+	
+	first_valid = {
+
+		modifier = {
+			add = 25
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+				has_trait = schemer
+			}
+			desc = OBF_your_spymaster_is_a_schemer
+		}
+		modifier = {
+			add = 20
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_trait = schemer
+				has_council_position = councillor_spymaster
+			}
+			desc = OBF_you_are_a_schemer
+		}
+		modifier = {
+			add = 10
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_trait = schemer
+			}
+			desc = OBF_you_are_a_schemer
+		}
+	}
+	
+	first_valid = {
+		modifier = {
+			add = 20
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+				has_lifestyle = intrigue_lifestyle
+				
+			}
+			desc = OBF_spymaster_intrigue_lifestyle
+		}
+		
+		modifier = {
+			add = 15
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_lifestyle = intrigue_lifestyle
+				has_council_position = councillor_spymaster
+			}
+			desc = OBF_your_intrigue_lifestyle
+		}
+		modifier = {
+			add = 5
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_lifestyle = intrigue_lifestyle
+			}
+			desc = OBF_your_intrigue_lifestyle
+		}
+		
+	}
+	first_valid = {
+
+		modifier = {
+			add = 25
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+				has_perk = digging_for_dirt_perk
+			}
+			desc = OBF_your_spymaster_digging_dirt
+		}
+		modifier = {
+			add = 20
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_perk = digging_for_dirt_perk
+				has_council_position = councillor_spymaster
+			}
+			desc = OBF_you_digging_dirt
+		}
+		
+		modifier = {
+			add = 10
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_perk = digging_for_dirt_perk
+			}
+			desc = OBF_you_digging_dirt
+		}
+		 
+	}
+	
+}
+
+spy_scheme_owner_traits_chance_modifier = {
+	
+	#OWNER AND OWNER SPYMASTER TRAITS
+	first_valid = {
+		
+		modifier = {
+			add = 15
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+			has_trait = vengeful
+			OR = {
+				has_relation_rival = scope:target	
+				has_relation_nemesis = scope:target
+				}
+			}
+			desc = OBF_spymaster_rival
+		}
+		
+		modifier = {
+			add = -20
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+			NOT = {has_trait = deceitful}
+			OR = {
+				has_trait = honest
+				has_trait = just
+				}
+			}
+			desc = OBF_spymaster_honor
+		}
+		
+		modifier = { 
+		add = 15
+		scope:target = {exists = court_owner}
+		scope:owner = scope:target.court_owner
+		scope:owner = {
+			has_trait = vengeful
+			OR = {
+				has_relation_rival = scope:target	
+				has_relation_nemesis = scope:target
+				}
+			}
+			desc = SCHEME_VENGEFUL_RIVAL
+		}
+		
+		modifier = {
+			add = -20	
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:target = {exists = court_owner}
+			scope:owner = scope:target.court_owner
+			scope:owner = {
+			NOT = {has_trait = deceitful}
+			OR = {
+				has_trait = honest
+				has_trait = just
+				}
+			}
+			desc = OBF_your_honor
+		}
+		
+	}
+	modifier = {
+			add = -10
+			desc = OBF_you_are_arrogant
+			owner_spymaster_is_available_for_this_trigger = no
+			scope:owner = {
+				has_trait = arrogant
+			}
+		}
+	modifier = {
+			add = -10
+			desc = OBF_spymaster_is_arrogant
+			owner_spymaster_is_available_for_this_trigger = yes
+			scope:owner.cp:councillor_spymaster = {
+						has_trait = arrogant
+			}
+		}
+		
+}
+
+spy_scheme_owner_others_chance_modifier = {
+	
+	modifier = { # Culture Bonus
+		add = -50
+		scope:owner = {
+			culture = {
+				has_cultural_parameter = hostile_scheme_success_chance_vs_spouse_penalty
+			}
+			is_spouse_of = scope:target	
+		}
+		desc = "SCHEME_WEDDING_CEREMONIES"
+	}
+	
+	
+	
+	modifier = { # Culture Bonus
+		add = 15
+		scope:owner = {
+			culture = {
+				has_cultural_parameter = hostile_action_vs_rival_bonuses
+			}
+			OR = {
+				has_relation_rival = scope:target	
+				has_relation_nemesis = scope:target
+			}
+		}
+		desc = "SCHEME_EYE_FOR_AN_EYE"
+	}
+
+	# Struggle
+	modifier = {
+		add = -25
+		scope:owner = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = iberian_struggle
+				has_struggle_phase_parameter = struggle_agents_less_likely_to_join_schemes
+				is_secondary_character_involvement_involved_trigger = {
+					CHAR = scope:target
+				}
+			}
+		}
+	}
+}
+
+spy_scheme_target_base_chance_modifier = {
+	
+	modifier = {
+			scope:target = {NOT = {has_trait = blind}}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:target = {
+						OR = {this = scope:target.court_owner
+						related_to_liege_trigger = yes}}
+						NOT = {scope:owner = scope:target.court_owner}
+						exists = scope:target.court_owner.cp:councillor_spymaster
+						NOT = {scope:owner = scope:target.court_owner.cp:councillor_spymaster}
+						scope:target.court_owner.cp:councillor_spymaster = {
+							is_performing_council_task = task_disrupt_schemes
+							NOT = {is_scheming_against = {target = scope:target}}
+							}
+						
+					}
+					add = -10
+				}
+				if = {
+					limit = {
+						scope:target.intrigue > 0
+					}
+					add = {value = scope:target.intrigue multiply = -1}
+				}
+				if = {
+					limit = {
+						scope:target = {
+								has_trait = schemer
+						}
+					}
+					add = -15
+				}
+				if = {
+					limit = {
+						scope:target = {
+								has_trait = torturer
+						}
+					}
+					add = -5
+				}
+				if = {
+					limit = {
+						scope:target = {
+								has_lifestyle = intrigue_lifestyle
+						}
+					}
+					add = -10
+				}
+				if = {
+					limit = {
+						scope:target = {
+						OR = {this = scope:target.court_owner
+						related_to_liege_trigger = yes}}
+						NOT = {scope:owner = scope:target.court_owner}
+						exists = scope:target.court_owner.cp:councillor_spymaster
+						NOT = {scope:owner = scope:target.court_owner.cp:councillor_spymaster}
+						scope:target.court_owner.cp:councillor_spymaster = {
+							NOT = {is_scheming_against = {target = scope:target}}
+							}
+					}
+					add = {value = scope:target.court_owner.cp:councillor_spymaster.intrigue multiply = -1}
+				}
+				if = {
+					limit = {
+						scope:target = {
+						OR = {this = scope:target.court_owner
+						related_to_liege_trigger = yes}}
+						NOT = {scope:owner = scope:target.court_owner}
+						exists = scope:target.court_owner.cp:councillor_spymaster
+						NOT = {scope:owner = scope:target.court_owner.cp:councillor_spymaster}
+						scope:target.court_owner.cp:councillor_spymaster = {
+								has_trait = schemer
+								NOT = {is_scheming_against = {target = scope:target}}
+						}
+					}
+					add = -10
+				}
+				if = {
+					limit = {
+						scope:target = {
+						OR = {this = scope:target.court_owner
+						related_to_liege_trigger = yes}}
+						NOT = {scope:owner = scope:target.court_owner}
+						exists = scope:target.court_owner.cp:councillor_spymaster
+						NOT = {scope:owner = scope:target.court_owner.cp:councillor_spymaster}
+						scope:target.court_owner.cp:councillor_spymaster = {
+								has_lifestyle = intrigue_lifestyle
+								NOT = {is_scheming_against = {target = scope:target}}
+						}
+					}
+					add = -10
+				}
+			}
+			desc = OBF_target_court_intrigue
+		}
+		
+	#RANK	
+	first_valid = {
+
+		modifier = {
+			add = -30
+			exists = scope:target.primary_title
+			scope:target.primary_title.tier = tier_empire
+			desc = "SCHEME_TARGET_IS_AN_EMPEROR"
+		}
+		modifier = {
+			add = -25
+			exists = scope:target.primary_title
+			scope:target.primary_title.tier = tier_kingdom
+			desc = "SCHEME_TARGET_IS_A_KING"
+		}
+		
+		modifier = {
+			add = -20
+			scope:target.liege.primary_title.tier = tier_empire
+			scope:target = {related_to_liege_trigger = yes}
+			NOT = {scope:owner = scope:target.court_owner}
+			desc = "SCHEME_TARGET_RELATED_TO_LIEGE"
+		}
+		
+		modifier = {
+			add = -15
+			scope:target.liege.primary_title.tier = tier_kingdom
+			scope:target = {related_to_liege_trigger = yes}
+			NOT = {scope:owner = scope:target.court_owner}
+			desc = "SCHEME_TARGET_RELATED_TO_LIEGE"
+		}
+		modifier = {
+			add = -15
+			exists = scope:target.primary_title
+			scope:target.primary_title.tier = tier_duchy
+			desc = "SCHEME_TARGET_IS_A_DUKE"
+		}
+		modifier = {
+			add = -5
+			scope:target.court_owner.primary_title.tier = tier_duchy
+			scope:target = {related_to_liege_trigger = yes}
+			NOT = {scope:owner = scope:target.court_owner}
+			desc = "SCHEME_TARGET_RELATED_TO_LIEGE"
+		}
+		modifier = {
+			add = -5
+			exists = scope:target.primary_title
+			scope:target.primary_title.tier = tier_county
+			desc = "SCHEME_TARGET_IS_A_COUNT"
+		}
+		modifier = {
+			add = 40
+			scope:target = {related_to_liege_trigger = no}
+			desc = "SCHEME_TARGET_IS_NOT_A_RULER"
+		}
+	}
+		modifier = {
+			add = {
+			value = scope:target.intrigue
+			multiply = -4 }
+			scope:target = {
+				has_council_position = councillor_spymaster
+			}
+			desc = FABRICATE_HOOK_TARGETING_SPYMASTER
+			
+		}
+	
+	modifier = { # Minor Lifestyle Perk protection for Courtiers
+		add = {
+			value = 0
+			subtract = prepared_for_anything_perk_secondary_percentage
+		}
+		scope:target = {
+			is_alive = yes
+			is_ruler = no
+			exists = court_owner
+			court_owner = {
+				has_perk = prepared_for_anything_perk
+			}
+			NOT = { court_owner = scope:owner }
+			NOT = { has_perk = prepared_for_anything_perk }
+		}
+		desc = "SCHEME_PREPARED_FOR_ANYTHING_LIEGE_PERK_MODIFIER"
+	}
+	
+	
+		
+	#INTELLIGENCE
+	
+	first_valid = {
+		modifier = {
+			add = -20
+			scope:target = { probably_intelligent_trigger = yes }
+			desc = OBF_their_intelligence
+		}
+		modifier = {
+			add = 20
+			scope:target = { probably_unintelligent_trigger = yes }
+			desc = OBF_their_intelligence
+		}
+	}
+		
+	#TARGET TRAITS
+	
+	modifier = {
+			add = -15
+			desc = FABRICATE_HOOK_DECEITFUL
+			scope:target = {
+				has_trait = deceitful
+			}
+		}
+
+		modifier = {
+			add = -15
+			desc = FABRICATE_HOOK_TARGET_PARANOID
+			scope:target = {
+				has_trait = paranoid
+			}
+		}
+		
+		modifier = {
+			add = -10
+			desc = FABRICATE_HOOK_TARGET_FICKLE
+			scope:target = {
+				has_trait = fickle
+			}
+		}
+		
+		modifier = {
+			add = -5
+			desc = FABRICATE_HOOK_TARGET_CRAVEN
+			scope:target = {
+				has_trait = craven
+			}
+		}
+		modifier = {
+			add = -10
+			desc = OBF_target_is_shy
+			scope:target = {
+				has_trait = shy
+			}
+		}
+		modifier = {
+			add = 10
+			desc = FABRICATE_HOOK_TARGET_ARROGANT
+			scope:target = {
+				has_trait = arrogant
+			}
+		}
+
+}      
+   
+  
+hostile_spy_agent_success_chance_modifier = {
+
+		modifier = {  
+			add = agent_overall_success_chance
+			desc = OBF_overall_success_chance
+		}
+		
+	first_valid = { 
+		modifier = {
+			add = 80
+			scope:target = {has_relation_guardian = prev}
+			desc = "SCHEME_AGENT_IS_GUARDIAN"
+		}
+		modifier = {
+			add = 80
+			scope:target = {
+				is_child_of = root
+				is_adult = no
+			}
+			desc = OBF_target_parent
+		}
+		modifier = {
+			add = 70
+			scope:target = { 
+				is_ruler = yes 
+			}  
+			has_council_position = councillor_spymaster
+			scope:target.cp:councillor_spymaster = this
+			desc = "SCHEME_AGENT_IS_SPYMASTER" 
+		}
+		modifier = {  
+			add = 60
+			scope:target = {
+				is_ruler = no
+			}
+			has_council_position = councillor_spymaster
+			scope:owner.cp:councillor_spymaster = this
+			desc = OBF_agent_is_my_Spymaster
+		}
+		modifier = {
+			add = 50
+			scope:target = {
+				is_ruler = no
+			}
+			NOT = {scope:owner = scope:target.court_owner}
+			has_council_position = councillor_spymaster
+			exists = scope:target.court_owner.cp:councillor_spymaster
+			scope:target.court_owner.cp:councillor_spymaster = this
+			desc = "SCHEME_AGENT_IS_SPYMASTER_IN_MY_COURT"
+		}
+		modifier = {
+			add = 50
+			scope:target = {
+				is_ruler = yes
+			}
+			has_council_position = councillor_spymaster
+			scope:owner.cp:councillor_spymaster = this
+			desc = OBF_agent_is_my_Spymaster
+		}
+		
+		modifier = {
+			add = 45
+			scope:target = {
+				is_ruler = yes
+			}
+			has_council_position = councillor_marshal
+			scope:target.cp:councillor_marshal = this
+			desc = "OBF_is_marshal"
+		}
+		modifier = {
+			add = 40
+			has_relation_best_friend = scope:target
+			desc = "SCHEME_AGENT_IS_BEST_FRIEND"
+		}
+		modifier = {
+			add = 40
+			OR = {
+			has_relation_soulmate = scope:target
+			has_secret_relation_soulmate = scope:target
+			}
+			desc = "SCHEME_AGENT_IS_LOVER"
+		}
+		modifier = {
+			add = 30
+			is_spouse_of = scope:target
+			desc = "SCHEME_AGENT_IS_SPOUSE"
+		}
+		
+		modifier = {
+			add = 30
+			OR = {
+				has_relation_lover = scope:target
+				has_secret_relation_lover = scope:target
+				}
+			desc = "SCHEME_AGENT_IS_LOVER"
+		}
+		modifier = {
+			add = 25
+			has_relation_friend = scope:target
+			desc = "SCHEME_AGENT_IS_FRIEND"
+		}
+		modifier = {
+			add = 25
+			is_concubine_of = scope:target
+			desc = "SCHEME_AGENT_IS_CONCUBINE"
+		}
+		modifier = {
+			add = 25
+			is_close_family_of = scope:target
+			desc = "SCHEME_AGENT_IS_CLOSE_KIN"
+		}
+		modifier = {
+			add = 25
+			has_court_position = bodyguard_court_position
+			is_court_position_employer = {
+		        court_position = bodyguard_court_position
+				who = scope:target
+		    }
+			desc = "SCHEME_AGENT_IS_BODYGUARD"
+		}
+		modifier = {
+			add = 20
+			is_councillor_of = scope:target
+			desc = "SCHEME_AGENT_IS_COUNCILLOR"
+		}
+		modifier = {
+			add = 20
+			is_knight_of = scope:target
+			desc = OBF_is_a_knight
+		}
+		
+		modifier = {
+			add = 20
+			is_powerful_vassal_of = scope:target
+			desc = "SCHEME_AGENT_IS_POWERFUL_VASSAL"
+		}
+		modifier = {
+			add = 20
+			has_court_position = court_physician_court_position
+			is_court_position_employer = {
+		        court_position = court_physician_court_position
+				who = scope:target
+		    }
+			desc = "SCHEME_AGENT_IS_COURT_PHYSICIAN"
+		}
+		modifier = {
+			add = 15
+			scope:target = {
+				is_ruler = no
+				exists = court_owner
+			}
+			is_courtier_of = scope:target.court_owner
+			desc = "SCHEME_AGENT_IS_FELLOW_COURTIER"
+		}
+		
+		modifier = {
+			add = 15
+			is_ruler = yes
+			is_vassal_of = scope:target
+			desc = "SCHEME_AGENT_IS_VASSAL"
+		}
+		modifier = {
+			add = 15
+			has_court_position = cupbearer_court_position
+			is_court_position_employer = {
+		        court_position = cupbearer_court_position
+				who = scope:target
+		    }
+			desc = "SCHEME_AGENT_IS_CUP_BEARER"
+		}
+		modifier = {
+			add = 15
+			is_extended_family_of = scope:target
+			desc = "SCHEME_AGENT_IS_EXTENDED_FAMILY"
+		}
+		
+		modifier = {
+			add = 10
+			exists = court_owner
+			exists = scope:target.court_owner
+			scope:target.court_owner = scope:owner
+			court_owner = scope:owner
+			desc = "SCHEME_AGENT_IS_COURTIER_MY_COURT"
+		}
+				
+		modifier = {
+			add = 10
+			scope:target = {
+				is_ruler = no
+				exists = court_owner
+			} 
+			is_vassal_of = scope:target.court_owner
+			is_ruler = yes
+			desc = "SCHEME_AGENT_IS_VASSAL_OF_LIEGE"
+		}
+		modifier = {
+			add = 10
+			is_courtier_of = scope:target
+			desc = "SCHEME_AGENT_IS_COURTIER"
+		}
+		modifier = {
+			add = 5
+			scope:target = {
+				is_ruler = no
+				exists = court_owner
+			}
+			is_foreign_court_or_pool_guest_of = scope:target.court_owner
+			desc =  "SCHEME_AGENT_IS_GUEST"
+		}
+		modifier = {
+			add = 5
+			is_allied_to = scope:target
+			desc = OBF_target_is_ally
+		}
+		modifier = {
+			add = 5
+			is_at_same_location = scope:target
+			desc = OBF_same_location
+		}
+	}
+}
+
+hostile_spy_agent_base_join_chance_modifier = {
+	
+	#####################################
+	###########HARD##BLOCKERS############ 
+	#####################################
+
+	
+	first_valid = {#TARGET NOT ABLE TO PARTICIPATE
+	
+		modifier = {
+			add = -10000
+			agent_can_be_recruited_trigger = no
+			desc = SCHEME_NOT_ABLE_TO_HELP
+		}
+		modifier = { #TARGETS WON'T SCHEME AGAINST SELF
+			add = -5000
+			this = scope:target
+			desc = SCHEME_NOT_AGAINST_SELF
+		}
+		modifier = { #TARGETS WON'T SCHEME AGAINST SUBJECTS
+			add = -5000
+			this = scope:target.court_owner
+			desc = WILL_NOT_GIVE_INFORMATION_OWN_COURT
+		}
+		modifier = {
+			add = -5000
+			this = scope:target.liege
+			desc = WILL_NOT_GIVE_INFORMATION_VASSALS
+		}
+		#SPYMASTER WON'T TARGET CLOSE ONES
+		modifier = { 
+			trigger = {
+				exists = scope:owner.cp:councillor_spymaster
+				this = scope:owner.cp:councillor_spymaster
+					target_is_spymaster_or_someone_close_trigger = yes
+					opinion = { target = scope:target value > medium_negative_opinion }
+				scope:owner = {
+							any_scheme = {   
+								is_hostile = yes 
+								scheme_type = spy_character
+								NOT = {has_variable = spymaster_accepted_participation}}}
+				NOR = { 
+				has_relation_nemesis = scope:target
+				has_relation_rival = scope:target
+				}
+			}
+		add = -5000
+		desc = SCHEME_SPYMASTER_WONT_TARGET
+		}	
+	}
+	
+	# Base Reluctance affected by ai_energy
+		modifier = {
+			
+			add = { 
+				value = -40
+				if = { 
+					limit = { 
+						has_trait = loyal
+					} 
+					add = -100
+				}
+				if = { 
+					limit = { 
+						has_trait = disloyal
+					} 
+					add = 100
+				}
+				if = { 
+					limit = { 
+						ai_energy <= very_high_negative_ai_value
+					} 
+					add = -10
+				} 
+				if = { 
+					limit = { 
+						ai_energy <= high_negative_ai_value
+					} 
+					add = -10
+				} 
+				if = { 
+					limit = {
+						ai_energy <= low_negative_ai_value
+					} 
+					add = -10
+				}
+				if = { 
+					limit = { 
+						ai_boldness <= very_high_negative_ai_value
+					} 
+					add = -10
+				} 
+				if = { 
+					limit = { 
+						ai_boldness <= high_negative_ai_value
+					} 
+					add = -10
+				} 
+				if = { 
+					limit = {
+						ai_boldness <= low_negative_ai_value
+					} 
+					add = -10
+				}
+				max = 0
+				min = -200
+			}    
+			desc = BASE_RELUCTANCE 
+		}
+		
+	##############PERSUASION
+		first_valid = {
+		
+		###########SPYMASTER UNAVAILABLE AND NOT BEING ONE 
+		modifier = { 
+				agent_willing_to_help_without_spymaster_trigger = no
+				owner_spymaster_is_available_for_this_trigger = no
+			add = -200
+		desc = SCHEME_YOU_NEED_SPYMASTER
+		}
+		
+		###########SPYMASTER AVAILABLE AND BEING ONE OR KNOWING AGENT 7.5
+		modifier = { 
+				agent_willing_to_help_without_spymaster_trigger = yes
+				owner_spymaster_is_available_for_this_trigger = yes
+				NOR = {
+				is_great_grandparent_of = scope:target
+				is_grandparent_of = scope:target
+				is_parent_of = scope:target
+				AND = {is_consort_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}
+				AND = {is_child_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}}
+			add = {
+				value = scope:owner.diplomacy
+				if = {
+					limit = {
+						scope:owner = { 
+								OR = {
+								has_trait = deceitful
+								is_a_persuasive_person_trigger = yes
+								is_a_very_elusive_person_trigger = yes
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						scope:owner = { has_council_position = councillor_spymaster }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						scope:owner = { OR = {has_trait = diplomat
+											has_trait = schemer} }
+					}
+					add = 15
+				}
+				if = {
+					limit = {
+						scope:owner = { has_trait = seducer }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { 
+								OR = {
+									has_trait = deceitful
+									is_a_persuasive_person_trigger = yes
+									is_a_very_elusive_person_trigger = yes
+								}
+							}
+					}
+					add = 15
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { OR = {has_trait = diplomat
+																		has_trait = schemer} }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { has_trait = seducer }
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { diplomacy > 0 }
+					}
+					add = {
+						value = scope:owner.cp:councillor_spymaster.diplomacy
+						multiply = 1}
+				}
+				max = 100
+			}
+			desc = SCHEME_YOU_WERE_CONVINCENT
+		}
+		###########SPYMASTER UNAVAILABLE BUT BEING ONE OR KNOWING AGENT
+		modifier = {
+				owner_spymaster_is_available_for_this_trigger = no
+				agent_willing_to_help_without_spymaster_trigger = yes
+				NOR = {
+				is_great_grandparent_of = scope:target
+				is_grandparent_of = scope:target
+				is_parent_of = scope:target
+				AND = {is_consort_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}
+				AND = {is_child_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}}
+			add = {
+				value = scope:owner.diplomacy
+				if = {
+					limit = {
+						scope:owner = { 
+								OR = {
+								has_trait = deceitful
+								is_a_persuasive_person_trigger = yes
+								is_a_very_elusive_person_trigger = yes
+							}
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						scope:owner = { has_council_position = councillor_spymaster }
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						scope:owner = { OR = {has_trait = diplomat
+											has_trait = schemer} }
+					}
+					add = 15
+				}
+				if = {
+					limit = {
+						scope:owner = { has_trait = seducer }
+					}
+					add = 10
+				}
+				max = 75
+			}
+			desc = SCHEME_YOU_WERE_CONVINCENT
+		}
+		###########SPYMASTER AVAILABLE BUT NOT BEING ONE
+		modifier = {
+				agent_willing_to_help_without_spymaster_trigger = no
+				owner_spymaster_is_available_for_this_trigger = yes
+				NOR = {
+				is_great_grandparent_of = scope:target
+				is_grandparent_of = scope:target
+				is_parent_of = scope:target
+				AND = {is_consort_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}
+				AND = {is_child_of = scope:target.court_owner
+				opinion = { 
+						target = scope:target
+						value >= low_negative_opinion}}}
+			add = {
+				value = scope:owner.cp:councillor_spymaster.diplomacy
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { intrigue > 0 }
+					}
+					add = {
+						value = scope:owner.cp:councillor_spymaster.intrigue
+						multiply = 1}
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { 
+								OR = {
+									has_trait = deceitful
+									is_a_persuasive_person_trigger = yes
+									is_a_very_elusive_person_trigger = yes
+								}
+							}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { OR = {has_trait = diplomat
+																		has_trait = schemer} }
+					}
+					add = 15
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { has_trait = seducer }
+					}
+					add = 10
+				}
+				max = 75
+				
+			}
+			desc = SCHEME_SPYMASTER_CONVINCENT
+		}
+
+	}
+	
+	first_valid = { # NOT GOOD FOR THIS
+		
+		modifier = {
+				add = -300
+			OR = {is_a_benevolent_person_trigger = yes
+					will_not_betray = yes
+					has_trait = loyal
+					ai_honor >= high_positive_ai_value
+					ai_greed <= low_negative_ai_value} 
+					agent_overall_success_chance < 10
+					intrigue < 9
+		desc = SCHEME_NOT_GOOD_AT_THIS 
+		}
+		
+		# NOT GOOD FOR THIS BUT OPEN TO PERSUASION
+		modifier = {
+				add = -200
+					agent_overall_success_chance < 10
+					intrigue < 9
+		desc = SCHEME_NOT_GOOD_AT_THIS_BUT 
+		}
+	}
+	
+	# NOTHING TO GAIN 
+		modifier = {
+			trigger = {
+				NAND = { # Greedy agents find that Gold is, indeed, something they stand to gain!
+				exists = scope:gift
+				always = scope:gift
+				ai_greed >= low_positive_ai_value
+			}
+			NOR = {
+				ai_greed < low_positive_ai_value
+				AND = {    
+						opinion = {  
+							target = scope:target
+							value >= medium_negative_opinion
+						}
+					OR = {     
+					AND = {root = {agent_willing_to_help_without_spymaster_trigger = no}
+			 				owner_spymaster_is_available_for_this_trigger = no}
+					root = scope:owner.cp:councillor_spymaster
+					root = {this = scope:target}
+					root = {this = scope:target.liege}
+					root = {this = scope:target.court_owner} 
+					root = {is_consort_of = scope:target} 
+					root = {is_heir_of = scope:target}
+					root = {is_close_family_of = scope:target} 
+					root = {has_relation_soulmate = scope:target}
+					root = {has_relation_best_friend = scope:target}
+					root = {has_secret_relation_soulmate = scope:target}
+					root = {has_relation_nemesis = scope:owner}
+					root = {highest_held_title_tier >= tier_kingdom}
+					}
+				}
+			}
+				NAND = { 
+					exists = house.house_head
+					exists = scope:target.house
+					house.house_head = {
+						any_owned_story = {
+							story_type = story_cycle_house_feud
+							exists = var:house_feud_house
+							var:house_feud_house = scope:target.house
+							}
+						}
+					}
+				}
+			add = {
+				value = ai_greed
+				multiply = -1
+				}
+			
+		desc = SCHEME_NOTHING_TO_GAIN
+	}
+	
+		############################################
+		####FAMILY MEMBERS AND OTHER RELATIONS######
+		#################BLOCKERS###################
+	
+	# CLOSE RELATIONS WON'T PARTICIPATE
+	
+	first_valid = {
+		modifier = { #FRIENDS AND LOVERS WON'T BETRAY HARD BLOCKER UNLESS STRONG HOOK
+			add = -1000
+				OR = {
+					has_relation_best_friend = scope:target
+					has_secret_relation_soulmate = scope:target
+					has_relation_soulmate = scope:target
+					}
+		desc = SCHEME_WONT_BETRAY_HIM
+		}
+		modifier = { ##WEIGHT 20
+			add = -100
+				OR = {
+					has_relation_friend = scope:target
+					has_secret_relation_lover = scope:target
+					has_relation_lover = scope:target
+					}
+		desc = SCHEME_WONT_BETRAY_HIM
+		}
+	}
+	
+	first_valid = {
+	
+		modifier = {
+			add = -1000
+				has_relation_nemesis = scope:owner
+		desc = SCHEME_HELP_RIVAL
+		}
+		modifier = { 
+			add = -100
+				has_relation_rival = scope:owner
+		desc = SCHEME_HELP_RIVAL
+		}
+	}
+
+	first_valid = { #####FAMILY MEMBERS WON'T SPY
+	
+		modifier = { ##### WON'T BETRAY DESCENDANTS
+			add = -1000
+				OR = {
+					is_great_grandparent_of = scope:target
+					is_grandparent_of = scope:target
+					is_parent_of = scope:target
+			}
+		desc = SCHEME_NOT_BETRAY_DESCENDANTS
+		}
+		
+		modifier = { ######A LOYAL SPOUSE WON'T SPY
+			add = -100
+				trigger = {is_consort_of = scope:target}
+				opinion = {
+					target = scope:target
+					value >= low_negative_opinion
+					}
+				opinion = {
+					target = scope:target
+					value < low_positive_opinion
+				}
+		desc = SCHEME_AGAINST_SPOUSE
+		}
+		
+		modifier = { #####A CHILD OR SIBLING THAT LIKES THE TARGET WON'T SPY
+			add = -100
+				trigger = {
+				OR = {
+						is_sibling_of = scope:target
+						is_child_of = scope:target
+						is_heir_of = scope:target
+					}
+				}
+				opinion = {
+					target = scope:target
+					value >= low_negative_opinion
+				}
+				opinion = {
+					target = scope:target
+					value < low_positive_opinion
+				}
+		desc = SCHEME_AGAINST_KIN
+		}	
+	}	
+		opinion_modifier = {
+		trigger = {
+				opinion = {
+					target = scope:target
+					value >= low_positive_opinion
+				}
+				OR = {
+						is_sibling_of = scope:target
+						is_child_of = scope:target
+						is_heir_of = scope:target
+					}
+				}
+		who = this
+		opinion_target = scope:target
+		multiplier = -10
+		desc = SCHEME_AGAINST_KIN
+		}
+		
+		opinion_modifier = {
+		trigger = {
+				opinion = {
+					target = scope:target
+					value >= low_positive_opinion
+				}
+				is_consort_of = scope:target}
+		who = this
+		opinion_target = scope:target
+		multiplier = -10
+		desc = SCHEME_AGAINST_SPOUSE
+		}
+		
+		opinion_modifier = {###### CHILD OR SIBLING DOES NOT LIKE TARGET
+		trigger = {
+				opinion = {
+					target = scope:target
+					value < medium_negative_opinion
+				}
+				OR = {
+						is_sibling_of = scope:target
+						is_child_of = scope:target
+						is_heir_of = scope:target
+					}
+				}
+		who = this
+		opinion_target = scope:target
+		multiplier = -1
+		desc = SCHEME_AGAINST_KIN_POSITIVE
+		}
+		
+		opinion_modifier = {###### A SPITEFUL SPOUSE WILL SPY
+		trigger = {
+				opinion = {
+					target = scope:target
+					value < medium_negative_opinion
+				}
+				is_consort_of = scope:target}
+		who = this
+		opinion_target = scope:target
+		multiplier = -1
+		desc = SCHEME_AGAINST_SPOUSE_POSITIVE
+		}
+		
+		#############OPINIONS###########
+	########GOOD OPINION OF TARGET 
+	opinion_modifier = {
+		trigger = {
+			NOR = { 
+			is_sibling_of = scope:target
+			is_child_of = scope:target
+			is_heir_of = scope:target
+			is_consort_of = scope:target
+			this = scope:target
+			}
+			opinion = {
+				target = scope:target
+				value >= low_positive_opinion
+			}
+		}
+		who = this
+		opinion_target = scope:target
+		multiplier = -1
+		min = -50
+		desc = SCHEME_I_LIKE_TARGET
+	}  
+	
+	########BAD OPINION OF TARGET 
+	opinion_modifier = {
+		trigger = {
+			NOR = { 
+			is_sibling_of = scope:target
+			is_child_of = scope:target
+			is_heir_of = scope:target
+			is_consort_of = scope:target
+			this = scope:target
+							}
+			opinion = { 
+				target = scope:target
+				value <= low_negative_opinion
+			}
+		}
+		who = this
+		opinion_target = scope:target
+		multiplier = -1
+		max = 50
+		desc = SCHEME_I_DISLIKE_TARGET
+	}
+		
+		
+	
+		############################################
+		############OTHER RELATIONS######
+		#################ACCEPTANCE###################
+	
+	first_valid = {
+	######## NEMESIS WILL SPY WEIGHT 15
+		modifier = {
+			add = 2000
+				has_relation_nemesis = scope:target
+		desc = SCHEME_AGAINST_RIVAL
+		}
+	########RIVALS WILL SPY
+		modifier = {
+			add = 75
+				has_relation_rival = scope:target
+		desc = SCHEME_AGAINST_RIVAL
+		}
+	}
+
+	#######PLOT LOCATION########## WEIGHT 5.0
+	
+	first_valid = {
+	
+	#########AGENT IN OWN COURT
+		modifier = {
+			add = 35
+				NOT = {has_trait = disloyal}
+				NOT = {is_pool_guest_of = scope:owner}
+				scope:target = {
+						is_ruler = no
+						exists = court_owner
+				}
+				scope:target.court_owner = scope:owner
+		desc = SCHEME_WILL_HELP_LIEGE
+		}
+		
+	#########FOREIGN AGENT IN FOREIGN COURT
+		modifier = {
+			add = -35
+				OR = {ai_honor >= medium_positive_ai_value
+				has_trait = loyal}
+				exists = court_owner
+				NOT = {has_same_culture_as = scope:owner}
+				NOT = {is_vassal_or_below_of = scope:owner}
+				NOT = {is_liege_or_above_of = scope:owner}
+				NOT = {scope:target.court_owner.top_liege = scope:owner.top_liege}
+		desc = SCHEME_SPYING_FOREIGN
+		}
+		
+	#########SAME CULTURE AGENT IN FOREIGN COURT
+		modifier = {
+			add = 35
+				exists = court_owner
+				has_same_culture_as = scope:owner
+				NOT = {has_same_culture_as = scope:target.court_owner}
+				NOT = {is_vassal_or_below_of = scope:owner}
+				NOT = {is_liege_or_above_of = scope:owner}
+				NOT = {scope:target.court_owner.top_liege = scope:owner.top_liege}
+		desc = SCHEME_SPYING_HOMELAND
+		}
+	}
+		
+	######AGENT DOES NOT WANT TO RISK POSITION WEIGHT 12
+	
+	modifier = {
+				exists = scope:target.court_owner
+				NOT = {scope:target.court_owner = scope:owner}
+				owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+				NOR = {
+				is_great_grandparent_of = scope:target
+				is_grandparent_of = scope:target
+				is_parent_of = scope:target
+				is_consort_of = scope:target.court_owner
+				is_child_of = scope:target.court_owner}
+				OR = {is_vassal_of = scope:target.court_owner
+					is_councillor_of = scope:target.court_owner}
+				add = {
+					value = 0
+					if = {
+						limit = {scope:target = {highest_held_title_tier >= tier_kingdom}}
+						add = -20
+					}
+					if = {
+						limit = {scope:target = {highest_held_title_tier <= tier_duchy}}
+						add = -15
+					}
+					if = {
+						limit = {highest_held_title_tier = tier_duchy}
+						add = -20
+					}
+					if = {
+						limit = {highest_held_title_tier = tier_county}
+						add = -15
+					}
+					if = {
+						limit = {is_councillor = yes}
+						add = -10
+					}
+					if = {
+						limit = {
+						scope:target = {highest_held_title_tier = tier_county}
+						is_councillor = yes}
+						add = -10
+					}
+					if = {
+						limit = {has_any_court_position = yes
+								is_councillor = no}
+						add = -15
+					}
+					if = {
+						limit = {ai_boldness <= low_negative_ai_value}
+						add = -25
+					}
+					if = {
+						limit = {ai_boldness <= high_negative_ai_value}
+						add = -25
+					}
+					min = -100			
+				}
+				
+		desc = SCHEME_WONT_RISK_POSITION
+		}
+		
+		
+		###########INTIMIDATED AND COWED
+		
+		#####INTIMIDATED OR COWED OF TARGET WEIGHT 15
+		first_valid = {
+		
+		modifier = { #INTIMIDATED OF TARGET
+				scope:target = {is_adult = yes}
+				exists = scope:target.court_owner
+				has_dread_level_towards = {
+				target = scope:target
+				level = 1
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:target = scope:target.court_owner
+						scope:target.court_owner = {
+						exists = scope:target.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = -200
+					}
+				else_if = {
+					limit = {scope:target = scope:target.court_owner}
+					add = -100
+					}
+				else = {
+					add = -50
+					}		
+				}
+			desc = SCHEME_I_AM_INTIMIDATED
+			}
+			
+		modifier = { #COWED OF TARGET
+				scope:target = {is_adult = yes}
+				has_dread_level_towards = {
+				target = scope:target
+				level = 2
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:target = {
+						exists = scope:target.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = -4000
+					}
+				else = {
+					add = -2000
+					}		
+				}
+			desc = SCHEME_I_AM_COWED
+			}
+		}
+		
+		#####INTIMIDATED OR COWED OF TARGET COURT OWNER
+		first_valid = {
+		
+		modifier = { #INTIMIDATED OF TARGET COURT OWNER
+				exists = scope:target.court_owner
+				scope:target.court_owner = {is_adult = yes}
+				scope:target = {related_to_liege_trigger = yes}
+				NOT = {scope:target = scope:target.court_owner}
+				NOT = {scope:owner = scope:target.court_owner}
+				owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+				has_dread_level_towards = {
+				target = scope:target.court_owner
+				level = 1
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:target.court_owner = {
+						exists = scope:target.court_owner.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = -50
+					}
+				else = {
+					add = -25
+					}
+				}
+			desc = SCHEME_I_AM_INTIMIDATED_COURT_OWNER
+			}
+			
+		modifier = { #COWED OF TARGET COURT OWNER
+				exists = scope:target.court_owner
+				scope:target.court_owner = {is_adult = yes}
+				scope:target = {related_to_liege_trigger = yes}
+				NOT = {scope:target = scope:target.court_owner}
+				NOT = {scope:owner = scope:target.court_owner}
+				owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+				has_dread_level_towards = {
+				target = scope:target.court_owner
+				level = 2
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:target.court_owner = {
+						exists = scope:target.court_owner.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = -4000
+					}
+				else = {
+					add = -2000
+					}
+				}
+			desc = SCHEME_I_AM_COWED_COURT_OWNER
+			}
+		}
+		
+		##########INTIMIDATED OR COWED BY OWNER
+		
+		first_valid = {
+		
+		modifier = { #INTIMIDATED BY OWNER YOUR SUBJECTS
+				scope:owner = {is_adult = yes}
+				OR = {
+				is_owner_courtier_or_vassal_or_below = yes
+				is_pool_guest_of = scope:owner}
+				has_dread_level_towards = {
+				target = scope:owner
+				level = 1
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:owner = {
+						exists = scope:owner.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = 150
+					}
+				else = {
+					add = 75
+					}
+				}
+			desc = INTIMIDATED_REASON
+			}
+		
+		modifier = { #COWED BY OWNER YOUR SUBJECTS
+				scope:owner = {is_adult = yes}
+				OR = {
+				is_owner_courtier_or_vassal_or_below = yes
+				is_pool_guest_of = scope:owner}
+				has_dread_level_towards = {
+				target = scope:owner
+				level = 2
+				}
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:owner = {
+						exists = scope:owner.dynasty
+							dynasty = {
+								has_dynasty_perk = guile_legacy_5
+								}
+							}
+						}
+					add = 4000
+					}
+				else = {
+					add = 2000
+					}	
+				}
+			desc = COWED_REASON
+			}
+		
+		modifier = { #COWED BY OWNER FOREIGN
+					scope:owner = {is_adult = yes
+							exists = scope:owner.dynasty
+								dynasty = {
+									has_dynasty_perk = guile_legacy_5
+								}
+							}
+						NOT = {court_owner = scope:owner}
+						has_dread_level_towards = {
+								target = scope:owner
+								level = 2
+					}
+			add = 2000
+			desc = COWED_REASON
+			}
+		}
+		
+	# Zeal vs other Faiths
+		modifier = {
+			trigger = {
+				ai_zeal > low_positive_ai_value
+			NOT = {
+				faith = {
+					faith_hostility_level = {
+						target = scope:target.faith
+						value = faith_fully_accepted_level
+					}
+				}
+			}
+		}
+		add = {
+			value = ai_zeal
+			if = {
+				limit = {
+					faith = {
+						faith_hostility_level = {
+							target = scope:target.faith
+							value = faith_astray_level
+						}
+					}
+				}
+				multiply = 0.25
+			}
+			else = {
+				multiply = 0.5
+			}
+		}
+		desc = SCHEME_ZEALOUS_AGAINST_HEATHEN
+	}
+		
+	
+	########OPINION OF OWNER
+	opinion_modifier = {
+		trigger = {
+			OR = {
+			scope:owner = scope:target.court_owner
+			has_relation_to = scope:owner
+			is_vassal_or_below_of = scope:owner
+			is_allied_to = scope:owner
+			}
+			NOT = { this = scope:owner }
+		}
+		who = this
+		opinion_target = scope:owner
+		multiplier = 0.30
+		#step = 5
+		desc = SCHEME_MY_OPINION_OF_YOU
+	}
+		
+		
+		######## ALWAYS READY TO BETRAY CLAIMANTS WEITGH 7
+	modifier = {
+		trigger = {
+			is_ruler = yes
+			any_held_title = {
+				scope:target = {
+					has_claim_on = prev
+				}
+			}
+			NOR = {
+				is_great_grandparent_of = scope:target
+				is_grandparent_of = scope:target
+				is_parent_of = scope:target
+			}
+			opinion = {
+				target = scope:target
+				value <= low_negative_opinion
+			}
+		}
+		add = {
+		value = 30
+			if = {
+				limit = {ai_greed > 0}
+			add = {
+				value = ai_greed
+				multiply = 0.2}
+			}
+		}
+		desc = SCHEME_BETRAY_UNRULY_CLAIMANT
+	}
+	
+	##########COURT WILL NOT TRUST RECENTLY JOINED PERSON OR GUESTS WEIGHT 35
+	first_valid = {
+		modifier = {
+			add = 35
+			NOR = {
+			NOT = {has_trait = paranoid}
+			has_trait = trusting
+			is_pool_guest_of = scope:target.court_owner
+			days_since_joined_court < 180
+			has_relation_lover = scope:target
+			has_relation_best_friend = scope:target
+			has_relation_soulmate = scope:target
+			has_relation_friend = scope:target
+			has_secret_relation_lover = scope:target
+			has_secret_relation_soulmate = scope:target
+			is_consort_of = scope:target
+			is_close_family_of = scope:target}
+			scope:target = {
+				related_to_liege_trigger = no 
+				days_since_joined_court < 180 }
+		desc = SCHEME_TARGET_RECENTLY_JOINED_COURT
+		}
+		modifier = {
+			add = 35
+			NOR = {
+			NOT = {has_trait = paranoid}
+			has_trait = trusting
+			is_pool_guest_of = scope:target.court_owner
+			days_since_joined_court < 180
+			has_relation_lover = scope:target
+			has_relation_best_friend = scope:target
+			has_relation_soulmate = scope:target
+			has_relation_friend = scope:target
+			has_secret_relation_lover = scope:target
+			has_secret_relation_soulmate = scope:target
+			is_consort_of = scope:target
+			is_close_family_of = scope:target}
+			scope:target = {
+				related_to_liege_trigger = no 
+				is_pool_guest_of = scope:target.court_owner }
+		desc = SCHEME_TARGET_MERELY_A_GUEST 
+		}
+	}
+	
+	###########THEY HAVE HEARD BAD RUMOURS ABOUT TARGET
+	modifier = {
+		has_opinion_modifier = {
+		modifier = heard_bad_rumours_opinion
+				target = scope:target
+		}
+		exists = court_owner
+		OR = {scope:target = scope:target.court_owner
+		scope:target = {is_consort_of = scope:target.court_owner}
+		scope:target = {is_close_family_of = scope:target.court_owner}}
+		add = {
+				value = 20
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { diplomacy > 0 }
+					}
+					add = {
+						value = scope:owner.cp:councillor_spymaster.diplomacy
+						multiply = 0.5}
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { intrigue > 0 }
+					}
+					add = {
+						value = scope:owner.cp:councillor_spymaster.intrigue
+						multiply = 1}
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { 
+								OR = {
+									has_trait = deceitful
+									is_a_persuasive_person_trigger = yes
+									is_a_very_elusive_person_trigger = yes
+								}
+							}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						scope:owner.cp:councillor_spymaster = { OR = {has_trait = diplomat
+																		has_trait = schemer} }
+					}
+					add = 10
+				}
+				max = 75
+				
+			}
+		desc = SCHEME_HEARD_BAD_RUMOURS_ABOUT_TARGET
+	}
+	
+	############# WEAK HOOK WAS USED weight 20
+	modifier = {
+		exists = scope:hook
+		scope:hook = yes
+			NOR = {    
+			root = scope:owner.cp:councillor_spymaster
+			root = {is_consort_of = scope:target} 
+			root = {is_close_family_of = scope:target} 
+					}
+		add = 150
+		desc = SCHEME_WEAK_HOOK_USED
+	}
+	
+	######## VICTIM OF TARGET OR OWNER
+	
+	first_valid = {
+	
+	###### WANTS VENGEANCE FROM TARGET WEIGHT 15
+	modifier = {
+		add = {
+			value = 35
+			if = {
+				limit = {ai_vengefulness > medium_positive_ai_value}
+				add = {
+					value = ai_vengefulness
+					multiply = 1
+				}
+			}
+			min = 35
+		}
+			NOT = { this = scope:target }
+			wants_revenge_from_target_trigger = yes
+			is_or_was_victim_of_scheme_trigger =  no
+		desc = SCHEME_I_MUST_TAKE_VENGEANCE
+		}
+	#######WAS A VICTIM OF A PREVIOUS SPY SCHEME 
+	modifier = {
+		add = {
+			value = -35
+			if = {
+				limit = {ai_vengefulness > medium_positive_ai_value}
+				add = {
+					value = ai_vengefulness
+					multiply = -1
+				}
+			}
+			max = -35
+		}
+			NOT = { this = scope:target }
+			wants_revenge_from_target_trigger = no
+			is_or_was_victim_of_scheme_trigger =  yes 
+		desc = SCHEME_WILL_NOT_HELP
+		}
+	}
+	
+	# FEUD 
+	modifier = {
+		trigger = {
+			exists = house.house_head
+			exists = scope:target.house
+			house.house_head = {
+				any_owned_story = {
+					story_type = story_cycle_house_feud
+					exists = var:house_feud_house
+					var:house_feud_house = scope:target.house
+				}
+			}
+		}
+		add = {
+			value = 50
+		}
+		desc = SCHEME_TARGET_IS_FEUD_TARGET
+	}
+	
+	######################BONUSES#####################
+	
+	########### OWNER HAS SKULDUGGERY FOCUS 
+	modifier = {
+		scope:owner = {
+			has_focus = intrigue_skulduggery_focus
+		}
+		add = 10
+		desc = SCHEME_SKULDUGGERY_FOCUS
+	}
+	
+	## # BONUS FROM EVENTS - 
+	modifier = {
+		add = 20
+		faith = {
+			has_doctrine_parameter = adherents_more_likely_to_join_schemes
+		}
+		desc = SCHEME_IS_SACRED
+	}
+	
+	## # RESPECTED HOST - 
+	modifier = {
+		add = -50
+		scope:target = {
+			culture = { has_cultural_parameter = courtiers_and_guests_less_likely_to_join_schemes }
+		}
+		OR = {
+			is_courtier_of = scope:target
+			is_pool_guest_of = scope:target
+			is_foreign_court_guest_of = scope:target
+		}
+		desc = RESPECTED_HOST
+	}
+	
+	## # GRANDEUR 7 
+	modifier = {
+		add = 20
+		scope:owner = {
+			has_royal_court = yes
+			has_court_type = court_intrigue
+			court_grandeur_current_level >= 7
+		}
+		desc = INTRIGUE_COURT_AGENT_ACCEPTANCE_REASON
+	}
+
+	## # BONUS FROM EVENTS 
+	modifier = {
+		add = 20
+		scope:owner = {
+			has_character_modifier = event_bonus_to_agent_invite
+		}
+		desc = BONUS_TO_AGENT_RECRUITMENT
+	}
+
+	## # AMENITIES 
+	modifier = {
+		add = 5
+		is_pool_guest_of = scope:owner
+		scope:owner = {
+			has_royal_court = yes
+			court_owner = {
+				amenity_level = { type = court_lodging_standards value = medium_amenity_level }
+			}
+		}
+		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
+	}
+
+	modifier = {
+		add = 10
+		is_pool_guest_of = scope:owner
+		scope:owner = {
+			has_royal_court = yes
+			court_owner = {
+				amenity_level = { type = court_lodging_standards value = high_amenity_level }
+			}
+		}
+		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
+	}
+
+	modifier = {
+		add = 15
+		is_pool_guest_of = scope:owner
+		scope:owner = {
+			has_royal_court = yes
+			court_owner = {
+				amenity_level = { type = court_lodging_standards value = very_high_amenity_level }
+			}
+		}
+		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
+	}
+
+	modifier = {
+		add = 20
+		is_pool_guest_of = scope:owner
+		scope:owner = {
+			has_royal_court = yes
+			court_owner = {
+				amenity_level = { type = court_lodging_standards value = max_amenity_level }
+			}
+		}
+		desc = BONUS_TO_AGENT_RECRUITMENT_FROM_AMENITIES
+	}
+	
+	#########THESE MODIFIERS ARE ADDED TO BASE RELUCTANCE
+	#Characters who has the disloyal trait are predisposed to scheme
+	#modifier = {
+	#	add = 50
+	#	is_a_malicious_person_trigger = yes
+	#	desc = "HAS_DISLOYAL_TRAIT"
+	#}
+	#modifier = {
+	#	add = -100
+	#	is_a_benevolent_person_trigger = yes
+	#	desc = "HAS_LOYAL_TRAIT"
+	#}
+	# Cowardice
+	#modifier = {
+	#	trigger = {
+	#		ai_boldness < medium_negative_ai_value
+	#		scope:target = {exists = court_owner}
+	#		NOT = {scope:owner = scope:target.court_owner}
+	#	}
+	#	
+	#	add = {
+	#		value = ai_boldness
+	#		divide = 2
+	#	}
+	#	desc = SCHEME_I_AM_A_COWARD
+	#}
+	# General Compassion
+	#modifier = {
+	#	trigger = {
+	#		ai_compassion > 0
+	#		NOT = { this = scope:target }
+	#	}
+	#	add = {
+	#		value = ai_compassion
+	#		multiply = -1
+	#		divide = 10
+	#	}
+	#	desc = COMPASSIONATE_REASON
+	#}
+	#modifier = { # Characters with a sadistic streak are more likely to join
+	#	trigger = {
+	#		ai_compassion < high_negative_ai_value
+	#		NOT = { this = scope:target }
+	#	}
+	#	opinion = {
+	#			target = scope:target
+	#			value <= low_negative_opinion
+	#		}
+	#	add = {
+	#		value = ai_compassion
+	#		multiply = -1
+	#		divide = 5
+	#	}
+	#	desc = SCHEME_COULD_GO_FURTHER
+	#}
+}

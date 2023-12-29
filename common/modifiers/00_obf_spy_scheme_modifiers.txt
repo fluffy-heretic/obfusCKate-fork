@@ -1,0 +1,106 @@
+﻿### Spy scheme modifiers
+
+caught_spying_modifier = {
+	icon = intrigue_negative
+	hostile_scheme_power_add = -10
+}
+
+caught_someone_spying_modifier = {
+	icon = intrigue_positive
+	spy_character_scheme_resistance_add = 10
+}
+
+more_vigilant_modifier = {
+	icon = intrigue_negative
+	scheme_resistance = 10
+}
+
+agents_being_discovered_modifier = {
+	icon = intrigue_negative
+	scheme_resistance = 10
+	scheme_success_chance = -25
+}
+
+spymaster_willing_to_scheme_modifier = {
+	icon = intrigue_positive
+	scheme_power = 15
+}
+
+scheme_drunkard_spy_target_modifier = {
+	icon = intrigue_positive
+	scheme_power = 10
+}
+
+spymaster_doubled_efforts_modifier = {
+	icon = intrigue_negative
+	scheme_power = -10
+	scheme_success_chance = -15
+}
+
+scheme_refused_agent_help_modifier = {
+	icon = intrigue_negative
+	scheme_success_chance = -10
+	scheme_power = -10 
+}
+
+scheme_agent_stressing_target_modifier = {
+	icon = intrigue_negative
+	scheme_success_chance = -10
+	scheme_resistance = 10 
+}
+ 
+digging_for_dirt_perk_modifier = {
+	icon = intrigue_positive
+	scheme_power = 25
+}
+
+own_court_modifier = {
+	icon = intrigue_positive
+	scheme_power = 80
+}
+
+own_vassals_modifier = {
+	icon = intrigue_positive
+	scheme_power = 15
+}
+
+unlanded_target_modifier = {
+	icon = intrigue_positive
+	scheme_power = 25
+}
+
+same_realm_modifier = {
+	icon = intrigue_positive
+	scheme_power = 5
+}
+
+foreign_realm_modifier = {
+	icon = intrigue_negative
+	scheme_power = -5
+	scheme_success_chance = -10
+}
+
+a_little_help_to_spy_on_barons_modifier = {
+	icon = intrigue_positive
+	scheme_power = 45
+}
+
+spy_on_kings_or_above_modifier = {
+	icon = intrigue_positive
+	scheme_resistance = 10
+}
+
+spy_on_dukes_modifier = {
+	icon = intrigue_positive
+	scheme_resistance = 7.5
+}
+
+spy_on_counts_modifier = {
+	icon = intrigue_positive
+	scheme_resistance = 5
+}
+
+spy_on_independents_modifier = {
+	icon = intrigue_positive
+	scheme_resistance = 5
+}

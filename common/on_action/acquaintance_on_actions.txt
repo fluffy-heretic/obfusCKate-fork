@@ -1,0 +1,1816 @@
+﻿###Game Start
+#On action triggered on game start to add flags to already related persons so they are not forgotten when divorcing, leaving court and etc
+on_game_start_after_lobby = {
+		on_actions ={
+				flag_characters_on_game_start
+		}
+}
+
+flag_characters_on_game_start = {
+		
+		effect = {
+		every_player = {
+		every_close_or_extended_family_member = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_consort = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_child = {
+			every_spouse = {
+				add_to_temporary_list = natural_acquaintances
+			}
+		}
+		every_relation = {
+		type = ward
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = guardian
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = nemesis
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soulmate
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = crush
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = bully
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soldier_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = victim
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_rival
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = best_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		}
+		liege = {
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		}
+		
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = prev}}
+			list = natural_acquaintances
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+		house = {
+			every_house_member = {
+				add_to_temporary_list = house_and_memories_acquaintances
+			}
+		}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = prev}}
+			list = house_and_memories_acquaintances
+			character_barely_known_effect = yes
+			}
+			
+		every_patroned_holy_order = {
+			leader = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_consort = {
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_child = {
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}	
+		every_relation = {
+		type = friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = best_friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = lover
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = soulmate
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = prev}}
+			list = basic_acquaintances
+			character_met_effect = yes
+			}
+		if = {
+			limit = {is_councillor = yes}
+		liege = {
+		every_consort = {
+				add_to_temporary_list = position_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = position_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = position_acquaintances
+		}
+
+		}
+	
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = prev}}
+			list = position_acquaintances
+			character_met_effect = yes
+					}
+			
+			}
+		if = {
+			limit = {exists = liege
+					is_diarch_of_target = liege}
+		liege = {
+		every_consort = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = regency_acquaintances
+		}
+
+		}
+	
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = prev}}
+			list = regency_acquaintances
+			character_deception_effect = yes
+			character_known_effect = yes
+				}	
+			}
+		}	
+	}
+}
+
+###BIRTHDAY - FLAG CHARACTERS #TESTED AN WORKING
+#On action triggered every birthday on player character to add flags to already related persons so they are not forgotten when divorcing, leaving court and etc
+on_birthday = {
+		on_actions ={
+				make_acquaintances_from_knowledge
+				make_acquaintances_from_position_knowledge
+				make_acquaintances_from_regency_knowledge
+		}
+}
+
+make_acquaintances_from_knowledge = {#TESTED AN WORKING
+	trigger = {
+			is_ai = no
+			is_alive = yes
+			}
+		effect = {
+		every_close_or_extended_family_member = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_consort = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_child = {
+			every_spouse = {
+				add_to_temporary_list = natural_acquaintances
+			}
+		}
+		every_relation = {
+		type = ward
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = guardian
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = nemesis
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soulmate
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = crush
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = bully
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soldier_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = victim
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_rival
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = best_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		}
+		liege = {
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		}
+		
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = natural_acquaintances
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+		house = {
+			every_house_member = {
+				add_to_temporary_list = house_and_memories_acquaintances
+			}
+		}
+		root = {every_memory = {
+		limit = {NOT = {has_memory_category = notes}}
+		every_memory_participant = {
+				add_to_temporary_list = house_and_memories_acquaintances
+
+		}}}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = house_and_memories_acquaintances
+			character_barely_known_effect = yes
+			}
+			
+		every_patroned_holy_order = {
+			leader = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_consort = {
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_child = {
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}	
+		every_relation = {
+		type = friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = best_friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = lover
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = soulmate
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = basic_acquaintances
+			character_met_effect = yes
+			}
+			
+		}
+	}
+	
+make_acquaintances_from_position_knowledge = {#TESTED AN WORKING
+	trigger = {
+			is_ai = no
+			is_alive = yes
+			is_councillor = yes
+			}
+		effect = {
+		liege = {
+		every_consort = {
+				add_to_temporary_list = position_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = position_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = position_acquaintances
+		}
+
+		}
+	
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = position_acquaintances
+			character_met_effect = yes
+			}
+			
+		}
+	}
+	
+make_acquaintances_from_regency_knowledge = {#TESTED AN WORKING
+	trigger = {
+			is_ai = no
+			is_alive = yes
+			AND = {
+					exists = liege
+					is_diarch_of_target = liege
+				}
+			}
+		effect = {
+		liege = {
+		every_consort = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = regency_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = regency_acquaintances
+		}
+
+		}
+	
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = regency_acquaintances
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+			
+		}
+	}
+#trigger flags when becoming regent #TESTED AN WORKING
+on_entered_diarchy = {
+		on_actions ={
+				make_acquaintances_from_entering_regency
+		}
+
+}
+
+make_acquaintances_from_entering_regency = {#TESTED AN WORKING
+	trigger = {
+		root = {
+		diarch = {
+			is_ai = no
+			is_alive = yes
+			}
+		}
+	}
+		effect = {
+		root = {
+		every_consort = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = entered_regency_acquaintances
+		}
+
+		}
+	
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = root}}
+			list = entered_regency_acquaintances
+			add_character_flag = {
+				flag = partially_spied
+				years = 4
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 1
+					}
+			}
+			
+		}
+	}
+
+####DEATH - CHARACTER DIES AND MUST RENEW FLAGS#TESTED AN WORKING
+#Character dies so heir only retains basic info about characters the previous heir met
+on_death = {
+		on_actions ={
+				remove_flags
+				new_flags
+		}
+
+}
+
+new_flags = { #add flags to new heir relations
+	trigger = {
+	is_ai = no
+	}
+		events = {
+		acquaintance.9002
+		}
+	}
+
+remove_flags = { #remove flags from previous ruler relations
+	trigger = { 
+		is_ai = no 
+		}
+	effect = {
+	every_living_character = {
+	limit = {
+	NOR = {has_character_flag = partially_spied_3
+	has_character_flag = partially_spied_2}
+	has_character_flag = partially_spied}
+	remove_character_flag = partially_spied
+	}
+	every_living_character = {
+	limit = {
+	NOT = {has_character_flag = partially_spied_3}
+	has_character_flag = partially_spied_2}
+	remove_character_flag = partially_spied_2
+	remove_character_flag = partially_spied
+	}
+	every_living_character = {
+	limit = {
+	OR = {has_character_flag = has_deceived
+	has_character_flag = humble_character
+	has_character_flag = illusory_diplomat
+	has_character_flag = illusory_administrator
+	has_character_flag = illusory_intriguer
+	has_character_flag = illusory_scholar
+	has_character_flag = illusory_warrior
+	has_character_flag = partially_spied_3}}
+	
+	add_to_temporary_list = flags_to_remove_but_mantain_basic
+	}
+	every_in_list = {
+	list = flags_to_remove_but_mantain_basic
+	remove_character_flag = has_deceived
+	remove_character_flag = humble_character
+	remove_character_flag = illusory_diplomat
+	remove_character_flag = illusory_administrator
+	remove_character_flag = illusory_intriguer
+	remove_character_flag = illusory_scholar
+	remove_character_flag = illusory_warrior
+	remove_character_flag = partially_spied_3
+	remove_character_flag = partially_spied_2
+	remove_character_flag = partially_spied
+	character_met_effect = yes
+		}
+	}
+}
+
+###RUMOURS
+quarterly_playable_pulse = {
+		on_actions ={
+				heard_rumours_on_action
+				
+		}
+}
+
+heard_rumours_on_action = { ###For common rumours
+	trigger = {
+	is_ai = no
+	is_alive = yes
+	}
+	random_events = { 
+	chance_to_happen = 100
+	35 = acquaintance.9003
+	100 = 0
+		}
+}
+
+####Discover a deceiving councillor
+random_yearly_playable_pulse  = {
+		on_actions ={
+				discover_liar
+				
+		}
+}
+
+discover_liar = {
+	trigger = {
+	is_ai = no
+	is_alive = yes
+	}
+	random_events = {
+	chance_to_happen = 100
+	30 = obf_interaction.0014
+	100 = 0
+	}
+}
+
+
+
+##NEW RELATIONS - ADD FLAGS
+### Add Flags when relations are set
+on_set_relation_lover = {
+		on_actions ={
+				make_acquaintances_from_relation
+				make_acquaintances_from_relations_of_relation
+		}
+}
+
+on_set_relation_soulmate = {
+		on_actions ={
+				make_acquaintances_from_relation
+				make_acquaintances_from_relations_of_relation
+		}
+}
+on_set_relation_friend = {
+		on_actions ={
+				make_acquaintances_from_relation
+				make_acquaintances_from_relations_of_relation
+		}
+}
+on_set_relation_best_friend = {
+		on_actions ={
+				make_acquaintances_from_relation
+				make_acquaintances_from_relations_of_relation
+		}
+}
+on_set_relation_rival = {
+		on_actions ={
+				make_acquaintances_from_relation
+		}
+}
+on_set_relation_nemesis = {
+		on_actions ={
+				make_acquaintances_from_relation
+		}
+}
+on_set_relation_guardian = {
+		on_actions ={
+				make_acquaintances_from_relation
+				make_acquaintances_for_liege_of_ward
+		}
+}    
+
+make_acquaintances_from_relation = {
+	trigger = {
+			Or = {
+			scope:target = {is_ai = no
+			is_alive = yes}
+			root = {is_ai = no
+					is_alive = yes}}
+			}
+	effect = {
+	if = {
+	limit = {root = {
+			is_alive = yes
+				is_ai = yes}}
+	root = {save_scope_as = character_to_flag}
+	}
+	if = {
+	limit = {scope:target = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:target = {save_scope_as = character_to_flag}
+	}
+	scope:character_to_flag = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			} 
+		}
+	}
+
+make_acquaintances_from_relations_of_relation = {
+	trigger = {
+			Or = {
+			scope:target = {is_ai = no
+			is_alive = yes}
+			root = {is_ai = no
+					is_alive = yes}}
+			}
+	effect = {
+	if = {
+	limit = {root = {
+			is_alive = yes
+				is_ai = yes}}
+	root = {
+				every_close_family_member = {
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = best_friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = rival
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = nemesis
+				character_met_effect = yes
+				}
+				every_consort = {
+				character_met_effect = yes
+				}}
+	}
+	if = {
+	limit = {scope:target = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:target = {
+				every_close_family_member = {
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = best_friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = rival
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = nemesis
+				character_met_effect = yes
+				}
+				every_consort = {
+				character_met_effect = yes
+				}
+			}
+		}
+	}
+}
+	
+make_acquaintances_for_liege_of_ward = {
+	trigger = {
+			root = {exists = liege}
+			Or = {
+			scope:target = {is_ai = no
+			is_alive = yes}
+			root.liege = {is_ai = no
+					is_alive = yes}}
+			}
+	effect = {
+	if = {
+	limit = {root.liege = {
+			is_alive = yes
+				is_ai = yes}}
+	root.liege = {save_scope_as = character_to_flag}
+	}
+	if = {
+	limit = {scope:target = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:target = {save_scope_as = character_to_flag}
+	}
+	scope:character_to_flag = {
+			character_barely_known_effect = yes
+			} 
+		}
+	}
+	
+###ADD FLAG TO ALLY	
+on_alliance_added = {
+		on_actions ={
+				make_acquaintances_from_alliance
+		}
+}
+
+make_acquaintances_from_alliance = {
+	trigger = {
+			Or = {
+			scope:first = {is_ai = no}
+			scope:second = {is_ai = no}}
+			}
+	effect = {
+	if = {
+	limit = {scope:first = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:first = {save_scope_as = character_to_flag}
+	}
+	if = {
+	limit = {scope:second = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:second = {save_scope_as = character_to_flag}
+	}
+	scope:character_to_flag = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			} 
+		}
+	}
+	
+### ADD FLAGS TO SPOUSE
+on_marriage = {
+		on_actions ={
+				make_acquaintances_from_marriage
+				make_acquaintances_from_relations_of_spouse
+		}
+}
+
+make_acquaintances_from_marriage = {
+	trigger = { 
+		Or = {
+			root = {is_ai = no}
+			scope:spouse = {is_ai = no}}}
+	effect = {
+	root = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+	scope:spouse = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			} 			
+		}
+	}
+	
+make_acquaintances_from_relations_of_spouse = {
+	trigger = { 
+		Or = {
+			root = {is_ai = no}
+			scope:spouse = {is_ai = no}}}
+	effect = {
+	if = {
+	limit = {root = {
+			is_alive = yes
+				is_ai = yes}}
+	root = {
+				every_close_family_member = {
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = best_friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = rival
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = nemesis
+				character_met_effect = yes
+				}
+				every_consort = {
+				character_met_effect = yes
+				}}
+	}
+	if = {
+	limit = {scope:spouse = {
+			is_alive = yes
+				is_ai = yes}}
+	scope:spouse = {
+				every_close_family_member = {
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = best_friend
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = rival
+				character_met_effect = yes
+				}
+				every_relation = {
+				type = nemesis
+				character_met_effect = yes
+				}
+				every_consort = {
+				character_met_effect = yes
+				}
+			}
+		}
+	}
+}
+	
+### ADD FLAGS TO CONCUBINE
+on_concubinage = {
+		on_actions ={
+				make_acquaintances_from_concubinage
+		}
+}
+
+make_acquaintances_from_concubinage = {
+	trigger = { 
+		Or = {
+			root = {is_ai = no}
+			scope:concubine = {is_ai = no}}}
+	effect = {
+	root = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+	scope:concubine = {
+			character_deception_effect = yes
+			character_known_effect = yes
+			} 			
+		}
+	}
+
+#ADD FLAG TO PRISONER
+on_imprison = {
+		on_actions ={
+				make_acquaintances_from_prisoners
+		}
+}
+
+make_acquaintances_from_prisoners = {
+	trigger = { 
+		Or = {
+			root = {is_ai = no}
+			scope:imprisoner = {is_ai = no}}}
+	effect = {
+	root = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 1
+					}
+			}
+	scope:imprisoner = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 1
+					}
+			} 			
+		}
+	}
+#ADD FLAG TO HOSTAGE
+on_hostage_taken = {
+		on_actions ={
+				make_acquaintances_from_hostages
+		}
+}
+
+make_acquaintances_from_hostages = {
+	trigger = { 
+		Or = {
+			root = {is_ai = no}
+			scope:warden = {is_ai = no}}}
+	effect = {
+	root = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 1
+					}
+			}
+	scope:warden = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 1
+					}
+			} 			
+		}
+	}
+	
+###SWAY
+#Flags characters through sway
+sway_ongoing = {
+		on_actions ={
+				new_acquaintance_sway_ongoing 
+		}
+}
+sway_success = {
+		on_actions ={
+				new_acquaintance_sway 
+		}
+}
+sway_failure = {
+
+	on_actions = { 
+				new_acquaintance_sway 
+		}
+}
+
+new_acquaintance_sway = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+		events = {
+		acquaintance.1003
+		delay = {days = 5}
+		acquaintance.1001
+
+		}
+	}
+new_acquaintance_sway_ongoing  = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+		events = {
+		acquaintance.1003
+		acquaintance.1002
+
+}
+	}
+
+#####BEFRIEND acquaintances
+
+befriend_ongoing = {
+
+ on_actions ={
+ 	new_acquaintance_befriend
+		}
+}
+
+befriend_dislike_ongoing = {
+
+ on_actions ={
+	new_acquaintance_befriend_dislike
+		}
+}
+
+new_acquaintance_befriend = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}	
+
+events = {
+delay = {days = 2}
+acquaintance.2001
+
+	}
+}
+new_acquaintance_befriend_dislike = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}	
+
+events = {
+delay = {days = 2}
+acquaintance.2001
+	}
+}
+
+befriend_critical_success = {
+	on_actions ={
+	new_acquaintance_befriend_outcome
+		}
+}
+befriend_success = {
+	on_actions ={
+	new_acquaintance_befriend_outcome
+		}
+}
+befriend_failure = {
+	on_actions ={
+	new_acquaintance_befriend_outcome
+		}
+}
+befriend_critical_failure = {
+	on_actions ={
+	new_acquaintance_befriend_outcome
+		}
+}
+new_acquaintance_befriend_outcome = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+	events = {
+	acquaintance.2002
+	}
+}
+
+
+#####SEDUCTION acquaintances
+###Included on scheme
+#seduce_ongoing_milestone_1 = {
+#	on_actions ={
+#	new_acquaintance_seduction
+#		}
+#}
+#
+#seduce_ongoing_milestone_2 = {
+#	on_actions ={
+#	new_acquaintance_seduction
+#		}
+#}
+#
+#new_acquaintance_seduction = {
+#trigger = {
+#OR = {scope:owner = {is_ai = no
+#				is_alive = yes}
+#scope:target = {is_ai = no
+#				is_alive = yes}							
+#}
+#scope:target = {NOT = {has_relation_to = scope:owner} }}	
+#	events = {
+#	acquaintance.2003
+#	}
+#}
+
+seduce_success = {
+	on_actions ={
+	delay = {days = 1}
+	new_acquaintance_seduction_outcome
+		}
+}
+seduce_generic_success = {
+	on_actions ={
+	delay = {days = 1}
+	new_acquaintance_seduction_outcome
+		}
+}
+seduce_failure = {
+	on_actions ={
+	delay = {days = 1}
+	new_acquaintance_seduction_outcome 
+		}
+}
+new_acquaintance_seduction_outcome = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+	events = {
+	acquaintance.2004
+	}
+}
+
+#####ROMANCE
+#
+court_ongoing = {
+
+ on_actions ={
+ 	new_acquaintance_courting
+		}
+}
+
+new_acquaintance_courting = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}	
+
+events = {
+acquaintance.2005
+
+	}
+}
+
+court_outcome = {
+ on_actions ={
+ 	new_acquaintance_courting_outcome
+		}
+}
+
+new_acquaintance_courting_outcome = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+	events = {
+	acquaintance.2002
+	}
+}
+
+###CONVERT TO WITCH
+convert_to_witchcraft_failure_outcome = {
+	on_actions ={
+ 	new_acquaintance_witch_outcome
+		}
+}
+
+new_acquaintance_witch_outcome = {
+trigger = {
+OR = {scope:owner = {is_ai = no
+				is_alive = yes}
+scope:target = {is_ai = no
+				is_alive = yes}							
+}
+scope:target = {NOT = {has_relation_to = scope:owner} }}
+	events = {
+	acquaintance.2002
+	}
+}
+
+
+####ACTIVITIES	
+#####Feast acquaintances
+
+hunt_random_pulse = {
+	on_actions ={
+	new_acquaintance_activity_participants
+		}
+}
+
+playdate_event_selection = {
+	on_actions ={
+	new_acquaintance_activity_participants
+		}
+}
+
+new_acquaintance_activity_participants = {
+	trigger = {
+	
+	is_ai = no
+	is_alive = yes
+	}
+		events = {
+		acquaintance.3000
+		}
+}
+
+feast_main_event_selection = {
+	on_actions ={
+	new_acquaintance_activity_participants
+	new_acquaintance_feast_host
+	delay = {days = 2}
+	new_acquaintance_feast
+		}
+}
+
+feast_default_host_event_selection = {
+	on_actions ={
+	new_acquaintance_activity_participants
+	new_acquaintance_feast_host
+	delay = {days = 2}
+	new_acquaintance_feast
+		}
+}
+feast_default_event_selection = {
+	on_actions ={
+	new_acquaintance_activity_participants
+	new_acquaintance_feast_host
+	delay = {days = 2}
+	new_acquaintance_feast
+		}
+}
+
+new_acquaintance_feast_host = {
+	trigger = {
+	is_ai = no
+	is_alive = yes
+	}
+		events = {
+		acquaintance.3001
+		acquaintance.3002
+		}
+}
+
+
+new_acquaintance_feast = {
+	trigger = {
+	
+	is_ai = no
+	is_alive = yes
+	}
+		events = {
+		acquaintance.3003
+		}
+}
+
+#wedding
+wedding_ceremony_ongoing_event_pulse = {
+	on_actions ={
+	delay = {days = 2}
+	new_acquaintance_wedding
+		}
+}
+
+wedding_banquet_ongoing_event_pulse = {
+	on_actions ={
+	delay = {days = 2}
+	new_acquaintance_wedding
+		}
+}
+
+new_acquaintance_wedding = {
+	trigger = {
+	
+	is_ai = no
+	is_alive = yes
+	}
+		events = {
+		acquaintance.3004
+		}
+}
+
+
+####GUESTS ARRIVE AT COURT
+on_guest_arrived_from_pool = {
+	on_actions ={
+ 	ask_info_guest_notification
+	make_acquaintances_from_guests
+		}
+}
+make_acquaintances_from_guests = {
+	trigger = {
+			scope:host = {is_ai = no
+				is_alive = yes}
+			}
+	effect = {
+	scope:guest = {
+			character_deception_effect = yes
+			add_character_flag = {
+				flag = partially_spied
+				years = 4
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 2
+					}
+			} 
+		}
+	}
+
+ask_info_guest_notification = {
+trigger = {
+scope:host = {is_ai = no
+				is_alive = yes
+				is_adult = yes}
+scope:guest = {exists = var:last_visited_ruler
+			NOT = {var:last_visited_ruler = scope:host}
+			is_adult = yes
+			is_capable_of_being_asked_info_trigger = yes
+			NOT = {has_character_flag = was_asked_information}
+			scope:guest.var:last_visited_ruler = {is_ruler = yes
+													is_alive = yes}}							
+}
+effect = {	
+	scope:guest = {
+	add_character_flag = {
+				flag = can_ask_information
+				months = 6}
+		}
+	}
+	events = {
+		obf_interaction.0012
+	}
+}
+
+####NEW JOIN COURTIER
+on_join_court = {
+	on_actions = {
+	make_acquaintances_from_new_courtiers
+	ask_info_courtier_notification
+		}
+}
+
+make_acquaintances_from_new_courtiers = {
+	trigger = {
+			scope:new_employer = {is_ai = no}
+			root = {is_alive = yes}
+			}
+	effect = {
+	root = {
+			character_deception_effect = yes
+			add_character_flag = {
+				flag = partially_spied
+				years = 4
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 3
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 2
+					}
+			} 
+		}
+	}
+	
+ask_info_courtier_notification = {
+trigger = {
+scope:new_employer = {is_ai = no
+				is_alive = yes
+				is_adult = yes}
+root = {exists = scope:old_employer
+			NOT = {scope:old_employer = scope:new_employer}
+			is_adult = yes
+			is_capable_of_being_asked_info_trigger = yes
+			NOT = {is_close_or_extended_family_of = scope:new_employer}
+			NOT = {is_consort_of = scope:new_employer}
+			NOT = {has_character_flag = was_asked_information}
+			scope:old_employer = {is_ruler = yes
+									is_alive = yes}}							
+}
+effect = {	
+	root = {
+	add_character_flag = {
+				flag = can_ask_information
+				months = 6}
+	set_variable = {
+				name = last_visited_ruler
+				value = scope:old_employer
+				months = 7
+			}
+		}
+	}
+	events = {
+		obf_interaction.0013
+	}
+}

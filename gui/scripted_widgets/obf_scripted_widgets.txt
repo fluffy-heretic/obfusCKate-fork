@@ -1,0 +1,2 @@
+﻿gui/000_obf_known_character_finder.gui = obf_known_character_finder_window
+gui/000_obf_known_character_button.gui = obf_known_character_button_large

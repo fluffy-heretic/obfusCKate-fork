@@ -1,0 +1,2 @@
+file: 000_obf_knightsview_l_english
+PROWESS_VALUES_ACCLAIMED_KNIGHT

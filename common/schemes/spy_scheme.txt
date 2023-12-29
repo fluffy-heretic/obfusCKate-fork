@@ -1,0 +1,702 @@
+﻿spy_character = {
+	
+	skill = intrigue
+	desc = spy_character_desc_general
+	hostile = yes
+	icon = debug_secret
+	
+	allow = {  
+		is_ai = no
+		age >= 14    
+		is_imprisoned = no       
+		custom_tooltip = {    
+		text = "recently_spied"         
+		scope:target = {   
+			NOT = { has_character_flag = has_been_spied	}
+			}
+		}
+		
+		trigger_if = {
+			limit = {scope:target = {
+			is_ruler = no
+			is_pool_guest = no 
+			is_pool_character = no}}
+		custom_tooltip = {    
+		text = "too_risky_at_the_moment"         
+		scope:target = {
+		is_ruler = no
+		is_pool_guest = no
+			exists = court_owner
+			court_owner = {NOT = {has_character_modifier = caught_someone_spying_modifier}}
+			}
+		}
+	}
+		
+		trigger_if = {
+			limit = {scope:target = {
+			is_ruler = no
+			is_pool_guest = yes
+			is_pool_character = no}}
+		custom_tooltip = {    
+		text = "too_risky_at_the_moment_guests"         
+		scope:target = {
+			exists = court_owner
+			court_owner = {NOT = {has_character_modifier = caught_someone_spying_modifier}}
+			}
+		}
+	}	
+		trigger_if = {
+			limit = {scope:target = {
+			highest_held_title_tier = tier_barony}}
+		custom_tooltip = {    
+		text = "too_risky_at_the_moment_barons"         
+		scope:target = {
+		
+			exists = liege
+			liege = {NOT = {has_character_modifier = caught_someone_spying_modifier}}
+			}
+		}
+	}	
+		trigger_if = {
+			limit = {scope:target = {
+			highest_held_title_tier > tier_barony}}
+		custom_tooltip = {    
+		text = "too_risky_at_the_moment_the_liege"         
+		scope:target = { 
+		NOT = {has_character_modifier = caught_someone_spying_modifier}
+			}
+		}
+	}		
+		trigger_if = {
+		limit = {scope:target = {is_imprisoned = no}}
+		custom_tooltip = {    
+		text = "not_in_any_court"         
+		scope:target = {   
+			is_pool_character = no
+				}
+			}
+		}
+	
+		scope:target = { in_diplomatic_range = scope:owner }
+		
+		custom_tooltip = { 
+		text = "you_are_already_spying" 
+
+		scope:target = {
+				NOT = {
+					any_targeting_scheme = {
+					scheme_type = spy_character}
+				}
+			}
+		}
+			
+		}
+	 
+	valid = { 
+		
+		trigger_if = {
+		limit = {scope:target = {is_imprisoned = no}}
+		custom_tooltip = {    
+		text = "not_in_any_court"         
+		scope:target = {   
+			is_pool_character = no
+				}
+			}
+		}
+		
+		scope:target = { in_diplomatic_range = scope:owner }
+		custom_tooltip = { 
+			text = they_are_imprisoned
+			scope:target = {
+				is_imprisoned = no
+			}  
+		}
+		custom_tooltip = {
+			text = they_are_imprisoned_can_torture
+			scope:target = {
+				NOT = {imprisoner = scope:owner}
+			}
+		} 
+		custom_description = {  
+			object = scope:target
+			text = i_have_been_caught_trying_to_murder_target
+			scope:target = {
+				NOT = {
+					has_opinion_modifier = {
+						target = prev
+						modifier = murder_personal_grudge_opinion
+					} 
+				}
+			}  
+		}  
+		 
+		# Special AI exceptions 
+		 
+			   
+	}  
+ 
+	valid_agent = {  
+		age >= 14    
+		agent_can_be_recruited_trigger = yes
+		     
+	}        
+	       
+	agent_join_chance = {      
+		base = 0    
+       
+		#SCHEME EXPOSED   
+		modifier = {  
+		add = -150
+		ai_boldness <= medium_positive_ai_value 
+		scope:owner = {
+			any_scheme = {   
+					is_hostile = yes 
+					is_scheme_exposed = yes}} 
+		desc = SCHEME_IS_ALREADY_EXPOSED 
+		}
+		
+		modifier = {
+		add = -200
+		ai_boldness <= high_positive_ai_value
+			scope:owner = {
+			any_scheme = {    
+					is_hostile = yes
+					OR = {has_scheme_modifier = agents_being_discovered_modifier
+					scheme_number_of_exposed_agents > 0}}}
+		desc = SCHEME_AGENTS_BEING_EXPOSED
+		}
+		 
+		modifier = {  
+		add = -250
+		ai_boldness <= very_high_positive_ai_value        
+			scope:owner = { 
+			any_scheme = { 
+					is_hostile = yes 
+					has_variable = you_have_been_exposed}}
+		desc = SCHEME_YOU_WERE_EXPOSED
+		}
+		      
+   
+		#Is Owner sending a gift in the invite interaction?
+		modifier = {    
+			add = spy_bribe_acceptance_value 
+			exists = scope:gift    
+			always = scope:gift  
+			NOT = {
+				AND = {    
+						opinion = {  
+							target = scope:target
+							value >= medium_negative_opinion
+						}
+					OR = {     
+					AND = {root = {agent_willing_to_help_without_spymaster_trigger = no}
+			 				owner_spymaster_is_available_for_this_trigger = no}
+					root = scope:owner.cp:councillor_spymaster
+					root = {this = scope:target}
+					root = {this = scope:target.liege}
+					root = {this = scope:target.court_owner} 
+					root = {is_consort_of = scope:target} 
+					root = {is_heir_of = scope:target}
+					root = {is_close_family_of = scope:target} 
+					root = {has_relation_soulmate = scope:target}
+					root = {has_relation_best_friend = scope:target}
+					root = {has_secret_relation_soulmate = scope:target}
+					root = {has_relation_nemesis = scope:owner}
+					root = {highest_held_title_tier >= tier_kingdom}
+					}
+				} 
+			}
+			desc = "SCHEME_WITH_GIFT"
+		}
+ 
+		#Default Hostile Scheme modifiers
+		hostile_spy_agent_base_join_chance_modifier = yes 
+
+
+		#Family Feud
+		house_feud_hostile_scheme_agent_modifier = yes
+	}
+	
+	base_success_chance = {
+		base = 0 
+		
+	modifier = {
+		add = -50
+		always = scope:exposed
+		desc = "SCHEME_IS_EXPOSED" 
+	}
+	modifier = {
+		add = -25
+			scope:owner = {
+			any_scheme = {
+					is_hostile = yes
+					NOT = {has_scheme_modifier = agents_being_discovered_modifier}
+					scheme_number_of_exposed_agents > 0}}
+		desc = "SCHEME_AGENTS_WERE_DISCOVERED"
+	}
+		   
+		spy_scheme_owner_base_chance_modifier = yes
+		
+		spy_scheme_owner_traits_chance_modifier = yes 
+		
+		spy_scheme_owner_education_and_lifestyle_chance_modifier = yes
+		
+		spy_scheme_owner_others_chance_modifier = yes
+		
+		spy_scheme_target_base_chance_modifier = yes
+		
+		# Spiritual Head of Faith
+		modifier = {
+			add = -50
+			desc = "SCHEME_VS_SPIRITUAL_HOF"
+			scope:target = {
+				faith = scope:owner.faith
+				faith = {
+					has_doctrine = doctrine_spiritual_head
+				}
+				faith = {
+					exists = religious_head
+					religious_head = {
+			 			this = scope:target
+			 		}
+				}
+			}
+		}
+
+		# Sponsored Inspiration
+		modifier = {
+			add = -25
+			desc = target_has_sponsored_inspiration
+			scope:target = {
+				exists = inspiration
+				inspiration = { exists = inspiration_sponsor }
+			}
+		}
+
+		# Family Feud
+		house_feud_hostile_scheme_success_modifier = yes
+		
+		# At War
+		first_valid = {
+			modifier = {
+				add = -30
+				desc = "SCHEME_AT_WAR"
+				scope:target = {
+					is_at_war_with = scope:owner
+				}
+			}
+			modifier = {
+				add = -15
+				scope:target = {
+					is_landed = no
+					exists = liege
+					liege = {
+						is_at_war_with = scope:owner
+					}
+				} 
+				desc = "SCHEME_AT_WAR_WITH_LIEGE" 
+			} 
+			modifier = {
+				add = -15
+				scope:target = {
+					is_landed = yes
+					exists = liege
+					liege = {
+						is_at_war_with = scope:owner
+					}
+				}
+				desc = "SCHEME_AT_WAR_WITH_LIEGE"
+			}
+		} 
+	} 
+	  
+	agent_success_chance = {   
+		base = 0
+		
+		modifier = {  
+			add = agent_overall_success_chance
+			desc = OBF_overall_success_chance
+		} 
+		 
+		########################################
+		###hostile_spy_agent_success_chance_modifier = no #NOT USED SINCE VALUE IS ALREADY ADDED 
+		########################################
+	}
+	 
+	agent_leave_threshold = -50
+	
+	cooldown = { years = 3 }	
+	is_secret = no 
+	base_secrecy = 15  
+	   
+	on_start = {
+		 
+		if = { 
+			limit = {scope:owner = { has_perk = digging_for_dirt_perk}}
+			add_scheme_modifier = {
+					type = digging_for_dirt_perk_modifier
+					} 
+		}
+
+		if = {   
+			limit = {scope:target = {highest_held_title_tier >= tier_kingdom}}
+			add_scheme_modifier = {
+					type = spy_on_kings_or_above_modifier
+					} 
+		} 
+		else_if = {    
+			limit = {scope:target = {highest_held_title_tier = tier_duchy}}
+			add_scheme_modifier = {
+					type = spy_on_dukes_modifier
+					} 
+		} 
+		else_if = { 
+			limit = {scope:target = {highest_held_title_tier = tier_county}}
+			add_scheme_modifier = { 
+					type = spy_on_counts_modifier
+					} 
+		}
+		else = {   
+			limit = {scope:target = {highest_held_title_tier = tier_barony}}
+			add_scheme_modifier = {
+					type = a_little_help_to_spy_on_barons_modifier
+					}
+		}
+		if = {  
+			limit = { 
+			scope:target = {
+			is_landed = no
+			related_to_liege_trigger = yes}
+			NOT = {scope:owner = scope:target.court_owner}
+			scope:target.court_owner = {highest_held_title_tier >= tier_kingdom}}
+			add_scheme_modifier = { 
+					type = spy_on_dukes_modifier
+					} 
+		} 
+		else_if = { 
+			limit = {
+			scope:target = {
+			is_landed = no
+			related_to_liege_trigger = yes}
+			NOT = {scope:owner = scope:target.court_owner}
+			scope:target.court_owner = {highest_held_title_tier = tier_duchy}}
+			add_scheme_modifier = {
+					type = spy_on_counts_modifier
+					} 
+		} 
+		else_if = { 
+			limit = {
+			scope:target = {
+			is_landed = no
+			related_to_liege_trigger = no}
+			NOT = {scope:owner = scope:target.court_owner}}
+			add_scheme_modifier = {
+					type = unlanded_target_modifier
+					} 
+		} 
+		 
+		if = {
+			limit = {scope:target.court_owner = scope:owner}
+			add_scheme_modifier = {
+					type = own_court_modifier
+					}
+		}   
+		else_if = { 
+			limit = {OR = {scope:target.court_owner = {is_vassal_or_below_of = scope:owner}
+						scope:target.liege = {is_vassal_or_below_of = scope:owner}}}
+			add_scheme_modifier = {
+					type = own_vassals_modifier
+					}
+		} 
+		else_if = {
+			limit = {OR = {scope:target.court_owner.top_liege = scope:owner.top_liege
+							scope:target.liege.top_liege = scope:owner.top_liege}}
+			add_scheme_modifier = {
+					type = same_realm_modifier
+					}
+		}  
+		else_if = { 
+			limit = {
+			NOT = {scope:target.liege.top_liege = scope:owner.top_liege}
+			NOT = {scope:target.court_owner.top_liege = scope:owner.top_liege}}
+			add_scheme_modifier = {
+					type = foreign_realm_modifier
+					}
+		}
+	
+	}
+	
+	on_ready = { 
+		# Do the Success Roll  
+		random = {  
+			chance = scheme_success_chance 
+			save_scope_value_as = {
+				name = scheme_succeeded
+				value = yes  
+			} 
+		}   
+ 
+		# On Success: Check for viable Secret 
+		if = {
+			limit = { exists = scope:scheme_succeeded }
+			scope:target = {
+					# Check for secrets that can be revealed
+					if = {
+						limit = {
+							any_secret = { 
+								NOT = { is_known_by = scope:owner }
+							}
+						}
+						random_secret = {
+							limit = {
+								NOT = { is_known_by = scope:owner }
+							}
+							weight = {
+								base = 1
+								modifier = { # It's more fun to Discover a Criminal Secret
+									add = 5
+									is_criminal_for = scope:target
+								} 
+							}     
+							save_scope_as = secret_to_reveal
+						}
+					}
+			}
+
+			if = { 
+				limit = { 
+				NOT = {exists = scope:discovery_event_happening}
+				exists = scope:secret_to_reveal }
+				random = {
+					chance = spy_scheme_secrets_discovery_chance
+					
+					save_temporary_scope_value_as = {
+					name = discover_a_secret
+					value = yes  
+					}
+				}
+				if = {
+					limit = { exists = scope:discover_a_secret
+					owner_spymaster_is_available_for_this_trigger = yes}
+			 
+							scheme_owner = { 
+							trigger_event = spy_outcome.0002 # SECRET DISCOVERY EVENT
+							}
+						}     
+				else_if = {  
+						limit = { exists = scope:discover_a_secret
+					owner_spymaster_is_available_for_this_trigger = no}
+							scheme_owner = { 
+							trigger_event = spy_outcome.0006 # SECRET DISCOVERY EVENT
+							}
+						}  
+				else_if = {
+					limit = { NOT = {exists = scope:discover_a_secret}
+					owner_spymaster_is_available_for_this_trigger = yes}
+			
+							scheme_owner = {
+							trigger_event = spy_outcome.0001 # NORMAL
+							}
+						}
+				else_if = {
+						limit = { NOT = {exists = scope:discover_a_secret}
+						owner_spymaster_is_available_for_this_trigger = no}
+							scheme_owner = {
+							trigger_event = spy_outcome.0005 # NORMAL
+							}
+						}
+			}
+			else = { #NORMAL SUCCESSFUL OUTCOME
+				if = {
+					limit = { owner_spymaster_is_available_for_this_trigger = yes}
+			
+							scheme_owner = {
+							trigger_event = spy_outcome.0001 # NORMAL
+							}
+						}
+				else = {
+							scheme_owner = {
+							trigger_event = spy_outcome.0005 # NORMAL
+							}
+						}
+					}
+				
+				}
+		#FAILURE
+		else = {
+			if = {
+				limit = { scope:scheme = {is_scheme_exposed = yes} 
+							owner_spymaster_is_available_for_this_trigger = yes}
+				scheme_owner = {
+					trigger_event = spy_outcome.0003 # SCHEME COMPROMISED - TRY AGAIN LATER
+				}
+			}
+			else_if = {
+				limit = { scope:scheme = {is_scheme_exposed = yes} }
+				scheme_owner = {
+					trigger_event = spy_outcome.0004 # SCHEME COMPROMISED - TRY AGAIN LATER
+				}
+			} 
+			else = {  # SCHEME RESTART FROM ZERO 
+				scheme_owner = {  
+					send_interface_message = {    
+						type = event_spymaster_task_bad
+						title = spying_failed_reset_message
+						desc = not_able_to_spy
+						right_icon = scope:target
+						
+						custom_tooltip = restart_scheme_half_progress_tt
+						hidden_effect = {
+							scope:scheme = {
+								add_scheme_progress = -5
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	on_monthly = {
+		scheme_target = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		 
+		
+		spy_scheme_discovery_chance_effect = yes
+		
+		if = {
+			limit = {
+				NOT = {scope:target.court_owner = scope:owner}
+				owner_spymaster_is_available_for_this_trigger = yes
+				scope:scheme = {
+						scheme_duration_days > 100
+						scheme_progress <= 3 
+						scheme_number_of_agents <= 1}
+				}			
+			scope:owner = {
+				trigger_event = spy_ongoing.5015
+			}
+		}
+		if = {
+			limit = {scope:scheme = {
+						is_scheme_exposed = yes
+						scheme_progress > 5
+						scheme_power_resistance_difference <= 35}
+				}			
+			scope:scheme = {
+				add_scheme_progress = -1
+				} 
+			}
+		if = { 
+			limit = {scope:target = {highest_held_title_tier = tier_barony}
+				owner_spymaster_is_available_for_this_trigger = no
+				scope:target = {is_vassal_of = scope:owner.cp:councillor_spymaster}
+				scope:scheme = {
+						scheme_number_of_agents = 0} 
+				}			 
+			scope:scheme = {
+				add_scheme_progress = -1
+				} 
+			scope:owner = {
+				trigger_event = spy_ongoing.1009
+				}
+			}	
+		else_if = {
+			limit = {scope:target = {highest_held_title_tier = tier_barony}
+				owner_spymaster_is_available_for_this_trigger = no
+				scope:target = {NOT = {is_vassal_of = scope:owner.cp:councillor_spymaster}}
+				scope:scheme = {
+						scheme_number_of_agents = 0}
+				}			
+			scope:scheme = {
+				add_scheme_progress = -1
+				} 
+			}
+		else_if = {
+			limit = {
+				scope:target = {NOT = {highest_held_title_tier = tier_barony}}
+				scope:scheme = {
+						scheme_number_of_agents = 0}
+				}			
+			scope:scheme = {
+				add_scheme_progress = -1
+				}
+			}
+		if = {
+			limit = {OR = {
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:scheme = {
+						scheme_number_of_agents > 0}} 
+			}
+			scope:owner = {
+				trigger_event = {
+					on_action = spy_ongoing
+					days = 5
+				}
+			}
+		}
+	}
+		 
+
+	
+	on_invalidated = {
+		scheme_target = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner  
+		}
+		if = { #Did the character die in another way?
+			limit = {
+				scope:target = {is_alive = no}
+			} 
+			scope:owner = { 
+				trigger_event = spy_outcome.2000
+			}
+		}
+ 
+		if = { #Did the character move outside of diplomatic range
+			limit = {
+				scope:target = {
+					NOT = { in_diplomatic_range = scope:owner }
+				}
+			} 
+			scope:owner = { 
+				trigger_event = spy_outcome.2500
+			}
+		}
+		if = { #Did the character move outside of diplomatic range
+			limit = {
+				scope:target = {
+					is_alive = yes
+					is_pool_character = yes
+				}
+			} 
+			scope:owner = { 
+				trigger_event = spy_scheme_discovery.4005
+			}
+		} 
+	} 
+ 
+
+	  
+	   
+	power_per_skill_point = 0.5
+	resistance_per_skill_point = 2
+	power_per_agent_skill_point = 2
+	tier_resistance = 0 
+	
+	minimum_progress_chance = 36
+	maximum_progress_chance = 120
+	minimum_success = 5
+	maximum_secrecy = 95
+	maximum_success = 95
+	
+	success_desc = "SPY_CHARACTER_SUCCESS_DESC"
+	discovery_desc = "SPY_CHARACTER_DISCOVERY_DESC"
+}

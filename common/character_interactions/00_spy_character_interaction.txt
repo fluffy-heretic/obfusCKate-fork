@@ -1,0 +1,106 @@
+﻿#spy interactions relating to schemes
+
+spy_character_interaction = {
+	icon = debug_secret
+	common_interaction = yes
+	interface_priority = 80
+	category = interaction_category_hostile
+	use_diplomatic_range = no
+
+	ignores_pending_interaction_block = yes
+
+	scheme = spy_character
+
+	send_name = START_SCHEME
+
+	is_shown = {
+		NOT = { scope:recipient = scope:actor }
+		NOT = {scope:recipient = {has_character_flag = has_been_spied}
+		}
+		NOT = {scope:recipient = {
+					has_opinion_modifier = {
+							modifier = tortured_me
+							target = scope:actor
+							}
+					has_character_modifier = recently_tortured
+						}
+					}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			can_start_scheme = {
+				type = spy_character
+				target = scope:recipient
+			}
+		}
+		scope:recipient = { NOT = { has_strong_hook = scope:actor } }
+	}
+
+	desc = {
+		triggered_desc = {
+			trigger = {
+				scope:actor = {
+					can_start_scheme = {
+						type = spy_character
+						target = scope:recipient
+					}
+				}
+			}
+			desc = spy_character_interaction_tt_spy_character_approved
+		}
+	}
+
+	on_accept = {
+		scope:actor = { ### START FIND SECRETS TASK WITH SCHEME
+			cp:councillor_spymaster = {
+				set_council_task = {
+					task_type = task_find_secrets
+					target = scope:recipient
+				}	
+			}
+			set_variable = {
+					name = had_spymaster_task_side_effect
+					value = yes
+					years = 6
+				}
+		}
+		scope:actor = {
+			stress_impact = {
+							compassionate = miniscule_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+						}
+		}
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					title = spy_character_interaction_notification
+
+					left_icon = scope:actor					
+					right_icon = scope:recipient
+
+					start_scheme = {
+						type = spy_character
+						target = scope:recipient
+					}
+
+					show_as_tooltip = {
+						stress_impact = {
+							compassionate = miniscule_stress_impact_gain
+							honest = miniscule_stress_impact_gain
+							just = miniscule_stress_impact_gain
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	auto_accept = yes
+	
+	ai_will_do = {
+		base = 0
+		}
+
+}

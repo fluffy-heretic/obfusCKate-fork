@@ -1,0 +1,221 @@
+﻿
+#####################################################################
+# EFFECT LIST
+#####################################################################
+# !!! Remember to add all new effects with a short description here !!!
+
+#new_acquaintance_effect		- Sets acquaintance relation
+
+#####################################################################
+# EFFECTS
+#####################################################################
+
+character_deception_effect = {
+
+	if = {
+		limit = {
+				NOT = {has_game_rule = masking_disabled}
+				NOT = {has_character_flag = has_deceived}
+				NOT = {probably_unintelligent_trigger = yes}
+				NOT = {has_trait = lunatic}
+				sum_of_all_skills_value >= 25
+				is_capable_adult_ai = yes
+				deception_time >= 3
+				NOT = {any_player = {
+					is_close_family_of = prev
+						}}
+				NOT = {any_player = {
+					is_consort_of = prev
+						}
+					}}
+
+		if = {
+			limit = {obf_humble_character = yes}
+			add_character_flag = {
+				flag = humble_character
+				months = deception_time
+					}
+			add_character_flag = has_deceived
+			}
+		else_if = {
+			limit = {obf_illusory_diplomat = yes}
+			add_character_flag = {
+				flag = illusory_diplomat
+				months = deception_time
+					}
+				add_character_flag = {
+				flag = has_deceived
+				years = 5
+					}
+			}
+		else_if = {
+			limit = {obf_illusory_administrator = yes}
+			add_character_flag = {
+				flag = illusory_administrator
+				months = deception_time
+					}
+				add_character_flag = {
+				flag = has_deceived
+				years = 5
+					}
+			}
+		else_if = {
+			limit = {obf_illusory_intriguer = yes}
+			add_character_flag = {
+				flag = illusory_intriguer
+				months = deception_time
+					}
+				add_character_flag = {
+				flag = has_deceived
+				years = 5
+					}
+			}
+		else_if = {
+			limit = {obf_illusory_scholar = yes}
+			add_character_flag = {
+				flag = illusory_scholar
+				months = deception_time
+					}
+				add_character_flag = {
+				flag = has_deceived
+				years = 5
+					}
+			}
+		else_if = {
+			limit = {obf_illusory_warrior = yes}
+			add_character_flag = {
+				flag = illusory_warrior
+				months = deception_time
+					}
+				add_character_flag = {
+				flag = has_deceived
+				years = 5
+					}
+				}
+			}
+		}
+		
+character_known_effect = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 8
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_3
+				years = 3
+					}
+}
+
+character_barely_known_effect = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 5
+					}
+			add_character_flag = {
+				flag = partially_spied_2
+				years = 2
+					}
+}
+
+character_met_effect = {
+			add_character_flag = {
+				flag = partially_spied
+				years = 3
+					}
+}
+
+# Needs CHARACTER 
+#Sets relation to acquaintance
+new_acquaintance_effect = {
+	
+			set_relation_acquaintance = $CHARACTER$
+			send_interface_message = {
+			type = event_generic_neutral
+			title = new_acquaintance_generic
+			left_icon = root
+			right_icon = $CHARACTER$
+				custom_tooltip = got_to_know_each_other_generic
+			}
+			$CHARACTER$ = { save_scope_as = target }
+
+		}
+
+new_acquaintance_effect_for_target = {
+	
+			set_relation_acquaintance = $CHARACTER$
+			send_interface_message = {
+			type = event_generic_neutral
+			title = new_acquaintance_generic_for_target
+			left_icon = scope:target
+			right_icon = $CHARACTER$
+				custom_tooltip = got_to_know_each_other_generic_for_target
+			}
+			$CHARACTER$ = { save_scope_as = owner }
+
+		}
+
+send_emissary_gift_cost_effect = {
+	scope:actor = {
+		# Small cost.
+		if = {
+			limit = { always = scope:send_emissary_small_gift }
+			pay_short_term_gold = {
+				target = scope:recipient
+				gold = minor_gold_value
+			} 
+		}
+		# Medium cost; we do this last as a fallback.
+		else_if = {
+			limit = { always = scope:send_emissary_medium_gift }
+			pay_short_term_gold = {
+				target = scope:recipient
+				gold = medium_gold_value
+			}
+		}
+		# Large cost.
+		else_if = {
+			limit = { always = scope:send_emissary_large_gift }
+			pay_short_term_gold = {
+				target = scope:recipient
+				gold = major_gold_value
+			}
+		}
+		
+	}
+}
+
+guest_shared_info_on_ruler_effect = {
+	
+			send_interface_message = {
+			type = event_generic_neutral
+			title = info_on_ruler
+			right_icon = scope:visited_ruler
+				custom_tooltip = got_info_on_ruler
+			}
+
+		}
+guest_shared_info_on_ruler_and_court_effect = {
+	
+			send_interface_message = {
+			type = event_generic_neutral
+			title = info_on_ruler
+			right_icon = scope:visited_ruler
+				custom_tooltip = got_info_on_ruler_and_court
+			}
+
+		}
+guest_leaves_court_effect = {
+	
+			send_interface_message = {
+			type = event_generic_bad
+			title = courtier_or_guest_leaves
+			right_icon = scope:recipient
+				custom_tooltip = courtier_or_guest_leaves_your_court
+			}
+
+		}
+		

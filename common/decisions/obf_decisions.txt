@@ -1,0 +1,113 @@
+﻿find_spouse_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_dynasty_house.dds"
+	
+	sort_order = 20
+
+	desc = find_spouse_decision_desc
+	selection_tooltip = find_spouse_decision_selection_tooltip
+	confirm_text = find_spouse_decision_confirm
+
+	is_shown = {
+		NOT = {has_trait = celibate}
+		is_ai = no
+		is_incapable = no
+		is_imprisoned = no
+		is_married = no
+		is_betrothed = no
+		has_contagious_deadly_disease_trigger = no
+		
+	}
+
+	cooldown = { years = 8 }
+
+	is_valid_showing_failures_only = {
+	NOT = {has_trait = celibate}
+		is_busy_in_events_unlocalised = no
+		is_busy_in_events_localised = yes
+		is_alive = yes
+	is_imprisoned = no
+	is_incapable = no
+	has_contagious_deadly_disease_trigger = no
+	is_commanding_army = no
+	is_travelling = no
+		is_ruler = yes
+		is_married = no
+		is_betrothed = no
+	}
+
+	effect = {
+		stress_impact = {
+			seducer = minor_stress_impact_loss
+			shy = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_loss
+			depressed_1 = minor_stress_impact_loss
+			depressed_genetic = minor_stress_impact_loss
+			chaste = minor_stress_impact_gain
+			reclusive = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+		add_prestige = minor_prestige_loss
+
+		trigger_event = {
+			id = find_spouse_ongoing.1001
+			days = 7
+		}
+		custom_tooltip = find_spouse_decision_tooltip
+	}
+	
+	ai_check_interval = 0
+	
+	ai_will_do = {
+		base = 0
+	}
+}
+
+hire_physician_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_recruitment.dds"
+	
+	sort_order = 81
+
+	desc = hire_physician_decision_desc
+	selection_tooltip = hire_physician_decision_tooltip
+
+	ai_check_interval = 60
+
+	is_shown = {
+		is_ruler = yes
+	}
+
+	cooldown = { days = 365 }
+
+	is_valid_showing_failures_only = {
+		is_imprisoned = no
+	}
+
+	effect = {
+		hidden_effect = {
+			add_character_flag = {
+				flag = health_3001_hire_physician_decision_text
+				days = 20
+			}
+		}
+
+		trigger_event = {
+			id = obf_replaced.3001
+			days = 14
+		}
+		custom_tooltip = hire_physician_decision_effect_tooltip
+	}
+	
+	ai_potential = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		gold > low_skill_court_physician_cost
+		is_at_war = no
+		NOT = {
+			employs_court_position = court_physician_court_position
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

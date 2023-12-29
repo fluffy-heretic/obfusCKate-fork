@@ -1,0 +1,284 @@
+﻿
+ask_advisors_opinion_interaction = {
+	category = interaction_category_hostile
+	icon = icon_diplomacy_spyactions
+	common_interaction = yes
+	interface_priority = 150
+	desc = ask_advisors_opinion_interaction_desc
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes	
+	send_name = ask_advisors_opinion_dismiss
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		
+		scope:actor = {
+		is_ai = no
+		is_imprisoned = no}
+		
+		scope:recipient = {
+			is_landed = yes
+			NOT = {has_character_flag = requested_military_info}
+			NOT = {is_vassal_or_below_of = scope:actor}
+			NOT = {has_character_flag = has_been_spied}
+
+			}
+		}
+		
+	is_valid_showing_failures_only = {
+	
+	NOT = {
+			scope:recipient = scope:actor
+		}
+		
+		scope:actor = {
+		is_ai = no
+		is_imprisoned = no}
+		
+		scope:recipient = {
+			is_landed = yes
+			in_diplomatic_range = scope:actor 
+
+			}
+	
+	}
+	
+auto_accept = yes
+	
+	on_accept = {
+		scope:actor = {
+			if = {
+				limit = { your_combined_martial_skill_value <= 12}
+					if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value <= 0.125
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_low_martial_opinion_suicidal_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.125
+								military_ratio_value < 8
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_low_martial_opinion_no_guess_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value >= 8
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_low_martial_opinion_easy_subjugate_effect"
+						}
+					} 
+				}
+			else_if = { #medium martial
+				limit = { your_combined_martial_skill_value > 12
+						your_combined_martial_skill_value <= 24}
+					if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value <= 0.15
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_medium_martial_opinion_suicidal_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.15
+								military_ratio_value <= 0.33
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_medium_martial_opinion_weaker_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.33
+								military_ratio_value <= 3
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_medium_martial_opinion_no_guess_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 3
+								military_ratio_value <= 6
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_medium_martial_opinion_stronger_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 6
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_medium_martial_opinion_easy_subjugate_effect"
+						}
+					}
+				}
+				else_if = { #good Martial
+				limit = { your_combined_martial_skill_value > 24
+						your_combined_martial_skill_value <= 48}
+					if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value <= 0.2
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_good_martial_opinion_suicidal_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.2
+								military_ratio_value <= 0.4
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_good_martial_opinion_weaker_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.4
+								military_ratio_value <= 2.5
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_good_martial_opinion_no_guess_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 2.5
+								military_ratio_value <= 5
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_good_martial_opinion_stronger_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 5
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_good_martial_opinion_easy_subjugate_effect"
+						}
+					}
+				}
+			else_if = { #very good Martial
+				limit = {your_combined_martial_skill_value > 48}
+					if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value <= 0.2
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_very_good_martial_opinion_suicidal_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.2
+								military_ratio_value <= 0.5
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_very_good_martial_opinion_weaker_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 0.5
+								military_ratio_value <= 2
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_very_good_martial_opinion_no_guess_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 2
+								military_ratio_value <= 4
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_very_good_martial_opinion_stronger_effect"
+						}
+					}
+					else_if = { 
+						limit = { 
+							scope:actor = { 
+								military_ratio_value > 4
+								}
+							}
+					custom_tooltip = { 
+					text = "ask_advisors_very_good_martial_opinion_easy_subjugate_effect"
+						}
+					}
+				}
+			if = {
+				limit = {scope:recipient = {any_ally = {is_alive = yes}}}
+				custom_tooltip = { 
+					text = "ask_advisors_has_allies_effect"
+						}
+				
+			}
+			if = {
+				limit = {scope:recipient = {is_independent_ruler = no}}
+				custom_tooltip = { 
+					text = "ask_advisors_is_not_independent_effect"
+						}
+				
+			}
+			if = {
+				limit = {scope:recipient = {is_at_war = yes}}
+				custom_tooltip = { 
+					text = "ask_advisors_is_at_war_effect"
+						}
+				
+			}
+			
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		}
+}

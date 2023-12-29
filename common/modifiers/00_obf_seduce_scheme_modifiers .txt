@@ -1,0 +1,202 @@
+﻿### Seduce Power modifiers
+target_not_attracted_modifier = {
+	icon = intrigue_negative
+	scheme_power = -100
+}
+
+seduction_emperor_modifier = {
+	icon = intrigue_positive
+	scheme_power = -4
+}
+
+seduction_king_modifier = {
+	icon = intrigue_positive
+	scheme_power = -3
+}  
+seduction_duke_modifier = {
+	icon = intrigue_positive
+	scheme_power = -2
+}
+
+seduction_county_modifier = {
+	icon = intrigue_positive
+	scheme_power = -1
+}    
+
+seduction_allies_modifier = {
+	icon = intrigue_positive
+	scheme_power = 5
+} 
+
+seduction_scheme_more_than_600000_modifier = {#18
+	icon = intrigue_positive
+	scheme_power = 18
+	scheme_success_chance = -30
+}
+
+seduction_scheme_less_than_600000_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 22
+	scheme_success_chance = -25
+}
+
+seduction_scheme_less_than_450000_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 7
+	scheme_success_chance = 5
+}
+
+seduction_scheme_less_than_300000_modifier = {#35
+	icon = intrigue_positive
+	scheme_power = 6
+	scheme_success_chance = 5
+}
+seduction_scheme_less_than_150000_modifier = {#40
+	icon = intrigue_positive
+	scheme_power = 5
+	scheme_success_chance = 5
+}
+seduction_scheme_less_than_140000_modifier = {#43
+	icon = intrigue_positive
+	scheme_power = 3
+}
+seduction_scheme_less_than_130000_modifier = {#45
+	icon = intrigue_positive
+	scheme_power = 2
+}
+seduction_scheme_less_than_120000_modifier = {#47
+	icon = intrigue_positive
+	scheme_power = 2
+}
+seduction_scheme_less_than_110000_modifier = {#49
+	icon = intrigue_positive
+	scheme_power = 2
+}
+seduction_scheme_less_than_100000_modifier = {#51
+	icon = intrigue_positive
+	scheme_power = 2
+}
+seduction_scheme_less_than_90000_modifier = {#54
+	icon = intrigue_positive
+	scheme_power = 3
+}
+seduction_scheme_less_than_80000_modifier = {#57
+	icon = intrigue_positive
+	scheme_power = 3
+}
+seduction_scheme_less_than_70000_modifier = {#60
+	icon = intrigue_positive
+	scheme_power = 3
+}
+seduction_scheme_less_than_60000_modifier = {#64
+	icon = intrigue_positive
+	scheme_power = 4
+}
+seduction_scheme_less_than_50000_modifier = {#69
+	icon = intrigue_positive
+	scheme_power = 5
+}
+seduction_scheme_less_than_40000_modifier = {#74
+	icon = intrigue_positive
+	scheme_power = 5
+}
+seduction_scheme_less_than_30000_modifier = {#79
+	icon = intrigue_positive
+	scheme_power = 5
+}
+seduction_scheme_less_than_20000_modifier = {#83
+	icon = intrigue_positive
+	scheme_power = 4
+}
+seduction_scheme_less_than_10000_modifier = {#90
+	icon = intrigue_positive
+	scheme_power = 90
+}
+
+### ENTICING OPPORTUNITY MODIFIERS
+
+seduction_allies_enticing_opportunity_modifier = {
+	icon = intrigue_positive
+	scheme_power = 1.6
+} 
+
+seduction_scheme_more_than_600000_enticing_opportunity_modifier = {#18
+	icon = intrigue_positive
+	scheme_power = 6
+}
+
+seduction_scheme_less_than_600000_enticing_opportunity_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 7.5
+}
+
+seduction_scheme_less_than_450000_enticing_opportunity_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 2.3
+
+}
+
+seduction_scheme_less_than_300000_enticing_opportunity_modifier = {#35
+	icon = intrigue_positive
+	scheme_power = 2
+}
+seduction_scheme_less_than_150000_enticing_opportunity_modifier = {#40
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+seduction_scheme_less_than_140000_enticing_opportunity_modifier = {#43
+	icon = intrigue_positive
+	scheme_power = 1
+}
+seduction_scheme_less_than_130000_enticing_opportunity_modifier = {#45
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+seduction_scheme_less_than_120000_enticing_opportunity_modifier = {#47
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+seduction_scheme_less_than_110000_enticing_opportunity_modifier = {#49
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+seduction_scheme_less_than_100000_enticing_opportunity_modifier = {#51
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+seduction_scheme_less_than_90000_enticing_opportunity_modifier = {#54
+	icon = intrigue_positive
+	scheme_power = 1
+}
+seduction_scheme_less_than_80000_enticing_opportunity_modifier = {#57
+	icon = intrigue_positive
+	scheme_power = 1
+}
+seduction_scheme_less_than_70000_enticing_opportunity_modifier = {#60
+	icon = intrigue_positive
+	scheme_power = 1
+}
+seduction_scheme_less_than_60000_enticing_opportunity_modifier = {#64
+	icon = intrigue_positive
+	scheme_power = 1.3
+}
+seduction_scheme_less_than_50000_enticing_opportunity_modifier = {#69
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+seduction_scheme_less_than_40000_enticing_opportunity_modifier = {#74
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+seduction_scheme_less_than_30000_enticing_opportunity_modifier = {#79
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+seduction_scheme_less_than_20000_enticing_opportunity_modifier = {#83
+	icon = intrigue_positive
+	scheme_power = 1.3
+}
+
+
+
+

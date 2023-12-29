@@ -1,0 +1,351 @@
+﻿switch_character_interaction = {
+	category = interaction_category_friendly
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	common_interaction = yes
+	desc = switch_character_interaction_desc
+	is_highlighted = {
+		always = yes
+	}
+	icon = icon_dead
+	interface_priority = 250
+	
+	is_shown = {
+		NOT = {scope:recipient = scope:actor}
+		scope:actor = {has_trait = incapable}
+	}
+	on_accept = {
+		scope:actor = {
+					set_player_character = scope:recipient
+					}
+		hidden_effect = {
+	every_living_character = {
+	limit = {
+	OR = {has_character_flag = has_deceived
+	has_character_flag = humble_character
+	has_character_flag = illusory_diplomat
+	has_character_flag = illusory_administrator
+	has_character_flag = illusory_intriguer
+	has_character_flag = illusory_scholar
+	has_character_flag = illusory_warrior
+	has_character_flag = partially_spied_3
+	has_character_flag = partially_spied
+	has_character_flag = partially_spied_2}}
+	
+	add_to_temporary_list = flags_to_remove
+	}
+	every_in_list = {
+	list = flags_to_remove
+	remove_character_flag = has_deceived
+	remove_character_flag = humble_character
+	remove_character_flag = illusory_diplomat
+	remove_character_flag = illusory_administrator
+	remove_character_flag = illusory_intriguer
+	remove_character_flag = illusory_scholar
+	remove_character_flag = illusory_warrior
+	remove_character_flag = partially_spied_3
+	remove_character_flag = partially_spied_2
+	remove_character_flag = partially_spied
+		}
+		scope:recipient = {
+		every_close_or_extended_family_member = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_consort = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_court_position_holder = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_general_councillor = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_knight = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_courtier_or_guest = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_prisoner = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_child = {
+			every_spouse = {
+				add_to_temporary_list = natural_acquaintances
+			}
+		}
+		every_relation = {
+		type = ward
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = guardian
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = nemesis
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soulmate
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = crush
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = bully
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = soldier_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = victim
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_rival
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = best_friend
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_mentor
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = intrigue_student
+				add_to_temporary_list = natural_acquaintances
+		}
+		every_relation = {
+		type = potential_lover
+				add_to_temporary_list = natural_acquaintances
+		}
+		liege = {
+		every_vassal = {
+				add_to_temporary_list = natural_acquaintances
+		}
+		}
+		liege = {
+		every_councillor = {
+				add_to_temporary_list = natural_acquaintances
+			}
+		}
+		
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = scope:recipient}}
+			list = natural_acquaintances
+			character_deception_effect = yes
+			character_known_effect = yes
+			}
+		house = {
+			every_house_member = {
+				add_to_temporary_list = house_and_memories_acquaintances
+			}
+		}
+		scope:recipient = {every_memory = {every_memory_participant = {
+				add_to_temporary_list = house_and_memories_acquaintances
+
+		}}}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = scope:recipient}}
+			list = house_and_memories_acquaintances
+			character_barely_known_effect = yes
+			}
+			
+		every_patroned_holy_order = {
+			leader = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_consort = {
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_child = {
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+			}	
+		every_relation = {
+		type = friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = best_friend
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = lover
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+			every_relation = {
+			type = soulmate
+				every_close_family_member = {
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = best_friend
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = rival
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_relation = {
+				type = nemesis
+				add_to_temporary_list = basic_acquaintances
+				}
+				every_consort = {
+				add_to_temporary_list = basic_acquaintances
+				}
+			}
+		every_in_list = {
+			limit = {
+			is_alive = yes
+						NOT = {this = scope:recipient}}
+			list = basic_acquaintances
+			character_met_effect = yes
+				}
+			
+			}
+		}
+	}
+	
+	auto_accept = yes
+}

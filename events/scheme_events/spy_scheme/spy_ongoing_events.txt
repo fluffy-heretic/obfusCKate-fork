@@ -1,0 +1,2911 @@
+﻿#Events for spy Scheme
+
+namespace = spy_ongoing
+
+#######################
+# A Well-timed Bribe
+# by Linnéa Thimrén and Petter Vilberg
+#######################
+
+spy_ongoing.1001 = {
+	type = character_event
+	title = spy_ongoing.1001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { owner_spymaster_is_available_for_this_trigger = yes }
+				desc = spy_ongoing.1001.desc_spymaster
+			}
+			desc = spy_ongoing.1001.desc
+		}
+	}
+	theme = generic_intrigue_scheme
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	left_portrait = {
+		character = scope:agent
+		animation = throne_room_conversation_2
+	}
+	right_portrait = {
+		character = scope:payer
+		animation = personality_rational
+	}
+	lower_center_portrait = scope:target
+
+	trigger = {
+		short_term_gold >= medium_gold_value
+		exists = scope:scheme
+		OR = {owner_spymaster_is_available_for_this_trigger = yes
+		scope:owner = {has_council_position = councillor_spymaster}}
+		NOT = {scope:target.court_owner = scope:owner}
+		scope:scheme = {
+			is_scheme_exposed = no
+			scheme_progress < 8
+			scheme_number_of_agents > 0
+			any_scheme_agent = {
+			NOR = { has_character_flag = been_talking_about_spying
+			 has_character_flag = been_chickening_about_spying
+			has_character_flag = been_lazy_spying
+			has_character_flag = shared_military_info
+			has_character_flag = has_blackmailed_in_scheme
+			this = scope:owner.cp:councillor_spymaster}
+			 NOT = {is_agent_exposed_in_scheme = scope:scheme }
+			is_landed = no
+				is_alive = yes
+				OR = {
+					will_betray_anyone_because_needs_money = yes
+					will_betray_anyone_for_money = yes
+					will_betray_close_relation_liking_them_or_not = yes}
+				
+			}
+		}
+		NOT = {scope:owner = scope:target.court_owner}
+		NOT = {scope:owner = {has_character_flag = payed_bribe}}
+		NOT = { exists = scope:scheme.var:had_payment_spy_event }
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 1
+			scope:scheme = { scheme_power_resistance_difference <= 35 }
+		}
+	}
+
+	immediate = {
+	if = {
+		limit = {owner_spymaster_is_available_for_this_trigger = yes}
+		
+		scope:owner.cp:councillor_spymaster = {
+		save_scope_as = payer
+			}
+		}
+		scope:owner = {
+			add_character_flag = {
+			flag = payed_bribe
+			days = 1850}
+			save_scope_as = payer
+				}
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					NOR = { has_character_flag = been_talking_about_spying
+							has_character_flag = been_chickening_about_spying
+							has_character_flag = been_lazy_spying
+							has_character_flag = shared_military_info
+							has_character_flag = has_blackmailed_in_scheme
+							this = scope:owner.cp:councillor_spymaster}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+					is_landed = no
+						is_alive = yes
+						OR = {
+					will_betray_anyone_because_needs_money = yes
+					will_betray_anyone_for_money = yes
+					will_betray_close_relation_liking_them_or_not = yes}
+					}
+				save_scope_as = agent
+				add_character_flag = {
+					flag = use_stealth_clothes
+					days = 1
+				}
+			}
+			set_variable = {
+				name = had_payment_spy_event
+				value = yes
+				days = 1825
+			}
+		}
+		#Dummy check to avoid errors since the flag is only checked in portrait modifiers otherwise
+		if = {
+			limit = {
+				has_character_flag = use_stealth_clothes
+			}
+			#Didn't see you there!
+		}
+	}
+
+	option = { #Pay the gold
+		name = spy_ongoing.1001.a
+		remove_short_term_gold = medium_gold_value
+		scope:agent = {
+			duel = {
+				skill = intrigue
+				value = 10
+				20 = {		
+					desc = intrigue_scheme_ongoing.1008.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.75
+						min = 0
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1008.a.success
+							left_icon = scope:agent
+							scope:scheme = {
+								add_scheme_modifier = {
+									type = scheme_agent_closing_in_modifier
+								}
+								add_scheme_progress = scheme_progress_gain
+							}
+						}
+					}
+				}
+				10 = {		
+					desc = intrigue_scheme_ongoing.1008.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1008.a.failure
+							left_icon = scope:agent
+							if = {
+								limit = {
+									scope:scheme = {
+										is_scheme_exposed = yes
+									}
+								}
+								scope:scheme = {
+									expose_scheme_agent = scope:agent
+								}
+							}
+							else = {
+								scope:scheme = {
+									expose_scheme = yes
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+	}
+
+	option = { #Save it
+		name = spy_ongoing.1001.b
+				scope:agent = {
+					add_opinion = {
+						modifier = respect_opinion
+						target = root
+						opinion = -20
+				}
+				if = {
+					limit = {scope:agent = {is_forced_into_scheme = scope:scheme}}
+				forbid_from_scheme = scope:scheme	
+				}
+				if = {
+					limit = {scope:agent = {NOT = {is_forced_into_scheme = scope:scheme}}}
+				scope:scheme = {
+						add_scheme_modifier = {
+							type = scheme_refused_agent_help_modifier
+						}
+					}	
+				}
+				scope:scheme = {
+						add_scheme_progress = scheme_progress_loss
+					}
+				}
+				stress_impact = {
+					impatient = minor_stress_impact_gain
+					}
+		}
+	}
+
+########################
+# Agent blackmails with scheme exposure
+# 
+########################
+spy_ongoing.1002 = {
+	type = character_event
+	title = spy_ongoing.1002.t
+	desc = spy_ongoing.1002.desc
+	theme = corruption
+	override_background = { reference = corridor_day }
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	left_portrait = {
+		character = scope:agent
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = anger
+	}
+
+	trigger = {
+		exists = scope:scheme
+		scope:scheme = {
+			scheme_progress > 2
+			scheme_number_of_agents > 0
+			any_scheme_agent = {
+			NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster
+					is_agent_exposed_in_scheme = scope:scheme 
+						has_relation_friend = scope:owner
+						has_relation_lover = scope:owner
+						has_relation_soulmate = scope:owner
+						has_secret_relation_lover = scope:owner
+						has_secret_relation_soulmate = scope:owner
+						has_relation_best_friend = scope:owner}
+				is_alive = yes
+				ai_boldness >= low_positive_ai_value
+				OR = {
+					will_betray_anyone_because_needs_money = yes
+					will_betray_anyone_for_money = yes
+					will_betray_close_relation_liking_them_or_not = yes
+					will_betray_absolutely_anyone_regardless = yes}
+			}
+			is_scheme_exposed = no
+			scope:target = {highest_held_title_tier >= tier_county}
+			OR = {
+				scope:target = {is_liege_or_above_of = scope:owner}
+				scope:target = {is_vassal_or_below_of = scope:owner}
+				scope:target.top_liege = scope:owner.top_liege}
+			}
+		NOT = { scope:owner = {has_character_flag = was_blackmailed_in_scheme}}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 1
+			scope:scheme = { scheme_power_resistance_difference >= 30 }
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+				NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster
+					is_agent_exposed_in_scheme = scope:scheme 
+						has_relation_friend = scope:owner
+						has_relation_lover = scope:owner
+						has_relation_soulmate = scope:owner
+						has_secret_relation_lover = scope:owner
+						has_secret_relation_soulmate = scope:owner
+						has_relation_best_friend = scope:owner}
+					is_alive = yes
+					ai_boldness >= low_positive_ai_value
+					OR = {
+					will_betray_anyone_because_needs_money = yes
+					will_betray_anyone_for_money = yes
+					will_betray_close_relation_liking_them_or_not = yes
+					will_betray_absolutely_anyone_regardless = yes} 
+				}
+				save_scope_as = agent
+				add_character_flag = {
+					flag = has_blackmailed_in_scheme
+					days = 3650
+				}
+				
+			}
+		}
+		scope:owner = {
+			add_character_flag = {
+			flag = was_blackmailed_in_scheme
+			days = 1825}
+		}
+		scope:agent = {
+				character_met_effect = yes
+		}
+	}
+
+	option = { #Pay the gold
+		name = spy_ongoing.1002.a
+		remove_short_term_gold = 100
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+	}
+
+	option = { #Give hook
+		name = spy_ongoing.1002.b
+		add_prestige = minor_prestige_loss
+		scope:agent = {
+			add_hook = {
+			type = favor_hook
+			target = scope:owner
+			}
+		}
+		stress_impact = {
+			craven = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+		}
+	}
+	option = { #Refuse
+		name = spy_ongoing.1002.c
+		add_prestige = minor_prestige_gain
+		scope:agent = {
+			add_opinion = {
+				target = scope:owner
+				modifier = respect_opinion
+				opinion = -20
+				}
+		forbid_from_scheme = scope:scheme
+			}
+		scope:scheme = {
+			expose_scheme = yes
+				}
+		spy_scheme_instant_discovery_effect = yes
+		stress_impact = {
+			just = minor_stress_impact_gain
+			honest = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+	option = { #arrest
+		name = spy_ongoing.1002.d
+		trigger = {
+			scope:agent = {
+			is_landed = no
+			is_owner_courtier_or_vassal_or_below = yes}
+			}
+		add_dread = minor_dread_gain
+		imprison_character_effect = {
+			TARGET = scope:agent
+			IMPRISONER = scope:owner
+		}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			honest = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+	option = { #Use Hook
+		name = spy_ongoing.1002.e
+		trigger = {scope:owner = {has_usable_hook = scope:agent}}
+				scope:owner = {
+				use_hook  = scope:agent 
+				}
+			}
+}
+
+
+##########################
+# A Little Too Talkative
+# by Linnéa Thimrén and Petter Vilberg
+##########################
+spy_ongoing.1003 = {
+	type = character_event
+	title = spy_ongoing.1003.t
+	desc = spy_ongoing.1003.desc
+	theme = generic_intrigue_scheme
+	override_background = {
+		reference = garden
+	}
+	right_portrait = {
+		character = scope:target
+		animation = throne_room_conversation_4
+	}
+	left_portrait = {
+		character = scope:agent_in_question
+		animation = throne_room_conversation_2
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:target = { is_adult = yes}
+		scope:scheme = {
+		is_scheme_exposed = no
+		scheme_progress > 2
+			scheme_number_of_agents > 0
+			any_scheme_agent = {
+				NOT = {is_consort_of = scope:target.court_owner}
+				NOT = {is_close_or_extended_family_of = scope:target.court_owner}
+				NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				OR = {has_personality_extroverted_trigger = yes
+				has_trait = contrite}
+				NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+			}
+		}
+		NOT = { exists = scope:scheme.var:had_talkative_agent_event }
+		scope:owner = { NOT = {has_character_flag = had_talkative_agent}}
+		
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = { 
+					NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+					NOT = {is_consort_of = scope:target.court_owner}
+					NOT = {is_close_or_extended_family_of = scope:target.court_owner}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+					OR = {has_personality_extroverted_trigger = yes
+					has_trait = contrite}
+					}
+				save_scope_as = agent_in_question
+				add_character_flag = {
+					flag = been_talking_about_spying
+					days = 3650
+				}
+			}
+
+			set_variable = {
+				name = had_talkative_agent_event
+				value = yes
+				days = 1825
+			}
+		}
+		if = {
+			limit = {
+				owner_spymaster_is_available_for_this_trigger = yes
+			}
+			cp:councillor_spymaster = {
+				save_scope_as = councillor
+			}
+		}
+		scope:owner = {
+		add_character_flag = {
+			flag = had_talkative_agent
+			days = 2000
+			}
+		}
+	}
+
+	# Let them blabber on
+	option = {
+		name = spy_ongoing.1003.a
+		scope:agent_in_question = {
+			duel = {
+				skill = intrigue
+				value = 10
+				20 = {		
+					desc = spy_ongoing.1003.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.75
+						min = 0
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1003.toast.success
+							left_icon = scope:agent_in_question
+							scope:scheme = {
+								add_scheme_modifier = {
+									type = scheme_talking_agent_modifier
+								}
+							}
+						}
+					}
+				}
+				10 = {		
+					desc = spy_ongoing.1003.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1003.toast.failure
+							left_icon = scope:agent_in_question
+							if = {
+								limit = {
+									scope:scheme = {
+										is_scheme_exposed = no
+									}
+								}
+								scope:scheme = {
+									expose_scheme = yes
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#Their trail needs to end
+	option = {
+	trigger = {
+			scope:agent_in_question = {OR = { is_pool_guest_of = scope:owner
+				is_owner_courtier_or_vassal_or_below = yes}}
+			}
+		name = spy_ongoing.1003.c
+		scope:agent_in_question = {
+			forbid_from_scheme = scope:scheme
+		}
+	}
+	
+	#Have your spymaster intervene
+	option = {
+		name = spy_ongoing.1003.d
+		trigger = {
+			owner_spymaster_is_available_for_this_trigger = yes
+		}
+		scope:scheme = {
+			add_scheme_modifier = { type = gregarious_demand_complete_silence_modifier days = 365 }
+			add_scheme_modifier = {
+				type = spymaster_doubled_efforts_modifier
+				days = 1000
+			}
+		
+		}
+	}
+}
+
+##########################
+# A Craven agent chickens
+##########################
+spy_ongoing.1004 = {
+	type = character_event
+	title = spy_ongoing.1004.t
+	desc = spy_ongoing.1004.desc
+	theme = generic_intrigue_scheme
+	override_background = {
+		reference = study
+	}
+	left_portrait = {
+		character = scope:owner
+		animation = worry
+	}
+	lower_right_portrait = scope:agent_in_question
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:target = {
+			highest_held_title_tier >= tier_county}
+		scope:scheme = {
+			scheme_progress > 3
+			scheme_number_of_agents > 0
+			NOT = {has_variable = you_have_been_exposed}
+			any_scheme_agent = {
+				NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+				is_ruler = no
+					is_councillor = no
+					is_a_bold_person_trigger = no
+					OR = {
+					has_benevolent_qualities_trigger = yes
+					has_personality_submissive_trigger = yes
+					is_a_coward_person_trigger = yes
+						has_trait = contrite}
+					NOT = {is_consort_of = scope:target.court_owner}
+					NOT = {is_close_or_extended_family_of = scope:target.court_owner}
+					NOT = {is_heir_of = scope:target.court_owner}
+					NOT = {is_consort_of = scope:owner}
+					NOT = {is_close_or_extended_family_of = scope:owner}
+					NOT = {is_heir_of = scope:owner}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+			}
+		}
+		NOT = { exists = scope:scheme.var:had_craven_agent_event }
+		
+		NOT = { scope:owner = {has_character_flag = been_chickening_about_spying}}
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = { 
+					NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+					is_ruler = no
+					is_councillor = no
+					is_a_bold_person_trigger = no
+					OR = {
+					has_benevolent_qualities_trigger = yes
+					has_personality_submissive_trigger = yes
+					is_a_coward_person_trigger = yes
+						has_trait = contrite}
+					NOT = {is_consort_of = scope:target.court_owner}
+					NOT = {is_close_or_extended_family_of = scope:target.court_owner}
+					NOT = {is_heir_of = scope:target.court_owner}
+					NOT = {is_consort_of = scope:owner}
+					NOT = {is_close_or_extended_family_of = scope:owner}
+					NOT = {is_heir_of = scope:owner}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }}
+				save_scope_as = agent_in_question
+				add_character_flag = {
+					flag = been_chickening_about_spying
+					days = 1825
+				}
+			}
+
+			set_variable = {
+				name = had_craven_agent_event
+				value = yes
+				days = 1825
+			}
+			scope:owner = {
+			add_character_flag = {
+				flag = been_chickening_about_spying
+				days = 1825
+				}
+			}
+			
+		}	
+	}
+
+	# talk sense
+	option = {
+		trigger = {scope:agent_in_question = {is_owner_courtier_or_vassal_or_below = yes}}
+		name = spy_ongoing.1004.a
+		scope:agent_in_question = {
+			duel = {
+				skill = diplomacy
+				value = 10
+				20 = {		
+					desc = spy_ongoing.1004.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.75
+						min = 0
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.success
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+				10 = {		
+					desc = intrigue_scheme_ongoing.1004.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1004.a.failure
+							left_icon = scope:agent_in_question
+							if = {
+								limit = {
+									scope:scheme = {
+										is_scheme_exposed = no
+									}
+								}
+								scope:scheme = {
+									expose_scheme = yes
+								}
+							}
+							else = {						
+								scope:scheme = {
+									expose_scheme_agent = scope:agent_in_question
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# "talk" sense
+	option = {
+		name = spy_ongoing.1004.b
+		random_list = {
+				50 = {
+					desc = spy_ongoing.1004.a.success
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.success
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+				35 = {
+				desc = spy_ongoing.1004.a.leaves
+					scope:agent_in_question = {
+						forbid_from_scheme = scope:scheme
+						}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.leaves
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+				15 = {
+				desc = spy_ongoing.1004.a.death
+				custom_tooltip = {
+				text = spy_ongoing.1004.death.out_of_hand
+					unknown_murder_effect = {
+							VICTIM = scope:agent_in_question 
+							MURDERER = scope:owner
+							REASON = death_mysterious
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.death
+							left_icon = scope:agent_in_question
+						}
+					}
+					stress_impact = {
+							just = major_stress_impact_gain
+							honest = major_stress_impact_gain
+							compassionate = major_stress_impact_gain
+						}
+					}
+				}
+		}
+	}
+	#There's nothing I can do if he wants to leave
+	option = {
+		name = spy_ongoing.1004.c
+		random_list = {
+				20 = {
+					desc = spy_ongoing.1004.a.success
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.success
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+				30 = {
+				desc = spy_ongoing.1004.a.leaves
+					scope:agent_in_question = {
+						forbid_from_scheme = scope:scheme
+						}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.leaves
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+				50 = {
+				desc = spy_ongoing.1004.c.exposed
+					scope:agent_in_question = {
+						forbid_from_scheme = scope:scheme
+						}
+					scope:scheme = {
+						expose_scheme = yes
+								}
+					spy_scheme_instant_discovery_effect = yes
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.leaves
+							left_icon = scope:agent_in_question
+						}
+					}
+				}
+		}
+	}
+}
+
+#######################
+# Drunkard Agent
+# by Linnéa Thimrén and Petter Vilberg
+#######################
+spy_ongoing.1005 = {
+	type = character_event
+	title = spy_ongoing.1005.t
+	desc = {
+		desc = spy_ongoing.1005.desc_opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:agent_hero_of_the_moment
+				}
+				desc = spy_ongoing.1005.desc_hero
+			}
+			desc = spy_ongoing.1005.desc
+		}
+	}
+	theme = intrigue
+	override_background = { reference = tavern }
+	left_portrait = {
+		character = scope:agent_in_question
+		animation = drink
+	}
+	right_portrait = {
+		character = scope:agent_hero_of_the_moment
+		animation = idle
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:scheme = {
+		NOT = {has_variable = you_have_been_exposed}
+		scheme_progress > 2
+			any_scheme_agent = { has_trait = drunkard }				
+		}
+		NOT = { exists = scope:scheme.var:had_drunkard_agent_event }
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					has_trait = drunkard
+					has_trait = wrathful
+				}
+				alternative_limit = {
+					has_trait = drunkard
+				}
+				save_scope_as = agent_in_question
+			}
+
+			if = {
+				limit = {
+					scope:agent_in_question = {
+						has_trait = wrathful
+					}
+					any_scheme_agent = { #A courtier of target that likes them well enough
+						NOT = { this = scope:agent_in_question }
+						is_courtier_of = scope:target
+						reverse_opinion = {
+							target = scope:target
+							value >= 10
+						}
+					}
+				}
+				random_scheme_agent = {
+					limit = {
+						NOT = { this = scope:agent_in_question }
+						is_courtier_of = scope:target
+						reverse_opinion = {
+							target = scope:target
+							value >= 10
+						}
+					}
+					save_scope_as = agent_hero_of_the_moment
+					add_character_flag = {
+						flag = use_stealth_clothes
+						days = 1
+					}
+				}
+			}
+
+			set_variable = {
+				name = had_drunkard_agent_event
+				value = yes
+				days = 730
+			}
+		}
+	}
+
+	# Encourage agents drunken escapades, gain plot power, risk exposing agent
+	option = {
+		name = spy_ongoing.1005.a
+		scope:agent_in_question = {
+			duel = {
+				skill = intrigue
+				value = 10
+				20 = {		
+					desc = spy_ongoing.1005.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1008.a.success
+							left_icon = scope:agent_in_question
+							scope:scheme = {
+								add_scheme_progress = scheme_progress_gain
+							}
+						}
+					}
+				}
+				10 = {		
+					desc = spy_ongoing.1005.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1008.a.failure
+							left_icon = scope:agent_in_question
+							scope:scheme = {
+								if = {
+									limit = {
+										is_scheme_exposed = no
+									}
+									expose_scheme = yes
+								}
+								expose_scheme_agent = scope:agent_in_question
+							}
+						}
+					}
+				}
+			}
+		}
+		stress_impact = {
+			craven = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_boldness = 0.75
+			}
+		}
+	}
+
+	# Stay away from the bottle, lay low and lose liking from agent
+	option = {
+		name = spy_ongoing.1005.b
+		scope:agent_in_question = {
+			add_opinion = {
+				modifier = cruelty_opinion
+				target = root
+				opinion = -15
+			}
+		}
+		ai_chance = {
+			base = 50
+			ai_value_modifier = {
+				ai_rationality = 0.25
+			}
+		}
+	}
+}
+
+
+######################
+# careless Agent leaves traces
+# by Linnéa Thimrén and Petter Vilberg
+######################
+spy_ongoing.1006 = {
+	type = character_event
+	title = spy_ongoing.1006.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { owner_spymaster_is_available_for_this_trigger = yes }
+				desc = spy_ongoing.1006.desc_spymaster
+			}
+			desc = spy_ongoing.1006.desc
+		}
+	}
+	theme = generic_intrigue_scheme
+	override_background = {
+		reference = council_chamber
+	}
+	left_portrait = {
+		character = scope:owner
+		animation = anger
+	}
+	lower_right_portrait = scope:agent_in_question
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:scheme = {
+			scheme_progress > 2
+			is_scheme_exposed = no
+			NOT = { exists = var:had_slothful_clues_event }
+			any_scheme_agent = {
+				OR = {
+				has_trait = wrathful
+				has_trait = impatient
+				has_trait = paranoid
+				has_trait = lazy
+				has_trait = contrite
+				has_trait = drunkard
+				has_trait = depressed
+				has_trait = lunatic
+				has_trait = possessed
+				probably_unintelligent_trigger = yes
+				}
+			NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+			}
+		}
+		scope:target = {
+			is_landed = yes
+		}
+		NOT = { scope:owner = {has_character_flag = agent_been_lazy_spying}}
+	}
+
+	immediate = {
+		scope:owner = {
+			add_character_flag = {
+					flag = agent_been_lazy_spying
+					days = 1825
+				}
+			}
+		scope:scheme = {
+			set_variable = {
+				name = had_slothful_clues_event
+				value = yes
+				days = 3650
+			}
+			random_scheme_agent = {
+				limit = { 
+				NOR = {  has_character_flag = been_talking_about_spying
+					has_character_flag = been_chickening_about_spying
+					has_character_flag = been_lazy_spying
+					has_character_flag = shared_military_info
+					has_character_flag = has_blackmailed_in_scheme
+					this = scope:owner.cp:councillor_spymaster}
+				OR = {
+				has_trait = wrathful
+				has_trait = impatient
+				has_trait = paranoid
+				has_trait = lazy
+				has_trait = contrite
+				has_trait = drunkard
+				has_trait = depressed
+				has_trait = lunatic
+				has_trait = possessed
+				probably_unintelligent_trigger = yes
+				} }
+				save_scope_as = agent_in_question
+				add_character_flag = {
+					flag = been_lazy_spying
+					days = 1825
+				}
+			}
+		}
+	}
+
+	option = { # They might just stress the target out enough...
+		name = spy_ongoing.1006.a
+		scope:agent_in_question = {
+			duel = {
+				skill = intrigue
+				target = scope:target
+				20 = {		
+					desc = spy_ongoing.1006.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.75
+						min = 0
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1006.a.success
+							left_icon = scope:agent_in_question
+							scope:scheme = {
+								add_scheme_modifier = {
+									type = scheme_stressed_target_modifier
+								}
+							}
+							scope:target = {
+								add_stress = medium_stress_gain
+							}
+						}
+					}
+				}
+				10 = {		
+					desc = spy_ongoing.1006.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1006.a.failure
+							left_icon = scope:agent_in_question
+							if = {
+								limit = {
+									scope:scheme = {
+										is_scheme_exposed = no
+									}
+								}
+								scope:scheme = {
+									expose_scheme = yes
+								}
+							}
+							else = {						
+								scope:scheme = {
+									expose_scheme_agent = scope:agent_in_question
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # They'll have to be more careful!!
+		name = spy_ongoing.1006.b
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = scheme_agent_stressing_target_modifier
+				days = 1000
+			}
+		}
+	}
+	option = {
+		name = spy_ongoing.1006.c
+		trigger = {
+			scope:agent_in_question = {is_owner_courtier_or_vassal_or_below = yes}
+			}
+				scope:agent_in_question = {
+						forbid_from_scheme = scope:scheme
+						}
+				scope:scheme = { add_scheme_progress = scheme_progress_loss}
+				root = {
+						send_interface_toast = {
+							title = spy_ongoing.1004.toast.leaves
+							left_icon = scope:agent_in_question
+						}
+					}
+	}
+}
+
+#######################
+# Lover is doubting
+# 
+#######################
+spy_ongoing.1007 = { #by Mathilda Bjarnehed
+	type = letter_event
+	opening = spy_ongoing.1007.t
+	desc = spy_ongoing.1007.desc
+	sender = {
+		character = scope:lover
+		animation = worry
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	trigger = {
+		NOT = { scope:scheme = { has_variable = had_spy_ongoing_1007_event } }
+		scope:target = scope:target.court_owner
+		scope:scheme = {
+		scheme_progress > 2
+		NOT = {has_variable = you_have_been_exposed}
+			any_scheme_agent = {
+				AND = {
+					OR = {
+					has_relation_lover = scope:owner
+					has_relation_soulmate = scope:owner	
+					}
+					OR = {
+					is_consort_of = scope:target
+					is_close_or_extended_family_of = scope:target
+					}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+			}
+			is_scheme_exposed = no
+		}
+	}
+
+	weight_multiplier = {
+		base = 20
+		# Target isn't bold
+		modifier = {
+			add = {
+				value = scope:lover.ai_boldness
+				multiply = -0.01
+				min = -0.8
+			}
+		}
+		# Target doesn't like you that much
+		modifier = {
+			scope:lover = {
+				opinion = {
+					target = root
+					value <= medium_positive_opinion
+				}
+			}
+			add = 0.5
+		}
+		modifier = {
+			scope:lover = {
+				opinion = {
+					target = root
+					value <= low_positive_opinion
+				}
+			}
+			add = 0.5
+		}
+		modifier = {
+			scope:lover = { has_trait = impatient }
+			add = 1
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			set_variable = {
+				name = had_spy_ongoing_1007_event
+				value = yes
+			}
+		}
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					AND = {
+					OR = {
+						has_relation_lover = scope:owner
+						has_relation_soulmate = scope:owner	
+						}
+					OR = {
+						is_consort_of = scope:target
+						is_close_or_extended_family_of = scope:target
+						}
+					}
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+				save_scope_as = lover
+			}
+		}
+		hidden_effect = {
+			scope:lover = { add_stress = major_stress_impact_gain }
+		}
+	}
+
+
+	# Be brave
+	option = {
+		name = spy_ongoing.1007.a
+		
+		duel = {
+			skill = diplomacy
+			target = scope:lover
+
+			20 = { # Low because of opinion modifier
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2
+				}
+				opinion_modifier = {
+					who = scope:lover
+					opinion_target = root
+				}
+				desc = spy_ongoing.1007.a.success
+				send_interface_toast = {
+					left_icon = scope:lover
+					title = spy_ongoing.1007.a.success
+					reverse_add_opinion = {
+						target = scope:lover
+						modifier = trust_opinion
+						opinion = 10
+					}
+				}
+			}
+			40 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+				}
+				desc = spy_ongoing.1007.a.failure
+				send_interface_toast = {
+					left_icon = scope:lover
+					title = spy_ongoing.1007.a.failure
+					reverse_add_opinion = {
+						target = scope:lover
+						modifier = dismissive_opinion
+						opinion = -25
+					}
+				}
+			}
+		}
+	}
+
+	#No more communication
+	option = {
+		name = spy_ongoing.1007.b
+
+		reverse_add_opinion = {
+			target = scope:lover
+			modifier = hurt_opinion
+			opinion = -10
+		}
+
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = intrigue_scheme_no_contact_modifier
+			}
+		}
+
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+		}
+	}
+}
+
+##################################
+# Target is closing in on agent
+##################################
+
+#Suitable agent
+scripted_trigger spy_scheme_ongoing_1008_suitable_agent = {
+	NOT = { is_agent_exposed_in_scheme = scope:scheme }
+}
+
+spy_ongoing.1008 = {
+	type = character_event
+	title = spy_ongoing.1008.t
+	desc = spy_ongoing.1008.desc
+	theme = generic_intrigue_scheme
+	right_portrait = {
+		character = scope:agent
+		animation = stress
+	}
+	lower_left_portrait = scope:defender
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	trigger = {owner_spymaster_is_liege_or_court_owner_but_willing_to_participate = no
+		NOT = { scope:scheme.scheme_target.court_owner = root }
+		scope:owner = {NOT = { has_character_flag = had_intrigue_scheme_ongoing_1008_event }}
+		scope:scheme = {
+		NOT = {has_variable = you_have_been_exposed}
+			scheme_progress > 4
+			any_scheme_agent = {
+				intrigue >= 12
+				spy_scheme_ongoing_1008_suitable_agent = yes
+			}
+		}
+		scope:target = {
+			is_landed = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.5
+			scope:scheme = { scheme_number_of_exposed_agents > 0 }
+		}
+	}
+
+	immediate = {
+		scope:owner = {
+			add_character_flag = {
+				flag = had_intrigue_scheme_ongoing_1008_event
+				days = 1825
+			}
+		}
+		scope:scheme = {
+			scope:target = {
+				save_scope_as = defender
+			}
+			random_scheme_agent = {
+				limit = {
+					intrigue >= 12
+					spy_scheme_ongoing_1008_suitable_agent = yes
+				}
+				#A target of more value for the scheme is more likely to be picked
+				weight = {
+					base = 10
+					compare_modifier = {
+						trigger = { intrigue >= 12 }
+						value = intrigue
+						multiplier = 0.5
+						max = 10
+					}
+				}
+				save_scope_as = agent
+			}
+		}
+
+		#Is my spymaster currently spying in target's court?
+		if = {
+			limit = {
+				owner_spymaster_is_available_for_this_trigger = yes
+			}
+			cp:councillor_spymaster = {
+				save_scope_as = councillor
+			}
+		}
+	}
+
+	#Let them work it out on their own
+	option = {
+		name = spy_ongoing.1008.a
+		scope:agent = {
+			duel = {
+				skill = intrigue
+				value = 12
+				15 = {		
+					desc = spy_ongoing.1008.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = intrigue_scheme_ongoing.1008.a.success
+							left_icon = scope:agent
+							scope:agent = {
+								add_intrigue_skill = 1
+							}
+						}
+					}
+				}
+				30 = {		
+					desc = spy_ongoing.1008.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+						min = -14
+					}
+					root = {
+						send_interface_toast = {
+							title = spy_ongoing.1008.a.failure
+							left_icon = scope:agent
+							if = {
+								limit = {
+									scope:scheme = {
+										is_scheme_exposed = no
+									}
+								}
+								scope:scheme = {
+									expose_scheme = yes
+									expose_scheme_agent = scope:agent
+								}
+							}
+							else = {						
+								scope:scheme = {
+									expose_scheme_agent = scope:agent
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	#Their trail needs to end
+	option = {
+	trigger = {
+			scope:agent = {is_owner_courtier_or_vassal_or_below = yes}
+			}
+		name = spy_ongoing.1008.b
+		scope:agent = {
+			forbid_from_scheme = scope:scheme
+		}
+	}
+	
+	#Have your spymaster intervene
+	option = {
+		name = spy_ongoing.1008.c
+		trigger = {
+			owner_spymaster_is_available_for_this_trigger = yes
+		}
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = spymaster_doubled_efforts_modifier
+				days = 1000
+			}
+		
+		}
+	}
+}
+
+#############################
+# Spymaster accepts spying
+#############################
+
+scripted_trigger spy_scheme_ongoing_1009_spymaster_close_relation = {
+	scope:scheme = {
+		NOT = { scheme_is_character_agent = prev }
+	}
+	opinion = { target = scope:target value <= medium_negative_opinion }
+	is_ai = yes
+}
+
+spy_ongoing.1009 = {
+	type = character_event
+	title = spy_ongoing.1009.t
+	desc = spy_ongoing.1009.desc
+	theme = generic_intrigue_scheme
+	override_background = { reference = council_chamber }
+	left_portrait = {
+		character = scope:owner
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:spymaster
+		animation = shame
+	}
+	lower_center_portrait = scope:target
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		exists = scope:owner.cp:councillor_spymaster
+		target_is_spymaster_or_someone_close_trigger = yes
+		scope:owner.cp:councillor_spymaster = {
+		spy_scheme_ongoing_1009_spymaster_close_relation = yes
+		}
+		NOT = {scope:target = scope:owner.cp:councillor_spymaster}
+		scope:scheme = {
+			scheme_progress < 8
+			is_scheme_exposed = no
+			NOT = { has_variable = spymaster_accepted_participation }
+		}
+		
+	}
+
+	immediate = {
+		scope:scheme = {
+			set_variable = {
+				name = spymaster_accepted_participation
+				value = yes
+				days = 3650
+			}
+		}
+		scope:owner.cp:councillor_spymaster = {
+		save_scope_as = spymaster
+		}
+	}
+
+	option = { #thanks
+	name = spy_ongoing.1009.a
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = spymaster_willing_to_scheme_modifier
+				days = 3650
+				}
+			}
+		if = {
+			limit = {scope:spymaster = {
+					is_at_same_location = scope:target
+					NOR = {
+					this = scope:target.liege
+					this = scope:target.court_owner}
+					}
+				}
+			scope:spymaster = {
+			force_add_to_scheme = {
+				scheme = scope:scheme
+				years = 5
+				}
+			}
+		}	
+	}
+}
+
+###########################################
+# Marshal shares information
+# by Linnéa Thimrén
+###########################################
+
+
+spy_ongoing.1010 = {
+	type = character_event
+	title = spy_ongoing.1010.t
+	desc = spy_ongoing.1010.desc
+	theme = generic_intrigue_scheme
+	override_background = { reference = alley_night }
+	left_portrait = {
+		character = scope:marshal
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = scope:owner
+		animation = personality_rational
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:target = {
+			exists = cp:councillor_marshal
+			NOT = {has_character_flag = shared_military_info}
+			NOT = {is_vassal_or_below_of = scope:owner}
+		}
+		scope:scheme = {
+			NOT = { has_variable = had_marshal_scheme_event }
+			scheme_progress > 2
+			scheme_number_of_agents > 0
+			is_scheme_exposed = no
+			NOT = {has_variable = you_have_been_exposed}
+			scheme_is_character_agent = scope:target.cp:councillor_marshal
+		}
+		scope:target.cp:councillor_marshal = {
+			NOT = { is_agent_exposed_in_scheme = scope:scheme }
+			OR = {
+				has_trait = disloyal
+				will_not_betray = no
+				}
+		}
+	}
+
+	immediate = {
+		scope:target = {
+			cp:councillor_marshal = {
+				add_character_flag = {
+					flag = use_stealth_clothes
+					days = 1
+				}
+				add_character_flag = {
+					flag = shared_military_info
+					days = 3650
+				}
+				save_scope_as = marshal
+			}
+		}
+		scope:scheme = {
+			set_variable = {
+				name = had_marshal_scheme_event
+				value = yes
+				days = 3650
+			}
+		}
+		scope:marshal = {
+				character_met_effect = yes
+		}
+	}
+
+	# Pay
+	option = {
+		name = spy_ongoing.1010.a
+		custom_tooltip = {
+		text = spy_ongoing.1010.get_info
+		}
+		scope:owner = {
+		remove_short_term_gold = 150
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		scope:target = {
+			add_character_flag = {
+				flag = requested_military_info
+				years = 3
+			}
+		} 
+	}
+
+	option = { #Give hook
+		name = spy_ongoing.1010.b
+		custom_tooltip = {
+		text = spy_ongoing.1010.get_info
+		}
+		add_prestige = minor_prestige_loss
+		scope:marshal = {
+			add_hook = {
+			type = favor_hook
+			target = scope:owner
+			}
+		}
+		scope:target = {
+			add_character_flag = {
+				flag = requested_military_info
+				years = 3
+			}
+		} 
+		stress_impact = {
+			craven = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+		}
+	}
+	option = { #Refuse
+		name = spy_ongoing.1010.c
+		add_prestige = minor_prestige_gain
+		scope:marshal = {
+			add_opinion = {
+				target = scope:owner
+				modifier = respect_opinion
+				opinion = -20
+				}
+			forbid_from_scheme = scope:scheme
+			}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			honest = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+	option = { #Use Hook
+		name = spy_ongoing.1010.d
+		custom_tooltip = {
+		text = spy_ongoing.1010.get_info
+		}
+		trigger = {scope:owner = {has_usable_hook = scope:marshal}}
+				scope:owner = {
+				use_hook  = scope:marshal 
+				}
+			scope:target = {
+			add_character_flag = {
+				flag = requested_military_info
+				years = 3
+			}
+		} 
+	}
+}
+
+
+###############TARGET##############
+#################################
+# Trusting target trusts agent
+# by Petter Vilberg and Linnéa Thimrén
+#################################
+spy_ongoing.2001 = {
+	type = character_event
+	title = spy_ongoing.2001.t
+	desc = spy_ongoing.2001.desc
+	theme = generic_intrigue_scheme
+	override_background = { reference = corridor_day }
+	left_portrait = {
+		character = scope:agent_in_question
+		animation = throne_room_conversation_2
+	}
+	right_portrait = {
+		character = scope:target
+		animation = throne_room_conversation_4
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		scope:scheme.scheme_target = {
+			has_trait = trusting
+			age > 14
+			is_ai = yes
+		}
+		scope:scheme = {
+			is_scheme_exposed = no
+			any_scheme_agent = {
+				reverse_opinion = {
+					target = scope:scheme.scheme_target
+					value >= 30
+				}
+			}
+		}
+		NOT = { exists = scope:scheme.var:trusting_target_event }
+	}
+
+	immediate = {
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					#Try to find someone the target has a very high opinion of.
+					scope:scheme.scheme_target = {
+						opinion = {
+							target = prev
+							value >= 30
+						}
+					}
+				}
+				save_scope_as = agent_in_question
+			}
+		}
+		scope:scheme = {
+			set_variable = {
+				name = trusting_target_event
+				value = yes
+				days = 3650
+			}
+		}
+	}
+
+	# Offer good advice until the time is right.
+	option = {
+		name = spy_ongoing.2001.a
+		scope:scheme = {
+			add_scheme_modifier = { type = murder_trusted_advice_modifier days = 365 }
+		}
+	}
+
+	# You can make sure they will be in the right place at the right time.
+	option = {
+		name = spy_ongoing.2001.b
+		scope:scheme = {
+			add_scheme_progress = scheme_progress_gain
+		}
+	}
+}
+
+
+######################################
+# Drunkard target makes things easier
+######################################
+
+spy_ongoing.2002 = {
+	type = character_event
+	desc = spy_ongoing.2002.desc
+	theme = generic_intrigue_scheme
+	override_background = { reference = tavern }
+	left_portrait = {
+		character = scope:agent_in_question
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = drink
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {
+		is_available_adult = yes
+		scope:target = {
+			has_trait = drunkard
+			is_ai = yes
+		}
+		scope:scheme = {
+			scheme_number_of_agents > 0
+			is_scheme_exposed = no
+			NOT = { has_variable = had_drunkard_target_scheme_event }
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			set_variable = {
+				name = had_drunkard_target_scheme_event
+				value = yes
+				days = 3650
+			}
+			random_scheme_agent = {
+				save_scope_as = agent_in_question
+			}
+		}
+	}
+
+	# Encourage
+	option = {
+		name = spy_ongoing.2002.a
+		remove_short_term_gold = 50
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = scheme_impaired_judgment_modifier
+			}
+		}
+	}
+
+	# Make them feel safe in their crapulence.
+	option = {
+		name = spy_ongoing.2002.b
+		remove_short_term_gold = 50
+		scope:scheme = {
+			add_scheme_modifier = {	
+				type = scheme_drunkard_spy_target_modifier
+			}
+		}
+	}
+}
+
+###########################################################
+# EVENTS TRIGGERED BY SCHEME OWNER
+# 3001-3999
+###########################################################
+
+############################
+# Being Just Causes Stress
+############################
+spy_ongoing.3001 = {
+	type = character_event
+	title = intrigue_scheme_ongoing.3001.t
+	desc = intrigue_scheme_ongoing.3001.desc
+	theme = generic_intrigue_scheme
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	trigger = {
+		has_trait = just
+		NOT = { has_character_flag = had_intrigue_scheme_ongoing_1003_event }
+		scope:scheme = {
+			NOT = {
+				has_scheme_modifier = modifier_just_scheming_less
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_intrigue_scheme_ongoing_1003_event
+			days = 1825
+		}
+	}
+
+	#Keep scheming
+	option = {
+		name = intrigue_scheme_ongoing.3001.a
+		stress_impact = {
+			just = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 30
+			ai_value_modifier = {
+				ai_boldness = 1
+			}
+		}
+	}
+
+	#Back down a little
+	option = {
+		name = intrigue_scheme_ongoing.3001.b
+		
+		trait = just
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = modifier_just_scheming_less
+				days = 1825
+			}
+		}
+		stress_impact = {
+			stubborn = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+			}
+		}
+	}
+}
+
+
+############################
+# Being Honest Causes Stress
+############################
+spy_ongoing.3002 = {
+	type = character_event
+	title = spy_ongoing.3002.t
+	desc = spy_ongoing.3002.desc
+	theme = generic_intrigue_scheme
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	
+	trigger = {
+		has_trait = honest
+		NOT = { has_character_flag = had_intrigue_scheme_ongoing_1003_event }
+		scope:scheme = {
+			NOT = {
+				has_scheme_modifier = modifier_just_scheming_less
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_intrigue_scheme_ongoing_1003_event
+			days = 1825
+		}
+	}
+
+	#Keep scheming
+	option = {
+		name = intrigue_scheme_ongoing.3001.a
+		stress_impact = {
+			honest = medium_stress_impact_gain
+		}
+	}
+
+	#Back down a little
+	option = {
+		name = intrigue_scheme_ongoing.3001.b
+		trait = honest
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = modifier_just_scheming_less
+				days = 1825
+			}
+		}
+		stress_impact = {
+			stubborn = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+			}
+		}
+	}
+}
+
+######################
+# Discover a secret about someone else at target's court
+######################
+scripted_trigger spy_ongoing_3009_other_secret_target = {
+	any_secret = {
+		NOT = { is_known_by = scope:owner }
+	}
+	scope:scheme = {
+		NOT = { scheme_is_character_agent = prev }
+	}
+	NOT = {has_character_flag = had_spy_secret_revealed}
+}
+
+spy_ongoing.3009 = { #REVEAL A SECRET
+	type = character_event
+	hidden = yes
+	theme = generic_intrigue_scheme
+	
+	trigger = {
+		exists = scope:target.court_owner
+		scope:target.court_owner = {
+			OR = {
+				any_courtier_or_guest = {
+					spy_ongoing_3009_other_secret_target = yes
+				}
+					spy_ongoing_3009_other_secret_target = yes
+			}
+		}
+		scope:scheme = {
+			scheme_progress > 3
+			scheme_number_of_agents > 1
+			any_scheme_agent = {
+				NOT = { is_agent_exposed_in_scheme = scope:scheme }
+			}
+			scheme_power_resistance_difference > 0
+			is_scheme_exposed = no
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 1
+			scope:scheme = {
+				scheme_number_of_agents > 2
+				any_scheme_agent = {
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+			}
+		}
+		modifier = {
+			add = 1
+			NOT = {scope:target.court_owner = scope:owner}
+			scope:scheme = {
+				scheme_number_of_agents > 4
+				any_scheme_agent = {
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+			}
+		}
+		modifier = {
+			add = 1
+			NOT = {scope:target.court_owner = scope:owner}
+			scope:scheme = {
+				scheme_number_of_agents > 6
+				any_scheme_agent = {
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+			}
+		}
+		modifier = {
+			add = 2
+			NOT = {scope:target.court_owner = scope:owner}
+			scope:scheme = {
+				scheme_number_of_agents > 8
+				any_scheme_agent = {
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = {scope:target.court_owner = scope:owner}
+				scope:target.court_owner = {
+					spy_ongoing_3009_other_secret_target = yes
+				}
+			}
+			scope:target.court_owner = {
+				add_to_list = secret_holders
+			}
+		}
+		scope:target.court_owner = {
+			every_courtier_or_guest = {
+				limit = {
+					spy_ongoing_3009_other_secret_target = yes
+					NOT = { is_in_list = secret_holders }
+				}
+				add_to_list = secret_holders
+			}
+		}
+		random_list = {
+		25 = {
+		random_in_list = {
+			list = secret_holders
+			limit = {
+				NOT = {this = scope:target}
+				OR = {
+					is_close_or_extended_family_of = scope:target
+					is_consort_of = scope:target
+					has_relation_best_friend = scope:target
+					has_relation_friend = scope:target
+					has_secret_relation_lover = scope:target
+					has_secret_relation_soulmate = scope:target
+					has_relation_lover = scope:target
+					has_relation_soulmate = scope:target
+				}
+			}
+			save_scope_as = other_secret_target
+			random_secret = {
+				limit = { NOT = { is_known_by = scope:owner } }
+				save_scope_as = secret_to_reveal
+				}
+			}
+		}
+		15 = {
+		random_in_list = {
+			list = secret_holders
+			limit = {
+				NOT = {this = scope:target}
+			}
+			save_scope_as = other_secret_target
+			random_secret = {
+				limit = { NOT = { is_known_by = scope:owner } }
+				save_scope_as = secret_to_reveal
+				}
+			}
+		}
+		10 = {
+		random_in_list = {
+			list = secret_holders
+			limit = {
+				this = scope:target
+			}
+			alternative_limit = { 
+					is_alive = yes }
+			save_scope_as = other_secret_target
+			random_secret = {
+				limit = { NOT = { is_known_by = scope:owner } }
+				save_scope_as = secret_to_reveal
+				}
+			}
+		}
+		
+	}
+		scope:scheme = {
+			random_scheme_agent = {
+				limit = {
+					NOT = { is_agent_exposed_in_scheme = scope:scheme }
+				}
+				save_scope_as = agent
+			}
+		}
+		scope:secret_to_reveal = {
+			if = {
+				limit = {
+					exists = secret_target
+					NOT = { secret_target = scope:other_secret_target }
+				}
+				secret_target = {
+					save_scope_as = secret_target
+				}
+			}
+		}
+		if = {
+			limit = {target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes}
+				scope:owner.cp:councillor_spymaster = {
+					save_scope_as = sender
+				}
+			}
+	}
+	
+	# REVEAL THE SECRET
+	option = {
+			if = {
+			limit = {exists = scope:secret_to_reveal}
+		scope:owner = { #Reveal letter
+			trigger_event = spy_ongoing.3011
+			}
+		}
+	}
+}
+
+spy_ongoing.3011 = {
+	type = letter_event
+	opening = {
+		desc = spy_ongoing.3011.opening
+	}
+	desc = {
+		desc = spy_ongoing.3011.desc_opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+							secret_type = secret_cannibal
+					}
+				}
+				desc = spy_ongoing.3011.cannibal
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+							secret_type = secret_cannibal
+					}
+				}
+				desc = spy_ongoing.3011.cannibal_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+							secret_type = secret_homosexual
+					}
+				}
+				desc = spy_ongoing.3011.homosexual
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+							secret_type = secret_homosexual
+					}
+				}
+				desc = spy_ongoing.3011.homosexual_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+							secret_type = secret_deviant
+					}
+				}
+				desc = spy_ongoing.3011.deviant
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+							secret_type = secret_deviant
+					}
+				}
+				desc = spy_ongoing.3011.deviant_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+							secret_type = secret_lover
+					}
+				}
+				desc = spy_ongoing.3011.lover
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+							secret_type = secret_lover
+					}
+				}
+				desc = spy_ongoing.3011.lover_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+						OR = {
+							secret_type = secret_disputed_heritage
+							secret_type = secret_unmarried_illegitimate_child
+						}
+					}
+				}
+				desc = spy_ongoing.3011.bastardy
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+						OR = {
+							secret_type = secret_disputed_heritage
+							secret_type = secret_unmarried_illegitimate_child
+						}
+					}
+				}
+				desc = spy_ongoing.3011.bastardy_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+						OR = {
+							secret_type = secret_murder_attempt
+							secret_type = secret_murder
+						}
+					}
+				}
+				desc = spy_ongoing.3011.murder
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+						OR = {
+							secret_type = secret_murder_attempt
+							secret_type = secret_murder
+						}
+					}
+				}
+				desc = spy_ongoing.3011.murder_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+					scope:secret_to_reveal = {
+							secret_type = secret_incest
+					}
+				}
+				desc = spy_ongoing.3011.incest
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+					scope:secret_to_reveal = {
+							secret_type = secret_incest
+					}
+				}
+				desc = spy_ongoing.3011.incest_no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+				}
+				desc = spy_ongoing.3011.desc_no_spymaster
+			}
+			desc = spy_ongoing.3011.desc
+		}
+	}
+	sender = scope:sender
+	
+	option = {
+		name = spy_ongoing.3011.a
+		scope:secret_to_reveal = {
+			reveal_to = scope:owner
+		}
+		scope:other_secret_target = {
+				add_character_flag = {
+					flag = had_spy_secret_revealed
+					years = 5
+				}
+		}
+	}
+}
+
+#############PARTIALLY SPIED
+spy_ongoing.3012 = {
+	type = letter_event
+	opening = {
+		desc = spy_ongoing.3012.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {is_scheme_exposed = no}
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+				}
+				desc = spy_ongoing.3012.spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {is_scheme_exposed = yes}
+					target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes
+				}
+				desc = spy_ongoing.3012.spymaster_exposed
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {is_scheme_exposed = no}
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+				}
+				desc = spy_ongoing.3012.no_spymaster
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = {is_scheme_exposed = yes}
+					OR = {target_is_spymaster_or_someone_close_trigger = yes
+					owner_spymaster_is_available_for_this_trigger = no}
+				}
+				desc = spy_ongoing.3012.no_spymaster_exposed
+			}
+		}
+	}
+	sender = scope:sender
+	trigger = {
+		NOT = {scope:target.court_owner = scope:owner}
+		scope:target = {NOT = {has_character_flag = partially_spied}}
+		scope:scheme = {
+			scheme_number_of_agents > 0
+			scheme_power_resistance_difference > 0
+			scheme_progress > 2
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -1
+				scope:target = {has_character_flag = partially_spied}
+		}
+		modifier = {
+			add = 5
+			NOT = {scope:target.court_owner = scope:owner}
+				scope:target = {NOT = {has_character_flag = partially_spied}}
+			scope:scheme = {
+				scheme_progress > 2
+				scheme_number_of_agents > 1
+				
+			}
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {target_is_spymaster_or_someone_close_trigger = no
+					owner_spymaster_is_available_for_this_trigger = yes}
+				scope:owner.cp:councillor_spymaster = {
+					save_scope_as = sender
+				}
+			}
+		}
+	
+	option = {
+		name = spy_ongoing.3012.a
+		scope:target = {
+			add_character_flag = {
+			flag = partially_spied
+			years = 3
+			}
+		}
+	}
+}
+
+
+###########################################
+# Lower their courtiers opinion of them (making them more likely to become agents)
+# by Linnéa Thimrén
+###########################################
+scripted_trigger spy_ongoing_5015_target_courtier = {
+	NOT = {this = scope:target}
+	NOT = {this = scope:target.court_owner}
+	is_adult = yes
+	scope:scheme = {
+		NOT = { scheme_is_character_agent = prev }
+	}
+	NOR = {
+		is_close_family_of = scope:target
+		is_consort_of = scope:target
+		has_relation_best_friend = scope:target
+		has_relation_friend = scope:target
+		has_relation_lover = scope:target
+		has_secret_relation_lover = scope:target
+		has_relation_soulmate = scope:target
+		has_secret_relation_soulmate = scope:target
+	}
+}
+
+scripted_trigger spy_ongoing_5015_target_courtier_and_agents = {
+	NOT = {this = scope:target}
+	NOT = {this = scope:target.court_owner}
+	is_adult = yes
+	NOR = {
+		is_close_family_of = scope:target
+		is_consort_of = scope:target
+		has_relation_best_friend = scope:target
+		has_relation_friend = scope:target
+		has_relation_lover = scope:target
+		has_secret_relation_lover = scope:target
+		has_relation_soulmate = scope:target
+		has_secret_relation_soulmate = scope:target
+	}
+}
+
+spy_ongoing.5015 = {
+	type = character_event
+	title = spy_ongoing.5015.t
+	desc = {
+	desc = spy_ongoing.5015.opening
+		triggered_desc = {
+				trigger = { scope:target = scope:target.court_owner }
+				desc = spy_ongoing.5015.liege
+			}
+		triggered_desc = {
+				trigger = { NOT = {scope:target = scope:target.court_owner} }
+				desc = spy_ongoing.5015.not_liege
+			}
+		}
+	theme = intrigue
+	override_background = { reference = council_chamber }
+	right_portrait = {
+		character = scope:owner
+		animation = personality_cynical
+	}
+	left_portrait = {
+		character = scope:spymaster
+		animation = throne_room_chancellor
+	}
+	lower_center_portrait = scope:target
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {target_is_spymaster_or_someone_close_trigger = no
+		short_term_gold >= scope:owner.cp:councillor_spymaster.slander_gold_value
+		NOT = {scope:target.court_owner = scope:owner}
+		owner_spymaster_is_available_for_this_trigger = yes
+		scope:scheme = {
+			NOT = { has_variable = had_spy_slander_event }
+			is_scheme_exposed = no
+			scheme_progress < 8
+		}
+		OR = {scope:target = scope:target.court_owner
+		scope:target = {is_consort_of = scope:target.court_owner}
+		scope:target = {is_close_family_of = scope:target.court_owner}
+		}
+		scope:target.court_owner = {
+			NOT = {has_character_flag = court_had_spy_slander}
+			NOT = {has_character_modifier = caught_someone_spying_modifier}
+			any_courtier_or_guest = {
+				count > 3
+				spy_ongoing_5015_target_courtier = yes
+				
+			}
+		}
+		scope:owner = {
+			NOT = {has_character_flag = again_this_idea}
+			NOT = {has_character_flag = spymaster_had_spy_slander_twice}
+			
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -1
+			OR = {
+				scope:owner = {has_character_flag = spymaster_had_spy_slander_twice}
+				scope:scheme = {is_scheme_exposed = yes}
+				scope:scheme = {has_variable = had_spy_slander_event}
+				}
+		}
+		modifier = {
+			add = 1
+			scope:scheme = {
+				scheme_progress <= 4
+				scheme_number_of_agents <= 0
+				NOT = { has_variable = had_spy_slander_event }
+			}
+		}
+		modifier = {
+			add = 1
+			scope:scheme = {
+				scheme_progress <= 4
+				scheme_number_of_agents <= 1
+				NOT = { has_variable = had_spy_slander_event }
+			}
+		}
+		modifier = {
+			add = 1
+			scope:scheme = {
+				scheme_progress <= 3
+				scheme_number_of_agents <= 2
+				NOT = { has_variable = had_spy_slander_event }
+			}
+		}
+		modifier = {
+			add = 1
+			scope:scheme = {
+				scheme_progress <= 3
+				scheme_number_of_agents <= 3
+				NOT = { has_variable = had_spy_slander_event }
+			}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			set_variable = {
+				name = had_spy_slander_event
+				value = yes
+				days = 3650
+			}
+		}
+		scope:owner.cp:councillor_spymaster = {
+		save_scope_as = spymaster
+		}
+		scope:target.court_owner = {
+			save_scope_as = court_owner
+		}
+	}
+	
+		on_trigger_fail = {
+			trigger_event = spy_ongoing.5016
+			}
+
+	# Spread rumors about how bad they are!
+	option = {
+		name = spy_ongoing.5015.a
+		remove_short_term_gold = scope:owner.cp:councillor_spymaster.slander_gold_value
+		scope:owner = {
+			add_character_flag = {
+				flag = again_this_idea
+					years = 5 
+					}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+				flag = court_had_spy_slander
+					years = 7 
+					}
+			every_courtier_or_guest = {
+				custom = spy_ongoing_5015_every_courtier
+				limit = {
+					spy_ongoing_5015_target_courtier_and_agents = yes
+				}
+			custom_tooltip = {
+			text = spy_ongoing.5015.lower_opinion
+				add_opinion = {
+					target = scope:target
+					modifier = heard_bad_rumours_opinion
+					years = 5
+				}
+			}
+		}
+	}
+}
+	
+	#Nah
+	option = {
+		name = spy_ongoing.5015.b
+	}
+}
+
+###########################################
+# AGAIN THE SAME IDEA Lower their courtiers opinion of them (making them more likely to become agents)
+# by Linnéa Thimrén
+###########################################
+scripted_trigger spy_ongoing_5016_target_courtier = {
+	NOT = {this = scope:target}
+	NOT = {this = scope:target.court_owner}
+	is_adult = yes
+	scope:scheme = {
+		NOT = { scheme_is_character_agent = prev }
+	}
+	NOR = {
+		is_close_family_of = scope:target
+		is_consort_of = scope:target
+		has_relation_best_friend = scope:target
+		has_relation_friend = scope:target
+		has_relation_lover = scope:target
+		has_secret_relation_lover = scope:target
+		has_relation_soulmate = scope:target
+		has_secret_relation_soulmate = scope:target
+	}
+}
+
+scripted_trigger spy_ongoing_5016_target_courtier_and_agents = {
+	NOT = {this = scope:target}
+	NOT = {this = scope:target.court_owner}
+	is_adult = yes
+	NOR = {
+		is_close_family_of = scope:target
+		is_consort_of = scope:target
+		has_relation_best_friend = scope:target
+		has_relation_friend = scope:target
+		has_relation_lover = scope:target
+		has_secret_relation_lover = scope:target
+		has_relation_soulmate = scope:target
+		has_secret_relation_soulmate = scope:target
+	}
+}
+
+spy_ongoing.5016 = {
+	type = character_event
+	title = spy_ongoing.5016.t
+	desc = spy_ongoing.5016.desc
+	theme = intrigue
+	override_background = { reference = throne_room }
+	right_portrait = {
+		character = scope:owner
+		animation = eyeroll
+	}
+	left_portrait = {
+		character = scope:spymaster
+		animation = throne_room_conversation_2
+	}
+	lower_center_portrait = scope:target
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	trigger = {target_is_spymaster_or_someone_close_trigger = no
+		short_term_gold >= scope:owner.cp:councillor_spymaster.slander_gold_value
+		NOT = {scope:target.court_owner = scope:owner}
+		owner_spymaster_is_available_for_this_trigger = yes
+		scope:scheme = {
+			scheme_progress < 6
+			scheme_number_of_agents < 4
+			scheme_duration_days > 100
+			NOT = { has_variable = had_spy_slander_event }
+			is_scheme_exposed = no
+		}
+		OR = {scope:target = scope:target.court_owner
+		scope:target = {is_consort_of = scope:target.court_owner}
+		scope:target = {is_close_family_of = scope:target.court_owner}
+		}
+		scope:target.court_owner = {
+			NOT = {has_character_flag = court_had_spy_slander}
+			NOT = {has_character_modifier = caught_someone_spying_modifier}
+			any_courtier_or_guest = {
+				count > 3
+				spy_ongoing_5015_target_courtier = yes
+				
+			}
+		}
+		scope:owner = {
+		NOT = {has_character_flag = spymaster_had_spy_slander_twice}
+		}
+	}
+
+	immediate = {
+		scope:scheme = {
+			set_variable = {
+				name = had_spy_slander_event
+				value = yes
+				days = 3650
+			}
+		}
+		scope:owner.cp:councillor_spymaster = {
+		save_scope_as = spymaster
+		}
+		scope:target.court_owner = {
+			save_scope_as = court_owner
+		}
+	}
+		
+
+	# Spread rumors about how bad they are!
+	option = {
+		name = spy_ongoing.5016.a
+		remove_short_term_gold = scope:owner.cp:councillor_spymaster.slander_gold_value
+		scope:owner = {
+			add_character_flag = {
+				flag = spymaster_had_spy_slander_twice
+					years = 5 
+					}
+		}
+		scope:target.court_owner = {
+			add_character_flag = {
+				flag = court_had_spy_slander
+					years = 7 
+					}
+			every_courtier_or_guest = {
+				custom = spy_ongoing_5016_every_courtier
+				limit = {
+					spy_ongoing_5016_target_courtier_and_agents = yes
+				}
+				custom_tooltip = {
+			text = spy_ongoing.5015.lower_opinion
+				add_opinion = {
+					target = scope:target
+					modifier = heard_bad_rumours_opinion
+					years = 5
+				}
+			}
+		}
+	}
+}
+	
+	#Nah
+	option = {
+		name = spy_ongoing.5016.b
+	}
+}

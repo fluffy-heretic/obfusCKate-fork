@@ -1,0 +1,66 @@
+﻿
+military_ratio_calculus_value = {
+	value = 0
+	add = max_military_strength
+	divide = scope:recipient.combined_military_strength
+
+}
+
+military_ratio_value = {
+	value = 0
+	add = military_ratio_calculus_value
+	if = {
+		limit = { 
+				scope:actor.cp:councillor_marshal.ai_boldness > very_high_positive_ai_value}
+				multiply = 1.5
+		}
+	if = {
+		limit = { scope:actor.cp:councillor_marshal.ai_boldness < very_high_negative_ai_value}
+				multiply = 0.5
+		}
+	if = {
+		limit = { scope:actor.cp:councillor_marshal.ai_rationality < very_high_negative_ai_value}
+				multiply = 2.5
+		}
+	if = {
+		limit = { scope:recipient = {has_relation_rival = scope:actor.cp:councillor_marshal}
+				scope:actor.cp:councillor_marshal.ai_vengefulness > very_high_positive_ai_value}
+				multiply = 2
+		}
+	if = {
+		limit = { NOT = {scope:recipient.faith = scope:actor.cp:councillor_marshal.faith}
+				scope:actor.cp:councillor_marshal.ai_zeal > very_high_positive_ai_value}
+				multiply = 1.5
+		}
+}
+
+combined_military_strength = {
+	value = 0
+	add = max_military_strength 
+	every_ally = {add = max_military_strength}
+}
+
+your_martial_skill_value = {
+	value = 0
+	if = {
+	limit = { scope:actor.martial <= 32}
+	add = scope:actor.martial
+	divide = 2
+	}
+	if = {
+	limit = { scope:actor.martial > 32}
+	add = scope:actor.martial
+	}
+	
+}
+
+your_advisor_skill_value = {
+	value = 0
+	add = scope:actor.cp:councillor_marshal.martial	
+}
+
+your_combined_martial_skill_value = {
+	value = 0
+	add = your_martial_skill_value
+	add = your_advisor_skill_value
+}

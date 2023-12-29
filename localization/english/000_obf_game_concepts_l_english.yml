@@ -1,0 +1,19 @@
+﻿l_english:
+
+game_concept_reflect_their_opinion: "#e Reflect Their Opinion#!"
+game_concept_reflect_their_opinion_desc: "The expression of [over_12_years_old|E] characters portraits on main view will reflect their opinion on the player.\nSince face expressions on small portraits in lists would be difficult to check, those portraits will have the glow match their opinion about the player (Useful if you disable opinions and enable expressions)\n\nIf the option for face expressions to be based on opinion AND personality is enabled, characters with very low honorable personalities (Treacheous, Blackguard) will have always the same expression, regardless of their opinion of the player so the player can't "read them". Their small portrait will not change but you can enable the option for glow on portraits to match character opinions.\n\n\n#X Note: Although most do, there are very few graphics that don't have a certain expression animation available, defaulting to an idle expression#!"
+
+game_concept_over_12_years_old: "#e Teenager and Adult#!"
+game_concept_over_12_years_old_desc: "Characters above 12 years old"
+
+game_concept_rumours: "#e Rumours#!"
+game_concept_rumours_desc: "Within the world, a character's actions, traits, or demeanor may draw attention and become the subject of intriguing gossip. Rumors can spread about characters you haven't even met. Some rumors may carry neutral information, while others might have adverse effects. But keep in mind, rumors can be a mix of truths, exaggerations, or outright falsehoods. Rumors about rulers might be founded on their hidden secrets, and even a seemingly straightforward rumor could hint at the existence of a secret connected to it. And remember, even you, as a ruler, can find yourself amid the whispers of courtiers. The likelihood of negative rumors spreading increases with the number of rivals the character has.
+
+game_concept_glow_matches_opinion: "#e matches opinion#!"
+game_concept_glow_matches_opinion_desc: "The glow color on small portraits will match that character opinion about you. Useful if you choose to hide opinions but still want a basic idea of a character's opinion...except treacherous characters, who will not give away their opinion.
+
+game_concept_skill_masking: "#e mask skills#!"
+game_concept_skill_masking_desc: "Upon meeting new characters, their skill values may appear higher or lower than they truly are for a period of time.\nThis perception is not random since it is influenced by your own personality, education, and skills, as well as the character's demeanor and abilities. The intrigue factor also plays a role in this dynamic.\n\nHowever, if you possess a higher education than the character in a specific area, you will never be deceived or perceive their skill incorrectly in that domain. Nonetheless, some characters with modest personalities may still be underestimated, leading you to perceive their skills as less than they truly are."
+
+game_concept_meta_traits: "#e Meta traits#!"
+game_concept_meta_traits_desc: "Meta traits are traits, apart from personality traits, whose presence in a character cannot be objectively confirmed in real life. Thus, knowledge about traits such as #BOL fecund/sterile/barren, disloyal/loyal, or intelligence traits#! would rely on assumptions (ex: actions, number of children, skills and abilities).\n\n #italic Because in the Middle Ages there were no fertility or IQ tests backed by scientific evidence...#!\n\n#E Meta traits:#!\n-fecund\n-sterile/barren\n-loyal/disloyal\n-genius/intelligent/quick\n-slow/stupid/imbecile\n-shrewd/dull"

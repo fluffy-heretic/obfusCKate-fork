@@ -1,0 +1,207 @@
+﻿### befriend Power modifiers
+
+befriend_allies_modifier = {
+	icon = intrigue_positive
+	scheme_power = 8
+}
+
+befriend_emperor_modifier = {
+	icon = intrigue_positive
+	scheme_power = -2
+}
+
+befriend_king_modifier = {
+	icon = intrigue_positive
+	scheme_power = -2
+}  
+befriend_duke_modifier = {
+	icon = intrigue_positive
+	scheme_power = -2
+}
+befriend_count_modifier = {
+	icon = intrigue_positive
+	scheme_power = -2
+} 
+
+befriend_scheme_more_than_600000_modifier = {#12
+	icon = intrigue_positive
+	scheme_power = 12
+	scheme_success_chance = -20
+}
+
+befriend_scheme_less_than_600000_modifier = {#14
+	icon = intrigue_positive
+	scheme_power = 14
+	scheme_success_chance = -15
+}
+
+befriend_scheme_less_than_450000_modifier = {#18
+	icon = intrigue_positive
+	scheme_power = 4
+	scheme_success_chance = 5
+}
+
+befriend_scheme_less_than_300000_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 4
+	scheme_success_chance = 5
+}
+
+befriend_scheme_less_than_150000_modifier = {#27
+	icon = intrigue_positive
+	scheme_power = 5
+	scheme_success_chance = 5
+}
+
+befriend_scheme_less_than_140000_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 2
+}
+
+befriend_scheme_less_than_130000_modifier = {#31
+	icon = intrigue_positive
+	scheme_power = 2
+}
+
+befriend_scheme_less_than_120000_modifier = {#32
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_110000_modifier = {#33
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_100000_modifier = {#34
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_90000_modifier = {#35
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_80000_modifier = {#36
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_70000_modifier = {#37
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_60000_modifier = {#38
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_50000_modifier = {#39
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_40000_modifier = {#40
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_30000_modifier = {#41
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_20000_modifier = {#42
+	icon = intrigue_positive
+	scheme_power = 1
+}
+
+befriend_scheme_less_than_10000_modifier = {#82
+	icon = intrigue_positive
+	scheme_power = 82
+}
+ 
+### COURTSHIP MODIFIERS
+
+befriend_allies_courtship_perk_modifier = {
+	icon = intrigue_positive
+	scheme_power = 2.6
+}
+
+befriend_scheme_more_than_600000_courtship_perk_modifier = {#12
+	icon = intrigue_positive
+	scheme_power = 4
+}
+
+befriend_scheme_less_than_600000_courtship_perk_modifier = {#14
+	icon = intrigue_positive
+	scheme_power = 4.6
+}
+
+befriend_scheme_less_than_450000_courtship_perk_modifier = {#18
+	icon = intrigue_positive
+	scheme_power = 1.3
+}
+
+befriend_scheme_less_than_300000_courtship_perk_modifier = {#22
+	icon = intrigue_positive
+	scheme_power = 1.3
+}
+befriend_scheme_less_than_150000_courtship_perk_modifier = {#27
+	icon = intrigue_positive
+	scheme_power = 1.6
+}
+befriend_scheme_less_than_140000_courtship_perk_modifier = {#29
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+befriend_scheme_less_than_130000_courtship_perk_modifier = {#31
+	icon = intrigue_positive
+	scheme_power = 0.6
+}
+befriend_scheme_less_than_120000_courtship_perk_modifier = {#32
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_110000_courtship_perk_modifier = {#33
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_100000_courtship_perk_modifier = {#34
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_90000_courtship_perk_modifier = {#35
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_80000_courtship_perk_modifier = {#36
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_70000_courtship_perk_modifier = {#37
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_60000_courtship_perk_modifier = {#38
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_50000_courtship_perk_modifier = {#39
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_40000_courtship_perk_modifier = {#40
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_30000_courtship_perk_modifier = {#41
+	icon = intrigue_positive
+	scheme_power = 0.3
+}
+befriend_scheme_less_than_20000_courtship_perk_modifier = {#42
+	icon = intrigue_positive
+	scheme_power = 0.3
+}

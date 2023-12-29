@@ -1,0 +1,22 @@
+﻿l_english:
+#added by obfusCKate: Start
+SKILL_EXCELLENT:0 "Is considered #difficulty_easy Excellent#! in this field\n#weak ( between 25 and 40) #!"
+SKILL_EXPERT:0 "Is an #flatulence @duchy_icon!Expert#! in this field\n#weak ( between 41 and 64) #!"
+SKILL_GENIUS:0 "Is a #clickable @empire_icon!Renowned Genius#! in this field\n#weak ( 65 or above) #!"
+#added by obfusCKate: End
+
+#changed by obfusCKate: start
+BASE_COLON:0 " "
+SKILL_AND_LEVEL_VALUE:0 "$LEVEL$"
+SKILL_TERRIBLE:0 "Is seen as #N Terrible#! in this field\n#weak (4 or below) #!"
+SKILL_INCOMPETENT:0 "Is seen as #N Incompetent#! in this field\n#weak ( between 5 and 8) #!"
+SKILL_COMPETENT:0 "Is seen as #high Competent#! in this field\n#weak ( between 9 and 16) #!"
+SKILL_GOOD:0 "Is considered #P Good#! in this field\n#weak ( between 17 and 24) #!"
+
+BASE_AI_WILLINGNESS:0 "Base Willingness [SelectLocalization(GreaterThanOrEqualTo_int32( '(int32)$VALUE|0$' , '(int32)1' ),'positive_modifier','negative_modifier')]"
+BASE_AI_RELUCTANCE:0 "Base Reluctance [SelectLocalization(GreaterThanOrEqualTo_int32( '(int32)$VALUE|0$' , '(int32)1' ),'positive_modifier','negative_modifier')]"
+
+AI_VALUE_MODIFIER_COMPOUND:0 "Personality [SelectLocalization(GreaterThanOrEqualTo_int32( '(int32)$VALUE|0$' , '(int32)1' ),'positive_modifier','negative_modifier')]"
+OPINION_MTTH:1 "[CHARACTER.GetShortUINamePossessive] Opinion of [TARGET_CHARACTER.GetShortUIName]"
+ #changed by obfusCKate: End
+

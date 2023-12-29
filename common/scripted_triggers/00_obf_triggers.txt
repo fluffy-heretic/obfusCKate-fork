@@ -1,0 +1,765 @@
+﻿#Sway_triggers
+
+sway_target_of_interest_trigger = {
+	NOT = { this = $CHARACTER$ }
+	in_diplomatic_range = $CHARACTER$
+	is_capable_adult = yes
+	OR = {
+		has_relation_to = $CHARACTER$
+		# We are their liege
+		is_vassal_or_below_of = $CHARACTER$
+		dynasty = $CHARACTER$.dynasty
+		#House Head
+		trigger_if = {
+			limit = {
+				exists = $CHARACTER$.house.house_head
+			}
+			this = $CHARACTER$.house.house_head
+		}
+		AND = {
+			exists = $CHARACTER$.liege
+			this = $CHARACTER$.liege
+		}
+		AND = {
+			$CHARACTER$ = { target_is_liege_or_above = prev }
+			NOT = { this = $CHARACTER$.liege }
+		}
+		
+		trigger_if = {
+			limit = {
+				exists = $CHARACTER$.liege
+			}
+			OR = {is_vassal_or_below_of = $CHARACTER$.liege
+				is_heir_of = $CHARACTER$.liege
+				is_consort_of = $CHARACTER$.liege
+				is_child_of = $CHARACTER$.liege
+				is_councillor_of = $CHARACTER$.liege}	
+		}
+		trigger_if = {
+			limit = {
+				exists = $CHARACTER$.top_liege
+			}
+			OR = {is_vassal_or_below_of = $CHARACTER$.top_liege
+				is_heir_of = $CHARACTER$.top_liege
+				is_consort_of = $CHARACTER$.top_liege
+				is_councillor_of = $CHARACTER$.top_liege}	
+		}
+		
+		#They are the head of our faith
+		AND = {
+			exists = $CHARACTER$.faith.religious_head
+			this = $CHARACTER$.faith.religious_head
+		}
+		has_character_flag = had_rumour_spread_trait
+		has_character_flag = had_rumour_spread_excellent_commander
+		has_character_flag = had_rumour_spread_excellent_knight
+		has_character_flag = had_rumour_spread_intellectual
+		has_character_flag = partially_spied_3
+		has_character_flag = partially_spied_2
+		has_character_flag = partially_spied
+		AND = { 
+			OR = {is_a_faction_member = yes
+			is_a_faction_leader = yes}
+			OR = {is_liege_or_above_of = $CHARACTER$
+			is_vassal_or_below_of = $CHARACTER$
+			character_is_realm_neighbor = $CHARACTER$.liege
+			is_vassal_or_below_of = $CHARACTER$.liege}
+		}
+		
+		#Any count or higher
+		highest_held_title_tier >= tier_county
+
+		#Councillors, Spouse and Heirs of Duke and above
+		trigger_if = {
+			limit = {exists = liege
+					liege = {NOT = {this = $CHARACTER$.liege}}
+					liege = {highest_held_title_tier >= tier_duchy }}
+					OR = {	#this = liege
+							is_councillor_of = liege
+							is_consort_of = liege
+							is_heir_of = liege}
+				}
+		trigger_if = {
+			limit = {
+				is_ruler = yes
+			}
+			any_neighboring_top_liege_realm_owner = {
+						this = $CHARACTER$.top_liege
+			}
+		}
+		trigger_if = {
+			limit = {exists = liege
+					location = { squared_distance = { target = $CHARACTER$.capital_county value < squared_distance_medium}}}
+		OR = {
+		is_councillor_of = liege
+		is_heir_of = liege
+			}
+		}
+		
+		has_strong_claim_on = $CHARACTER$.primary_title
+		any_claim = {holder = $CHARACTER$}
+		any_claim = {exists = holder holder = { this = $CHARACTER$}}
+		any_claim = {exists = holder holder = {is_vassal_or_below_of = $CHARACTER$}}
+		any_claim = {exists = holder holder = {is_liege_or_above_of = $CHARACTER$}}
+		AND = {
+				$CHARACTER$ = {highest_held_title_tier >= tier_kingdom}
+			OR = {
+					any_claim = {exists = title_province title_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_huge }}}
+					any_claim = {exists = holder.capital_province holder.capital_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_huge }}}
+				}
+			}
+		AND = {
+				$CHARACTER$ = {highest_held_title_tier = tier_duchy}
+			OR = {
+					any_claim = {exists = title_province title_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_large }}}
+					any_claim = {exists = holder.capital_province holder.capital_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_large }}}
+				}
+			}
+		AND = {
+				$CHARACTER$ = {highest_held_title_tier = tier_county}
+			OR = {
+					any_claim = {exists = title_province title_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_medium }}}
+					any_claim = {exists = holder.capital_province holder.capital_province = { squared_distance = { target = $CHARACTER$.capital_province value <= squared_distance_medium }}}
+				}
+			}
+	}
+}
+
+
+#befriend triggers
+can_be_target_of_befriend_trigger = {
+		custom_tooltip = {
+		text = can_be_target_of_befriend_trigger_no
+		OR = {
+			target_knows_about_owner_trigger = yes 
+			target_has_heard_or_has_been_introduced_to_owner = yes
+		}
+	}
+}
+target_at_distance_trigger = {
+		OR = {
+			is_vassal_of = scope:target
+			scope:target = {is_vassal_of = scope:owner}
+			is_at_same_location = scope:target
+			scope:target.location = { squared_distance = { target = scope:owner.capital_county value < 70000}}
+			target_knows_about_owner_trigger = yes
+		}
+	}
+
+distance_from_owner_to_target = {
+		scope:target = {is_alive = yes}
+		scope:target = {is_alive = yes}
+		OR = {
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = yes 
+								highest_held_title_tier >= tier_county}
+					exists = scope:target.primary_title.title_capital_county}
+				scope:target.primary_title.title_capital_county = { squared_distance = { target = scope:owner.primary_title.title_capital_county value < $DISTANCE$}}
+				}
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = yes 
+								highest_held_title_tier = tier_barony}
+					exists = scope:target.primary_title.barony}
+				scope:target.primary_title.barony = { squared_distance = { target = scope:owner.primary_title.title_capital_county value < $DISTANCE$}}
+				}
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = no 
+								exists = court_owner}
+					exists = scope:target.court_owner.primary_title.title_capital_county}
+				scope:target.court_owner.primary_title.title_capital_county = { squared_distance = { target = scope:owner.primary_title.title_capital_county value < $DISTANCE$}}
+				}
+		}
+}
+
+distance_from_owner_to_target_more_than = {
+		scope:target = {is_alive = yes}
+		scope:target = {is_alive = yes}
+		OR = {
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = yes 
+								highest_held_title_tier >= tier_county}
+					exists = scope:target.primary_title.title_capital_county}
+				scope:target.primary_title.title_capital_county = { squared_distance = { target = scope:owner.primary_title.title_capital_county value >= $DISTANCE$}}
+				}
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = yes 
+								highest_held_title_tier = tier_barony}
+					exists = scope:target.primary_title.barony}
+				scope:target.primary_title.barony = { squared_distance = { target = scope:owner.primary_title.title_capital_county value >= $DISTANCE$}}
+				}
+		trigger_if = {
+			limit = {exists = scope:owner.primary_title.title_capital_county
+						scope:target = {
+								is_landed = no 
+								exists = court_owner}
+					exists = scope:target.court_owner.primary_title.title_capital_county}
+				scope:target.court_owner.primary_title.title_capital_county = { squared_distance = { target = scope:owner.primary_title.title_capital_county value >= $DISTANCE$}}
+				}
+		}
+}
+
+befriend_had_interaction = {
+#befriend
+OR = {
+				
+				has_opinion_modifier = {
+						modifier = ambitious_vs_content_befriend_opinion
+						target = scope:owner}
+				has_opinion_modifier = {
+						modifier = gluttonous_vs_temperate_befriend_opinion
+						target = scope:owner}
+				has_opinion_modifier = {
+						modifier = gregarious_vs_depressed_befriend_opinion
+						target = scope:owner}
+				has_opinion_modifier = {
+						modifier = trusting_vs_cynical_befriend_opinion
+						target = scope:owner}
+				has_opinion_modifier = {
+						modifier = cynical_vs_zealous_befriend_opinion
+						target = scope:owner}
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = faction_common_goals_opinion}
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = comrades_in_arms_opinion}
+				has_opinion_modifier = {
+						target = scope:target
+						modifier = faction_common_goals_opinion}
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = comrades_in_arms_opinion}
+				
+				scope:scheme = {has_scheme_modifier = auspicious_offering_modifier}
+				scope:scheme = {has_scheme_modifier = helpful_hand_modifier}
+		}
+				
+}
+befriend_had_contact = {
+#befriend
+OR = {
+				
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = shared_interests_opinion}
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = pleased_opinion}
+				has_opinion_modifier = {
+						target = scope:owner
+						modifier = befriend_common_enemy_opinion}
+				has_opinion_modifier = {
+					modifier = sent_charming_envoy_opinion
+					target = scope:owner}
+				has_opinion_modifier = {
+						target = scope:target
+						modifier = shared_interests_opinion}
+				scope:scheme = {has_scheme_modifier = befriend_offered_leniency_modifier}
+				scope:scheme = {has_scheme_modifier = offered_favor_modifier}	
+				scope:scheme = {has_scheme_modifier = befriend_indebted_myself_modifier}
+				scope:scheme = {has_scheme_modifier = befriend_gregarious_target_modifier}
+				scope:scheme = {has_scheme_modifier = befriend_bonding_over_rival_modifier}
+				scope:scheme = {has_scheme_modifier = settled_differences_modifier}
+				scope:scheme = {has_variable = had_gregarious_target_event}
+		}
+				
+}
+
+befriend_has_met = {
+#befriend
+OR = {
+				has_opinion_modifier = {
+					target = scope:owner
+					modifier = softening_disposition_opinion}
+				has_opinion_modifier = {
+					target = scope:owner
+					modifier = disappointed_opinion}
+				has_opinion_modifier = {
+					target = scope:target
+					modifier = disappointed_opinion}
+				scope:scheme = {has_scheme_modifier = befriend_making_effort_modifier}
+				scope:scheme = {has_scheme_modifier = befriend_envoy_working_modifier}
+	}
+				
+}
+feast_had_interaction = {
+#feast
+OR = {
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_saved_my_life_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_had_good_time_together_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = friendly_interaction}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_saved_my_life_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_had_good_time_together_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = friendly_interaction}
+		
+		}
+				
+}
+feast_had_contact = {
+#feast
+OR = {
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_life_of_the_party_opinion}	
+		has_opinion_modifier = {
+			target = root
+			modifier = annoyed_opinion}	
+		has_opinion_modifier = {
+			target = root
+			modifier = angry_opinion}
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = kindness_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = rude_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_common_burden_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = grateful_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_sided_with_me_in_my_fight_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_sided_against_me_in_my_fight_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = cruelty_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = falsely_accused}
+		has_opinion_modifier = {
+			target = root
+			modifier = shamed_me_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = relieved_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = disgusted_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = bored_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = humiliated_opinion}
+		
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = learned_at_feast_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_life_of_the_party_opinion}	
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = annoyed_opinion}	
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = angry_opinion}
+		
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = kindness_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = rude_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_common_burden_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = grateful_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_sided_with_me_in_my_fight_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_sided_against_me_in_my_fight_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = cruelty_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = falsely_accused}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = shamed_me_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = relieved_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = disgusted_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = bored_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = humiliated_opinion}
+		
+
+		}
+				
+}
+
+feast_slight_contact = {
+#feast
+OR = {
+		has_opinion_modifier = {
+			target = root
+			modifier = learned_at_feast_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_victimised_in_prank}
+		has_opinion_modifier = {
+			target = root
+			modifier = annoying_glutton_at_feast_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = feast_threw_up_on_me_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = learned_at_feast_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_victimised_in_prank}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = annoying_glutton_at_feast_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = feast_threw_up_on_me_opinion}
+		}
+}
+
+wedding_had_interaction = {
+#wedding
+OR = {
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = berated_child_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = opened_my_eyes_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = kept_my_secret_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = friendliness_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = unfriendly_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = berated_child_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = opened_my_eyes_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = kept_my_secret_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = friendliness_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = unfriendly_opinion}
+		
+		}
+				
+}
+wedding_had_contact = {
+#wedding
+OR = {
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = hate_opinion}	
+		has_opinion_modifier = {
+			target = root
+			modifier = angry_opinion}	
+		has_opinion_modifier = {
+			target = root
+			modifier = love_opinion}
+		
+		has_opinion_modifier = {
+			target = root
+			modifier = forgiven_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = unforgiven_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = impressed_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = disappointed_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = annoyed_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = flattered_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = threatened_opinion}
+			
+		has_opinion_modifier = {
+			target = root
+			modifier = suspicion_opinion}
+			
+		has_opinion_modifier = {
+			target = root
+			modifier = grateful_opinion}
+
+		
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = hate_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = angry_opinion}	
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = love_opinion}	
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = forgiven_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = unforgiven_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = impressed_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = disappointed_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = annoyed_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = flattered_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = threatened_opinion}
+			
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = suspicion_opinion}
+			
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = grateful_opinion}
+
+		}
+				
+}
+
+wedding_slight_contact = {
+#wedding
+OR = {
+		has_opinion_modifier = {
+			target = root
+			modifier = insult_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = impressed_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = bored_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = pious_opinion}
+		has_opinion_modifier = {
+			target = root
+			modifier = weak_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = insult_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = impressed_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = bored_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = pious_opinion}
+		reverse_has_opinion_modifier = {
+			target = root
+			modifier = weak_opinion}
+		}
+}
+
+
+has_potential_for_not_negative_rumour_trigger = {
+NOR = {has_character_flag = had_rumour_spread
+		has_character_flag = partially_spied_3}
+		is_capable_adult_ai = yes
+OR = { # The true good
+				
+		AND = { 
+		is_female = no
+		has_trait_rank = {
+					trait = education_martial
+					rank > 1
+				} 
+				martial >= 25}
+		AND = { 
+		is_female = no
+		obf_illusory_warrior = yes
+				martial >= 17}
+			
+				
+		AND = { has_trait_rank = {
+					trait = education_learning
+					rank > 2
+				} 
+				sum_of_all_skills_value >= 35
+				learning >= 25}
+		AND = { obf_illusory_scholar = yes
+				learning >= 17}
+		AND = {
+		OR = {
+			has_trait = intellect_good_2
+			has_trait = intellect_good_3
+			has_trait = shrewd}
+			sum_of_all_skills_value >= 45}
+			
+		likely_a_brave_fighter_trigger = yes
+		likely_pretend_brave_fighter_trigger = yes
+		
+				has_trait = beauty_good_3
+				has_trait = beauty_good_2
+				has_trait = beauty_bad_3
+
+	}	
+	
+}
+
+has_potencial_negative_rumour_to_spread = {
+OR = {
+		any_secret = {
+				OR = {
+				secret_type = secret_murder
+				secret_type = secret_deviant
+				secret_type = secret_homosexual
+				secret_type = secret_lover
+				secret_type = secret_incest
+				secret_type = secret_non_believer
+				secret_type = secret_witch
+				secret_type = secret_disputed_heritage
+				secret_type = secret_unmarried_illegitimate_child} 
+				}
+		
+			}
+}
+has_potencial_false_negative_rumour_to_spread = {
+OR = {
+		obf_capable_of_murder_trigger = yes
+		obf_likely_extramarital_affair_trigger = yes
+		obf_likely_hide_sexuality_trigger = yes
+		obf_likely_incest_trigger = yes
+		obf_likely_witch_trigger = yes
+		likely_cynic_non_believer_trigger = yes
+		likely_hide_heritage_trigger = yes
+			}
+}
+
+rumour_should_be_heard = {
+OR = {
+	scope:recipient = { has_character_flag = partially_spied_3}
+	scope:recipient = { has_relation_to = scope:actor}
+	scope:actor.top_liege = scope:recipient.top_liege
+	scope:actor = {
+		character_is_land_realm_neighbor = scope:recipient}
+	scope:actor.top_liege = {
+		character_is_land_realm_neighbor = scope:recipient.top_liege}
+	scope:actor.top_liege = {
+		character_is_land_realm_neighbor = scope:recipient.court_owner}
+	scope:actor.top_liege = {
+		top_liege = scope:recipient.court_owner.top_liege}
+	}
+
+}
+
+
+player_should_receive_warning = {
+	
+	OR = {
+	has_character_flag = partially_spied_3
+	any_player = {
+		has_relation_to = root}
+	any_player = {
+			top_liege = {
+		character_is_land_realm_neighbor = root.top_liege}
+		}
+	any_player = {
+		character_is_land_realm_neighbor = root}
+	any_player = {
+		top_liege = root.top_liege}}
+
+}
+
+is_absolutely_available = {
+is_busy_in_events_localised = yes
+	is_imprisoned = no
+	is_incapable = no
+	has_contagious_deadly_disease_trigger = no
+is_commanding_army = no
+is_travelling = no
+}
+
+
+does_not_like_character_trigger = {
+	OR = {
+		opinion = {
+			target = $CHARACTER$
+			value <= 25
+		}
+		has_relation_victim = $CHARACTER$
+		has_relation_bully = $CHARACTER$
+		has_relation_rival = $CHARACTER$
+		is_at_war_with = $CHARACTER$
+		is_imprisoned_by = $CHARACTER$
+		has_relation_potential_friend = $CHARACTER$
+		has_trait = disloyal
+	}
+	NOR = {
+		has_relation_lover = $CHARACTER$
+		has_relation_friend = $CHARACTER$
+		has_relation_crush = $CHARACTER$
+		
+	}
+}
