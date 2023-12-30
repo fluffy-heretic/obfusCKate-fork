@@ -929,7 +929,7 @@ types Lists
 				margin_bottom = 4
 				align = center
 				#Changed by ObfusCKate: Start
-				text = "[OBFSkill( Character.GetSkill('diplomacy'), Character )]"
+				text = "[OBFSkill( Character.GetSkill('diplomacy') )]"
 				#Changed by ObfusCKate: End
 				tooltip = "diplomacy_concept"
 			}
@@ -952,7 +952,7 @@ types Lists
 				margin_bottom = 4
 				align = center
 				#Changed by ObfusCKate: Start
-				text = "[OBFSkill( Character.GetSkill('martial'), Character )]"
+				text = "[OBFSkill( Character.GetSkill('martial') )]"
 				#Changed by ObfusCKate: End
 				tooltip = "martial_concept"
 			}
@@ -975,7 +975,7 @@ types Lists
 				margin_bottom = 4
 				align = center
 				#Changed by ObfusCKate: Start
-				text = "[OBFSkill( Character.GetSkill('stewardship'), Character )]"
+				text = "[OBFSkill( Character.GetSkill('stewardship') )]"
 				#Changed by ObfusCKate: End
 				tooltip = "stewardship_concept"
 			}
@@ -998,7 +998,7 @@ types Lists
 				margin_bottom = 4
 				align = center
 				#Changed by ObfusCKate: Start
-				text = "[OBFSkill( Character.GetSkill('intrigue'), Character )]"
+				text = "[OBFSkill( Character.GetSkill('intrigue') )]"
 				#Changed by ObfusCKate: End
 				tooltip = "intrigue_concept"
 			}
@@ -1021,7 +1021,7 @@ types Lists
 				margin_bottom = 4
 				align = center
 				#Changed by ObfusCKate: Start
-				text = "[OBFSkill( Character.GetSkill('learning'), Character )]"
+				text = "[OBFSkill( Character.GetSkill('learning') )]"
 				#Changed by ObfusCKate: End
 				tooltip = "learning_concept"
 			}

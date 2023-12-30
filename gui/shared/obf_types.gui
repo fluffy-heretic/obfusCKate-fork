@@ -130,7 +130,7 @@ types OBFTypes
 
 		text_single = {
 			name = "prowess_value"
-			text = "[OBFSkill( Character.GetProwess, Character )]"
+			text = "[OBFSkill( Character.GetProwess )]"
 			align = nobaseline
 		}
 	}

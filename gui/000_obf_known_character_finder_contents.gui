@@ -119,7 +119,7 @@ types Lists
 										parentanchor = center
 										margin_bottom = 4
 										align = center
-										text = "[OBFSkill( Character.GetProwess, Character )]"
+										text = "[OBFSkill( Character.GetProwess )]"
 										default_format = "#true_white"
 										visible = "[SkillsAreKnown]"
 										tooltip = "prowess_concept"

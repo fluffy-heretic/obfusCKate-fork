@@ -659,7 +659,7 @@ window = {
 														align = right|nobaseline
 														#changed by obfusCKate: Start
 														default_format = "#true_white"
-														text = "[OBFSkill( SkillItem.GetValue, Character )]"
+														text = "[OBFSkill( SkillItem.GetValue )]"
 														tooltip = "[OBFSkillBreakdown]"
 														#changed by obfusCKate: End
 													}

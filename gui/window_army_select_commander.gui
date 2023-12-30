@@ -307,7 +307,7 @@ types army_select_commander
 
 					text_single = {
 						name = "prowess_value"
-						text = "[OBFSkill( Character.GetProwess, Character )]"
+						text = "[OBFSkill( Character.GetProwess )]"
 						default_format = "#high"
 					}
 				}

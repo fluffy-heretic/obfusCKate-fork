@@ -413,9 +413,9 @@ macro = {
 }
 
 macro = {
-	description = "Generic macro for translating skill values into grades. arg1 is the int32 skill value, arg2 is the character"
-	definition = "OBFSkill(arg1,arg2)"
-	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'skill', MakeScopeValue( IntToFixedPoint( arg1 ) ) ).AddScope( 'target', arg2.MakeScope ).Custom( 'OBFSkill' )"
+	description = "Generic macro for translating skill values into grades. arg1 is the int32 skill value"
+	definition = "OBFSkill(arg1)"
+	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'skill', MakeScopeValue( IntToFixedPoint( arg1 ) ) ).AddScope( 'target', Character.MakeScope ).Custom( 'OBFSkill' )"
 }
 
 macro = {
@@ -427,7 +427,7 @@ macro = {
 macro = {
 	description = "Text macro for GUI elements that use SkillItem"
 	definition = "OBFSkillItemText"
-	replace_with = "OBFSkill( SkillItem.GetValue, Character )"
+	replace_with = "OBFSkill( SkillItem.GetValue )"
 }
 
 macro = {

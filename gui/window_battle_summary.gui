@@ -1911,7 +1911,7 @@ types BattleSummary
 					text_single = {
 						name = "prowess_value"
 						###Changed by ObfusCKate: Start
-						text = "[OBFSkill( Character.GetProwess, Character )]"
+						text = "[OBFSkill( Character.GetProwess )]"
 						###Changed by ObfusCKate: End
 						tooltip = "prowess"
 						size = { 22 0 }
@@ -1987,7 +1987,7 @@ types BattleSummary
 					text_single = {
 						name = "prowess_value"
 						###Changed by ObfusCKate: Start
-						text = "[OBFSkill( Character.GetProwess, Character )]"
+						text = "[OBFSkill( Character.GetProwess )]"
 						###Changed by ObfusCKate: End
 						tooltip = "prowess"
 						size = { 22 0 }
