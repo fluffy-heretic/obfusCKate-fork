@@ -106,7 +106,8 @@ types Lists
 							}
 
 							# Skills
-							hbox_skills_grid = {}
+							hbox_skills_grid_character_model = {}
+
 							hbox = {
 								name = "hbox_skills_grid_character_model"
 								
