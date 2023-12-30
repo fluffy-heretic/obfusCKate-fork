@@ -90,93 +90,8 @@ template character_opinion_tooltip {
 
 					block "ott_opinion_value_text"
 					{
-
-						raw_text = " "
-						margin = {40 0}
-						max_width = 150
-						
-						text_single = {
-			name = "Excellent"
-			visible = "[GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) 86')]"
-			text = "cooltip_opinion_excellent"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {6 -2}
-
-			}
-			text_single = {
-			name = "vgood"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) 85'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) 60'))]"
-			text = "cooltip_opinion_very_good"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {-1 -2}
-			}
-			text_single = {
-			name = "good"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) 59'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) 30'))]"
-			text = "cooltip_opinion_good"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {16 -2}
-			}
-			text_single = {
-			name = "decent"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) 29'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) 10'))]"
-			text = "cooltip_opinion_decent"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {10 -2}
-			}
-			text_single = {
-			name = "Neutral"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) 9'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) -9'))]"
-			text = "cooltip_opinion_neutral"
-			default_format = "#Y"
-			using = Font_Size_Medium
-			margin = {12 -2}
-			}
-			text_single = {
-			name = "poor"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) -10'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) -29'))]"
-			text = "cooltip_opinion_poor"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {20 -2}
-			}
-			text_single = {
-			name = "awful"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) -30'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) -59'))]"
-			text = "cooltip_opinion_awful"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {15 -2}
-			}
-			text_single = {
-			name = "terrible"
-			visible = "[And(LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) -60'),GreaterThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ), '(int32) -85'))]"
-			text = "cooltip_opinion_terrible"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {9 -2}
-			}
-			text_single = {
-			name = "abysmal"
-			visible = "[LessThanOrEqualTo_int32(Character.GetOpinionOf( GetPlayer ),'(int32) -86')]"
-			text = "cooltip_opinion_abysmal"
-			fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
-			default_format = "#true_white"
-			using = Font_Size_Medium
-			margin = {5 -2}
-			}
-						
+						text = "[OBFPlayerOpinion]"
+						fonttintcolor = "[Character.GetOpinionOfTint( GetPlayer )]"
 					}
 
 					default_format = "#true_white"
@@ -222,9 +137,9 @@ template character_opinion_tooltip {
 				text_multi = {
 					block "ott_opinion_breakdown_text"
 					{
-					#Changed by ObfusCKate: Start
-					visible = "[ShowOpinionBreakdown]"
-					#Changed by ObfusCKate: end
+						#Changed by ObfusCKate: Start
+						visible = "[ShowOpinionBreakdown]"
+						#Changed by ObfusCKate: end
 						text = "[Character.GetOpinionBreakdownText( GetPlayer )]"
 					}
 
@@ -738,8 +653,8 @@ types GameTooltipTypes
 
 									portrait_opinion = {
 										#Changed by ObfusCKate: Start
-									visible = "[ShowOpinion]"
-									#Changed by ObfusCKate: End
+										visible = "[ShowOpinion]"
+										#Changed by ObfusCKate: End
 									}
 
 									expand = {}
@@ -752,7 +667,7 @@ types GameTooltipTypes
 								
 								#Changed by obfusCKate:Start
 								text_multi = {
-								visible = "[PlayerShouldKnowAge]"
+									visible = "[PlayerShouldKnowAge]"
 									name = "character_name"
 									text = "CHARACTER_TT_NAME_AGE"
 									default_format = "#high"
@@ -779,7 +694,7 @@ types GameTooltipTypes
 									icon = {
 										#Changed by ObfusCKate: Start
 										visible = "[PlayerKnowsHealth]"
-									#Changed by ObfusCKate: End
+										#Changed by ObfusCKate: End
 										size = { 23 23 }
 										framesize = { 60 60 }
 										frame = "[Character.GetHealthIconFrame]"
@@ -825,7 +740,7 @@ types GameTooltipTypes
 							text_single = {
 								#Changed by ObfusCKate: Start
 								visible = "[ShouldKnowPersonality]"
-							#Changed by ObfusCKate: End
+								#Changed by ObfusCKate: End
 								text = "[Character.GetAIPersonalityNoTooltip]"
 								default_format = "#L"
 								tooltip = "AI_PERSONALITY_TT"
@@ -852,8 +767,8 @@ types GameTooltipTypes
 
 								icon = {
 									#Changed by ObfusCKate: Start
-								visible = "[And(Character.IsAdult, And(Not(SpyInteractionShown), Not(Character.IsFemale)))]"
-								#Changed by ObfusCKate: End
+									visible = "[And(Character.IsAdult, And(Not(SpyInteractionShown), Not(Character.IsFemale)))]"
+									#Changed by ObfusCKate: End
 									size = { 20 20 }
 									framesize = { 40 40 }
 									frame = "[Character.GetSexualityFrame]"
@@ -863,8 +778,8 @@ types GameTooltipTypes
 
 								icon = {
 									#Changed by ObfusCKate: Start
-								visible = "[And(Character.IsAdult, And(Not(SpyInteractionShown), Character.IsFemale))]"
-							#Changed by ObfusCKate: End
+									visible = "[And(Character.IsAdult, And(Not(SpyInteractionShown), Character.IsFemale))]"
+									#Changed by ObfusCKate: End
 									size = { 20 20 }
 									framesize = { 40 40 }
 									frame = "[Character.GetSexualityFrame]"
@@ -2086,9 +2001,9 @@ template unit_icon_item_tooltip {
 				}
 
 				hbox = {
-				#changed by obfusCKate: start
-				visible = no
-				#changed by obfusCKate: End
+					#changed by obfusCKate: start
+					visible = no
+					#changed by obfusCKate: End
 					tooltip = "[Character.GetCommanderAdvantageDesc]"
 					icon = {
 						name = "skill_icon"
@@ -3379,6 +3294,7 @@ template dynasty_house_tooltip {
 			text = [house|E]
 		}
 		blockoverride "extra_data" {
+
 			cooltip_paragraph = {
 				name = "my_house"
 				visible = "[DynastyHouse.IsPlayerMember]"
@@ -6333,7 +6249,7 @@ template struggle_tooltip {
 									text = "STRUGGLE_TT_PHASE_PROGRESS"
 
 									tooltipwidget = {
-										using = struggle_phase_tooltip
+										struggle_phase_tooltip = {}
 									}
 								}
 

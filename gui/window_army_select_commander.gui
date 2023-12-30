@@ -222,9 +222,9 @@ types army_select_commander
 			spacing = 5
 
 			hbox = {
-			#changed by obfusCKate: Start
+				#changed by obfusCKate: Start
 				tooltip = "COMMANDER_ADVANTAGE_TT"
-			#changed by obfusCKate: End
+				#changed by obfusCKate: End
 				icon = {
 					name = "skill_icon"
 					texture = "gfx/interface/icons/icon_commander_advantage.dds"
@@ -307,7 +307,7 @@ types army_select_commander
 
 					text_single = {
 						name = "prowess_value"
-						text = "SKILL_PROWESS_VALUES_KNOWN_CHARACTER"
+						text = "[OBFSkill( Character.GetProwess, Character )]"
 						default_format = "#high"
 					}
 				}

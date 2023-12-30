@@ -26,21 +26,21 @@ template character_age_or_death_text
 		block "character_age"
 		{
 			text_single = {
-			visible = "[PlayerShouldKnowAge]"
+				visible = "[PlayerShouldKnowAge]"
 				text = "[Character.GetAge]"
 				align = nobaseline
 			}
 			text_single = {
-			visible = "[PlayerKnowsApproxAge]"
+				visible = "[PlayerKnowsApproxAge]"
 				raw_text = "CHARACTER_AGE_ACQUAINTANCE"
 				align = nobaseline
 			}
 		}
 
 		icon = {
-		#Changed by obfusCKate; Start
+			#Changed by obfusCKate; Start
 			visible = "[PlayerKnowsHealth]"
-		#Changed by obfusCKate; End
+			#Changed by obfusCKate; End
 			size = { 23 23 }
 			framesize = { 60 60 }
 			frame = "[Character.GetHealthIconFrame]"
@@ -104,7 +104,9 @@ types Lists
 	## Character Skill Value
 
 	type widget_skill_item_no_icon = widget {
-		tooltip = "SKILL_ITEM_TOOLTIP"
+		#Changed by obfusCKate; Start
+		tooltip = "[OBFSkillItemTooltip]"
+		#Changed by obfusCKate; End
 		using = tooltip_se
 		size = { 32 25 }
 
@@ -113,7 +115,9 @@ types Lists
 			parentanchor = center
 			margin_bottom = 4
 			align = center
-			text = "[SkillItem.GetValue]"
+			#Changed by obfusCKate; Start
+			text = "[OBFSkillItemText]"
+			#Changed by obfusCKate; End
 		}
 
 		background = {
@@ -245,7 +249,6 @@ types Lists
 									datamodel = "[CharacterListItem.GetTraits]"
 									flipdirection = yes
 									size = { 150 60 }
-
 									maxhorizontalslots = 8
 									maxverticalslots = 1
 
@@ -253,7 +256,7 @@ types Lists
 										container = {
 											#Changed by ObfusCKate: Start
 											visible = "[ShowAllTraitsInList]"
-										#Changed by ObfusCKate: End
+											#Changed by ObfusCKate: End
 
 											icon_trait = {
 												blockoverride "icon_size"
@@ -291,589 +294,20 @@ types Lists
 							margin_top = 5
 							margin_right = 5
 
-							#HUGE change by obfusCKate: Start
-							
-						hbox = {##
-								name = "obf_hbox_skills"
-								minimumsize = { 160 0 }
-								
-								widget = {#DIPLO FOR KNOWN
-									size = { 32 32 }
-										
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryDiplomatCharacterIsKnown)))]"
+							# Skills
+							hbox = {
+								name = "skills_grid"
+								layoutpolicy_horizontal = expanding
 
-									text_single = {
-										name = "value_diplo"
-										text = "SKILL_DIPLOMACY_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
+								expand = {}
 
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
+								datamodel = "[CharacterListItem.GetSkillItems]"
+								margin_right = 5
+
+								item = {
+									widget_skill_item_no_icon = {}
 								}
-								widget = {#DIPLO FOR HUMBLE
-									size = { 32 32 }
-										
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_diplo_humble"
-										text = "SKILL_DIPLOMACY_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR ILLUSORY DIPLOMAT
-									size = { 32 32 }
-										
-									visible = "[IllusoryDiplomatCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_DIPLOMAT_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_diplomacy_no_related"
-										text = "SKILL_DIPLOMACY_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_diplomacy_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryWarriorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_martial"
-										text = "SKILL_MARTIAL_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_martial_humble"
-											text = "SKILL_MARTIAL_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 2   
-											}
-										}
-									}
-								widget = {#MARTIAL FOR ILLUSORY WARRIOR
-									size = { 32 32 }
-										
-									visible = "[IllusoryWarriorCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_WARRIOR_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#Martial FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_martial_no_related"
-										text = "SKILL_MARTIAL_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#MARTIAL FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_martial_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryAdministratorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_stewardship"
-										text = "SKILL_STEWARDSHIP_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_stewardship_humble"
-											text = "SKILL_STEWARDSHIP_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryAdministratorCharacterIsKnown]"
-
-											text_single = {
-												name = "value_illusory_administrator"
-												text = "SKILL_VALUES_ILLUSORY_ADMINISTRATOR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3
-											}
-										}
-									}
-									widget = {#Stewardship FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_stewardship_no_related"
-										text = "SKILL_STEWARDSHIP_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								widget = {#STEWARDSHIP FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_stewardship_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryIntriguerCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_intrigue"
-										text = "SKILL_INTRIGUE_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_intrigue_humble"
-										text = "SKILL_INTRIGUE_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4  
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-											
-										visible = "[IllusoryIntriguerCharacterIsKnown]"
-
-										text_single = {
-											name = "value_illusory_intriguer"
-											text = "SKILL_VALUES_ILLUSORY_INTRIGUER_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4
-										}
-									}
-								}
-								widget = {#Intrigue FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_intrigue_no_related"
-										text = "SKILL_INTRIGUE_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {#Intrigue FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_intrigue_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryScholarCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_learning"
-										text = "SKILL_LEARNING_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_learning_humble"
-											text = "SKILL_LEARNING_VALUES_HUMBLE_CHARACTER" 
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryScholarCharacterIsKnown]"
-											
-											text_single = {
-												name = "value_illusory_scholar"
-												text = "SKILL_VALUES_ILLUSORY_SCHOLAR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5
-											}
-										}
-									}
-									widget = {#lEARNING FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-									
-									text_single = {
-										name = "value_learning_no_related"
-										text = "SKILL_LEARNING_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {#Learning FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-									
-									text_single = {
-										name = "value_learning_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-									
 							}
-							
-							
-						#HUGE change by obfusCKate: End	
-							
 
 							block "extra_skills" {}
 
@@ -944,7 +378,7 @@ types Lists
 										layoutpolicy_vertical = expanding
 
 										margin_bottom = 20
-										
+
 										expand = {}
 
 										hbox = {
@@ -1097,588 +531,7 @@ types Lists
 							}
 
 							# Skills
-							#HUGE change by obfusCKate: Start
-							
-						hbox = {##
-								name = "obf_hbox_skills"
-								minimumsize = { 160 0 }
-								
-								widget = {#DIPLO FOR KNOWN
-									size = { 32 32 }
-										
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryDiplomatCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_diplo"
-										text = "SKILL_DIPLOMACY_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR HUMBLE
-									size = { 32 32 }
-										
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_diplo_humble"
-										text = "SKILL_DIPLOMACY_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR ILLUSORY DIPLOMAT
-									size = { 32 32 }
-										
-									visible = "[IllusoryDiplomatCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_DIPLOMAT_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_diplomacy_no_related"
-										text = "SKILL_DIPLOMACY_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_diplomacy_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryWarriorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_martial"
-										text = "SKILL_MARTIAL_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_martial_humble"
-											text = "SKILL_MARTIAL_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 2   
-											}
-										}
-									}
-								widget = {#MARTIAL FOR ILLUSORY WARRIOR
-									size = { 32 32 }
-										
-									visible = "[IllusoryWarriorCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_WARRIOR_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#Martial FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_martial_no_related"
-										text = "SKILL_MARTIAL_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#MARTIAL FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_martial_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryAdministratorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_stewardship"
-										text = "SKILL_STEWARDSHIP_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_stewardship_humble"
-											text = "SKILL_STEWARDSHIP_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryAdministratorCharacterIsKnown]"
-
-											text_single = {
-												name = "value_illusory_administrator"
-												text = "SKILL_VALUES_ILLUSORY_ADMINISTRATOR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3
-											}
-										}
-									}
-									widget = {#Stewardship FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_stewardship_no_related"
-										text = "SKILL_STEWARDSHIP_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								widget = {#STEWARDSHIP FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_stewardship_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryIntriguerCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_intrigue"
-										text = "SKILL_INTRIGUE_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_intrigue_humble"
-										text = "SKILL_INTRIGUE_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4  
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-											
-										visible = "[IllusoryIntriguerCharacterIsKnown]"
-
-										text_single = {
-											name = "value_illusory_intriguer"
-											text = "SKILL_VALUES_ILLUSORY_INTRIGUER_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4
-										}
-									}
-								}
-								widget = {#Intrigue FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_intrigue_no_related"
-										text = "SKILL_INTRIGUE_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {#Intrigue FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_intrigue_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryScholarCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_learning"
-										text = "SKILL_LEARNING_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_learning_humble"
-											text = "SKILL_LEARNING_VALUES_HUMBLE_CHARACTER" 
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryScholarCharacterIsKnown]"
-											
-											text_single = {
-												name = "value_illusory_scholar"
-												text = "SKILL_VALUES_ILLUSORY_SCHOLAR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5
-											}
-										}
-									}
-									widget = {#lEARNING FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-									
-									text_single = {
-										name = "value_learning_no_related"
-										text = "SKILL_LEARNING_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {#Learning FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-									
-									text_single = {
-										name = "value_learning_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-									
-							}
-							
-							
-						#HUGE change by obfusCKate: End	
+							hbox_skills_grid = {}
 						}
 
 						### BOTTOM ROW ###
@@ -1743,7 +596,7 @@ types Lists
 													icon_trait = {
 														#Changed by ObfusCKate: Start
 														visible = "[ShowAllTraitsInList]"
-													#Changed by ObfusCKate: End
+														#Changed by ObfusCKate: End
 
 														blockoverride "icon_size"
 														{
@@ -2075,7 +928,9 @@ types Lists
 				parentanchor = center
 				margin_bottom = 4
 				align = center
-				text = "[Character.GetSkill('diplomacy')]"
+				#Changed by ObfusCKate: Start
+				text = "[OBFSkill( Character.GetSkill('diplomacy'), Character )]"
+				#Changed by ObfusCKate: End
 				tooltip = "diplomacy_concept"
 			}
 
@@ -2096,7 +951,9 @@ types Lists
 				parentanchor = center
 				margin_bottom = 4
 				align = center
-				text = "[Character.GetSkill('martial')]"
+				#Changed by ObfusCKate: Start
+				text = "[OBFSkill( Character.GetSkill('martial'), Character )]"
+				#Changed by ObfusCKate: End
 				tooltip = "martial_concept"
 			}
 
@@ -2117,7 +974,9 @@ types Lists
 				parentanchor = center
 				margin_bottom = 4
 				align = center
-				text = "[Character.GetSkill('stewardship')]"
+				#Changed by ObfusCKate: Start
+				text = "[OBFSkill( Character.GetSkill('stewardship'), Character )]"
+				#Changed by ObfusCKate: End
 				tooltip = "stewardship_concept"
 			}
 
@@ -2138,7 +997,9 @@ types Lists
 				parentanchor = center
 				margin_bottom = 4
 				align = center
-				text = "[Character.GetSkill('intrigue')]"
+				#Changed by ObfusCKate: Start
+				text = "[OBFSkill( Character.GetSkill('intrigue'), Character )]"
+				#Changed by ObfusCKate: End
 				tooltip = "intrigue_concept"
 			}
 
@@ -2159,7 +1020,9 @@ types Lists
 				parentanchor = center
 				margin_bottom = 4
 				align = center
-				text = "[Character.GetSkill('learning')]"
+				#Changed by ObfusCKate: Start
+				text = "[OBFSkill( Character.GetSkill('learning'), Character )]"
+				#Changed by ObfusCKate: End
 				tooltip = "learning_concept"
 			}
 
@@ -2173,587 +1036,20 @@ types Lists
 			}
 		}
 	}
-			#HUGE change by obfusCKate: Start
+
 	type hbox_skills_grid = hbox {
 		name = "skills_grid"
-								minimumsize = { 160 0 }
-								
-								widget = {#DIPLO FOR KNOWN
-									size = { 32 32 }
-										
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryDiplomatCharacterIsKnown)))]"
+		minimumsize = { 160 0 }
 
-									text_single = {
-										name = "value_diplo"
-										text = "SKILL_DIPLOMACY_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
+		block "skills_datamodel"
+		{
+			datamodel = "[CharacterListItem.GetSkillItems]"
+		}
 
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR HUMBLE
-									size = { 32 32 }
-										
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_diplo_humble"
-										text = "SKILL_DIPLOMACY_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR ILLUSORY DIPLOMAT
-									size = { 32 32 }
-										
-									visible = "[IllusoryDiplomatCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_DIPLOMAT_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_diplomacy_no_related"
-										text = "SKILL_DIPLOMACY_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {#DIPLO FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_diplomacy_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 1
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryWarriorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_martial"
-										text = "SKILL_MARTIAL_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_martial_humble"
-											text = "SKILL_MARTIAL_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 2   
-											}
-										}
-									}
-								widget = {#MARTIAL FOR ILLUSORY WARRIOR
-									size = { 32 32 }
-										
-									visible = "[IllusoryWarriorCharacterIsKnown]"
-
-									text_single = {
-										name = "value_illusory_diplomat"
-										text = "SKILL_VALUES_ILLUSORY_WARRIOR_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#Martial FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_martial_no_related"
-										text = "SKILL_MARTIAL_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-								widget = {#MARTIAL FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_martial_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 2
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryAdministratorCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_stewardship"
-										text = "SKILL_STEWARDSHIP_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_stewardship_humble"
-											text = "SKILL_STEWARDSHIP_VALUES_HUMBLE_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryAdministratorCharacterIsKnown]"
-
-											text_single = {
-												name = "value_illusory_administrator"
-												text = "SKILL_VALUES_ILLUSORY_ADMINISTRATOR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 3
-											}
-										}
-									}
-									widget = {#Stewardship FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_stewardship_no_related"
-										text = "SKILL_STEWARDSHIP_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-								widget = {#STEWARDSHIP FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_stewardship_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 3
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryIntriguerCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_intrigue"
-										text = "SKILL_INTRIGUE_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[HumbleCharacterIsKnown]"
-
-									text_single = {
-										name = "value_intrigue_humble"
-										text = "SKILL_INTRIGUE_VALUES_HUMBLE_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4  
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-											
-										visible = "[IllusoryIntriguerCharacterIsKnown]"
-
-										text_single = {
-											name = "value_illusory_intriguer"
-											text = "SKILL_VALUES_ILLUSORY_INTRIGUER_CHARACTER"
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-
-										background = {
-											name = "skill_icon_bg"
-											texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-											framesize = { 70 26 }
-											margin = { 10 0 }
-											frame = 4
-										}
-									}
-								}
-								widget = {#Intrigue FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-
-									text_single = {
-										name = "value_intrigue_no_related"
-										text = "SKILL_INTRIGUE_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-								widget = {#Intrigue FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-
-									text_single = {
-										name = "value_intrigue_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 4
-									
-										}
-									}
-								}
-
-								widget = {
-									size = { 32 32 }
-									
-									visible = "[And(SkillsAreKnown, Not(Or(HumbleCharacterIsKnown, IllusoryScholarCharacterIsKnown)))]"
-
-									text_single = {
-										name = "value_learning"
-										text = "SKILL_LEARNING_VALUES_KNOWN_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_OB"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {
-										size = { 32 32 }
-										
-										visible = "[HumbleCharacterIsKnown]"
-
-										text_single = {
-											name = "value_learning_humble"
-											text = "SKILL_LEARNING_VALUES_HUMBLE_CHARACTER" 
-											tooltip = "SKILL_ITEM_TOOLTIP_OB"
-											parentanchor = center
-										margin_bottom = 4
-										align = center
-										
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5   
-											}
-										}
-									}
-									widget = {
-											size = { 32 32 }
-												
-											visible = "[IllusoryScholarCharacterIsKnown]"
-											
-											text_single = {
-												name = "value_illusory_scholar"
-												text = "SKILL_VALUES_ILLUSORY_SCHOLAR_CHARACTER"
-												tooltip = "SKILL_ITEM_TOOLTIP_OB"
-												parentanchor = center
-										margin_bottom = 4
-										align = center
-
-											background = {
-												name = "skill_icon_bg"
-												texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-												framesize = { 70 26 }
-												margin = { 10 0 }
-												frame = 5
-											}
-										}
-									}
-									widget = {#lEARNING FOR NO RELATED
-									size = { 32 32 }
-										
-									visible = "[SkillsRoughlyKnown]"
-									
-									text_single = {
-										name = "value_learning_no_related"
-										text = "SKILL_LEARNING_VALUES_NO_RELATED_CHARACTER"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-								widget = {#Learning FOR UNKNOWN
-									size = { 32 32 }
-										
-									visible = "[SkillsNotKnown]"
-									
-									text_single = {
-										name = "value_learning_unknown"
-										text = "SKILL_UNKNOWN"
-										tooltip = "SKILL_ITEM_TOOLTIP_NO_RE_NO_SEC"
-										parentanchor = center
-										margin_bottom = 4
-										align = center
-
-									background = {
-										name = "skill_icon_bg"
-										texture = "gfx/interface/window_character/character_view_skills_bg.dds"
-										framesize = { 70 26 }
-										margin = { 10 0 }
-										frame = 5
-									
-										}
-									}
-								}
-									
-							}
-							
-							
-						#HUGE change by obfusCKate: End	
+		item = {
+			widget_skill_item_no_icon = {}
+		}
+	}
 
 	type hbox_list_sort_buttons = hbox {
 		name = "sort_buttons"
@@ -2795,14 +1091,17 @@ types Lists
 			align = nobaseline
 			max_width = 90
 		}
-		#changed by obfusCKate:Start
+
 		block "sort_dropdown" {
-			dropdown_sort_characterlist = {
-			visible = "[DropdownsEnabled]"
-			}
+			#changed by obfusCKate:Start
+			dropdown_sort_characterlist = { visible = "[DropdownsEnabled]" }
+			#changed by obfusCKate:End
 		}
+
 		button_standard = {
+			#changed by obfusCKate:Start
 			visible = "[DropdownsEnabled]"
+			#changed by obfusCKate:End
 			name = "sort_order"
 			size = { 25 25 }
 			onclick = "[CharacterSelectionList.RevertSortOrder]"
@@ -2825,112 +1124,19 @@ types Lists
 				}
 			}
 		}
-		#changed by obfusCKate:End
 		
 		#changed by obfusCKate:Start
-		###Relevance disabled - would filter by trait
-		#text_single = {
-		#	visible = "[Not(DropdownsEnabled)]"
-		#	raw_text = "Relevance"
-		#	default_format = "#E;L"
-		#	align = nobaseline
-		#}
-		#button_standard = {
-		#	visible = "[Not(DropdownsEnabled)]"
-		#	name = "sort_order_relevance"
-		#	size = { 25 25 }
-		#	onclick = "[CharacterSelectionList.SortBySkill('(int32)13')]"
-		#	tooltip = "CHARACTER_SORT_BY"
-		#	using = tooltip_nw
-		#
-		#	button_icon = {
-		#		alwaystransparent = yes
-		#		parentanchor = center
-		#		size = { 25 25 }
-		#		texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
-		#		framesize = { 66 66 }
-		#
-		#		frame = "[BoolTo1And2(CharacterSelectionList.GetSortOrder)]"
-		#
-		#		blockoverride "button_frames"
-		#		{
-		#			effectname = "NoHighlight"
-		#		}
-		#	}
-		#}
-
-		text_single = {
-			visible = "[Not(DropdownsEnabled)]"
-			raw_text = "Age"
-			default_format = "#E;L"
-			align = nobaseline
-		}
-		button_standard = {
-			visible = "[Not(DropdownsEnabled)]"
-			name = "sort_order_age"
-			size = { 25 25 }
-			onclick = "[CharacterSelectionList.SortBySkill('(int32)6')]"
-
-			tooltip = "CHARACTER_SORT_BY"
-			using = tooltip_nw
-
-			button_icon = {
-				alwaystransparent = yes
-				parentanchor = center
-				size = { 25 25 }
-				texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
-				framesize = { 66 66 }
-
-				frame = "[BoolTo1And2(CharacterSelectionList.GetSortOrder)]"
-
-				blockoverride "button_frames"
-				{
-					effectname = "NoHighlight"
-				}
-			}
-		}
-
-		text_single = {
-			visible = "[Not(DropdownsEnabled)]"
-			raw_text = "Rank"
-			default_format = "#E;L"
-			align = nobaseline
-		}
-		button_standard = {
-			visible = "[Not(DropdownsEnabled)]"
-			name = "sort_order_rank"
-			size = { 25 25 }
-			onclick = "[CharacterSelectionList.SortBySkill('(int32)7')]"
-
-			tooltip = "CHARACTER_SORT_BY"
-			using = tooltip_nw
-
-			button_icon = {
-				alwaystransparent = yes
-				parentanchor = center
-				size = { 25 25 }
-				texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
-				framesize = { 66 66 }
-
-				frame = "[BoolTo1And2(CharacterSelectionList.GetSortOrder)]"
-
-				blockoverride "button_frames"
-				{
-					effectname = "NoHighlight"
-				}
-			}
-		}
+		obf_characterlist_sort_no_dropdowns = {}
 		#changed by obfusCKate:End
 
 		expand = {}
 
-		#changed by obfusCKate: Start
 		block "skill_sort_buttons"
-#changed by obfusCKate: End
 		{
-		
 			hbox = {
+				#changed by obfusCKate: Start
 				visible = "[DropdownsEnabled]"
+				#changed by obfusCKate: End
 				button_standard_hover = {
 					name = "skill_diplomacy"
 					size = { 32 32 }
@@ -3268,7 +1474,8 @@ types Lists
 								alpha = 0.5
 							}
 						}
-						text_single = {
+
+							text_single = {
 							name = "relation_to_court_hostage"
 							default_format = "#medium"
 							align = nobaseline
@@ -3285,7 +1492,6 @@ types Lists
 								alpha = 0.5
 							}
 						}
-
 						expand = {}
 					}
 				}
@@ -3353,7 +1559,7 @@ types Lists
 										icon_trait = {
 											#Changed by ObfusCKate: Start
 											visible = "[ShowAllTraitsInList]"
-										#Changed by ObfusCKate: End
+											#Changed by ObfusCKate: End
 
 											blockoverride "icon_size"
 											{
@@ -3390,7 +1596,7 @@ types Lists
 										icon_trait = {
 											#Changed by ObfusCKate: Start
 											visible = "[ShowAllTraitsInList]"
-										#Changed by ObfusCKate: End
+											#Changed by ObfusCKate: End
 
 											blockoverride "icon_size"
 											{
@@ -3713,7 +1919,7 @@ types Lists
 										#TODO:this should only be visible if this character is not being taxed
 										visible = no
 										texture = "gfx/interface/colors/red.dds"
-										alpha = 0.3
+										alpha = 0.2
 							
 										modify_texture = {
 											texture = "gfx/interface/component_masks/mask_dlc.dds"
@@ -3726,6 +1932,7 @@ types Lists
 										margin_left = 10
 										max_width = 250
 										align = nobaseline
+										alwaystransparent = yes
 
 										visible = "[Character.IsAssignedAsTaxpayer]"
 
@@ -3737,6 +1944,7 @@ types Lists
 										margin_left = 10
 										max_width = 250
 										align = nobaseline
+										alwaystransparent = yes
 
 										visible = "[Not( Character.IsAssignedAsTaxpayer )]"
 
@@ -3886,8 +2094,8 @@ types Lists
 				dynamicgridbox = {
 					name = "personality_traits"
 					#changed by obfusCKate: Start
-										visible = "[Or(Character.IsPlayer, ShowPersonalityTraits)]"
-										#changed by obfusCKate: End
+					visible = "[Or(Character.IsPlayer, ShowPersonalityTraits)]"
+					#changed by obfusCKate: End
 					datamodel = "[TraitArrays.GetPersonalityTraits]"
 					flipdirection = yes
 					maxhorizontalslots = 3
@@ -3916,10 +2124,9 @@ types Lists
 					name = "traits_big"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)5'))]"
+					visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)5'))]"
 					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 5
 					maxverticalslots = 1
 
@@ -3937,10 +2144,9 @@ types Lists
 					name = "traits_medium"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)5'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)7')))]"
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)5'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)7')))]"
 					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 7
 					maxverticalslots = 1
 
@@ -3963,10 +2169,9 @@ types Lists
 					name = "traits_small"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)7'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)10')))]"
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)7'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)10')))]"
 					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 10
 					maxverticalslots = 1
 
@@ -3992,7 +2197,6 @@ types Lists
 										visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)10'))]"
 										#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 11
 					datamodel_wrap = 11
 					maxverticalslots = 2
@@ -4026,7 +2230,6 @@ types Lists
 										#changed by obfusCKate: End
 					datamodel = "[TraitArrays.GetPersonalityTraits]"
 					flipdirection = yes
-
 					maxhorizontalslots = 4
 
 					item = {
@@ -4053,10 +2256,9 @@ types Lists
 					name = "traits_big"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 5
 					maxverticalslots = 1
 
@@ -4074,10 +2276,9 @@ types Lists
 					name = "traits_medium"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 7
 					maxverticalslots = 1
 
@@ -4100,10 +2301,9 @@ types Lists
 					name = "traits_small"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)8')))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)8')))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 10
 					maxverticalslots = 1
 
@@ -4126,10 +2326,9 @@ types Lists
 					name = "traits_tiny"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)8'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)8'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 9
 					datamodel_wrap = 9
 					maxverticalslots = 2
@@ -4154,9 +2353,9 @@ types Lists
 		}
 		expand = {}
 	}
-	
+
 	type hbox_traits_list_small = hbox
-	{	
+	{
 		layoutpolicy_horizontal = expanding
 
 		widget = {
@@ -4170,11 +2369,10 @@ types Lists
 				dynamicgridbox = {
 					name = "personality_traits"
 					#changed by obfusCKate: Start
-										visible = "[ShowPersonalityTraits]"
-										#changed by obfusCKate: End
+					visible = "[ShowPersonalityTraits]"
+					#changed by obfusCKate: End
 					datamodel = "[TraitArrays.GetPersonalityTraits]"
 					flipdirection = yes
-
 					maxhorizontalslots = 3
 
 					item = {
@@ -4201,10 +2399,9 @@ types Lists
 					name = "traits_big"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 4
 					maxverticalslots = 1
 
@@ -4222,10 +2419,9 @@ types Lists
 					name = "traits_small"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
 					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 6
 					maxverticalslots = 1
 
@@ -4248,10 +2444,9 @@ types Lists
 					name = "traits_tiny"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 7
 					datamodel_wrap = 7
 					maxverticalslots = 2
@@ -4281,11 +2476,10 @@ types Lists
 				dynamicgridbox = {
 					name = "personality_traits"
 					#changed by obfusCKate: Start
-										visible = "[ShowPersonalityTraits]"
-										#changed by obfusCKate: End
+					visible = "[ShowPersonalityTraits]"
+					#changed by obfusCKate: End
 					datamodel = "[TraitArrays.GetPersonalityTraits]"
 					flipdirection = yes
-
 					maxhorizontalslots = 4
 
 					item = {
@@ -4312,10 +2506,9 @@ types Lists
 					name = "traits_big"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits,LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 4
 					maxverticalslots = 1
 
@@ -4333,10 +2526,9 @@ types Lists
 					name = "traits_small"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, And(GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6')))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 6
 					maxverticalslots = 1
 
@@ -4359,10 +2551,9 @@ types Lists
 					name = "traits_tiny"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)6'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
-
 					maxhorizontalslots = 6
 					datamodel_wrap = 6
 					maxverticalslots = 2

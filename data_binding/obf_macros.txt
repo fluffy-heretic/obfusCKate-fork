@@ -113,7 +113,7 @@ macro = {
 macro = {
 	description = "Player should see portrait idle when expressions are enabled"
 	definition = "PortraitShouldBeIdleWhenEnabled"
-	replace_with = "And(And(ExpressionsEnabled, PortraitsEnabled),Or(Or(Not(Character.IsAlive),Or(And(CharacterHasBasicInfo,Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Character.HasRelationTo(GetPlayer)))), Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))),Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer))))))"
+	replace_with = "And(And(ExpressionsEnabled, PortraitsEnabled),Or(Or(Not(Character.IsAlive),Or(And(CharacterHasBasicInfo,Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Character.HasRelationTo(GetPlayer)))), Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32)12'), Character.IsLocalPlayer))),Not(Or(And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)), Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer))))))"
 }
 
 macro = {
@@ -166,22 +166,22 @@ macro = {
 macro = {
 	description = "Character should express opinion based on personality"
 	definition = "PortraitExpressOpinionBasedOnPersonality"
-	replace_with = "And(And(PortraitsEnabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+	replace_with = "And(And(PortraitsEnabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32)-75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32)12'), Character.IsLocalPlayer))))"
 }
 macro = {
 	description = "Character should express opinion not based on personality"
 	definition = "PortraitExpressOpinionNotBasedOnPersonality"
-	replace_with = "And(And(PortraitsEnabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+	replace_with = "And(And(PortraitsEnabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32)-75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32)12'), Character.IsLocalPlayer))))"
 }
 macro = {
 	description = "Character should express opinion based on personality when portraits disabled"
 	definition = "PortraitExpressOpinionBasedOnPersonalityPortraitsDisabled"
-	replace_with = "And(And(PortraitsDisabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+	replace_with = "And(And(PortraitsDisabled,And(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32)-75')), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32)12'), Character.IsLocalPlayer))))"
 }
 macro = {
 	description = "Character should express opinion not based on personality when portraits disabled"
 	definition = "PortraitExpressOpinionNotBasedOnPersonalityPortraitsDisabled"
-	replace_with = "And(And(PortraitsDisabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32) -75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32) 12'), Character.IsLocalPlayer))))"
+	replace_with = "And(And(PortraitsDisabled,And(Not(And(ExpressionsPersonalityEnabled,LessThan_int32(Character.GetAIHonor, '(int32)-75'))), ExpressionsEnabled)), And(And(And(Character.IsValid, And(Character.IsAlive, Not(Character.IsLocalPlayer))),Or( And(Or(Or(CharacterIsAcquaintance,CharacterIsKnown),Character.HasRelationTo(GetPlayer)),Not(Character.IsLocalPlayer)),And(ObjectsEqual(Character.GetLiege,GetPlayer.GetLiege),Or(Character.IsCouncillor,Character.IsRuler)))),Not(Or(LessThanOrEqualTo_int32(Character.GetAge, '(int32)12'), Character.IsLocalPlayer))))"
 }
 
 macro = {
@@ -410,4 +410,58 @@ macro = {
 	description = "Hide non physical traits untill character meet"
 	definition = "HideNonPhysicalTraits"
 	replace_with = "Or(Or(ShouldKnowPersonality,ShowPersonalityTraits),Or(TraitIsFacialBeauty,Or(TraitIsPhysicallBeauty,TraitIsOtherPhysicallTrait)))"
+}
+
+macro = {
+	description = "Generic macro for translating skill values into grades. arg1 is the int32 skill value, arg2 is the character"
+	definition = "OBFSkill(arg1,arg2)"
+	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'skill', MakeScopeValue( IntToFixedPoint( arg1 ) ) ).AddScope( 'target', arg2.MakeScope ).Custom( 'OBFSkill' )"
+}
+
+macro = {
+	description = "Tooltip for skill values"
+	definition = "OBFSkillTooltip(arg1)"
+	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'target', arg1.MakeScope ).Custom( 'OBFSkillTooltip' )"
+}
+
+macro = {
+	description = "Text macro for GUI elements that use SkillItem"
+	definition = "OBFSkillItemText"
+	replace_with = "OBFSkill( SkillItem.GetValue, Character )"
+}
+
+macro = {
+	description = "Tooltip macro for GUI elements that use SkillItem"
+	definition = "OBFSkillItemTooltip"
+	replace_with = "Select_CString( Character.IsPlayer, OBFSkillBreakdownWithHeader, OBFSkillTooltip( Character ) )"
+}
+
+macro = {
+	description = "Generic macro for showing arg2's opinion of the arg1"
+	definition = "OBFOpinion(arg1,arg2)"
+	replace_with = "GuiScope.SetRoot( arg1.MakeScope ).AddScope( 'target', arg2.MakeScope ).Custom('OBFOpinion')"
+}
+
+macro = {
+	description = "Macro for showing the liege's opinion of the character"
+	definition = "OBFLiegeOpinion"
+	replace_with = "OBFOpinion( Character, Character.GetLiege )"
+}
+
+macro = {
+	description = "Macro for showing the character's opinion of the player"
+	definition = "OBFPlayerOpinion"
+	replace_with = "OBFOpinion( GetPlayer, Character )"
+}
+
+macro = {
+	description = "Rebuilding Skill tooltips so the promotes work properly"
+	definition = "OBFSkillBreakdownWithHeader"
+	replace_with = "Concatenate(Concatenate(Concatenate(Concatenate( SkillItem.GetSkillBreakdownTooltip, Localize('OBF_LINEBREAK_2') ), Localize('OBF_EFFECTS_TT') ), Localize('OBF_LINEBREAK') ), SkillItem.GetSkillEffects )"
+}
+
+macro = {
+	description = "Rebuilding Skill tooltips so the promotes work properly. Don't show header"
+	definition = "OBFSkillBreakdown"
+	replace_with = "Concatenate(Concatenate(Localize('OBF_EFFECTS_TT') , Localize('OBF_LINEBREAK') ), SkillItem.GetSkillEffects )"
 }

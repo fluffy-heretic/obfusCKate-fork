@@ -1126,7 +1126,7 @@ window = {
 														text_single = {
 															name = "prowess_value"
 															minimumsize = { 10 0 }
-																#changed by obfusCKate: start
+															#changed by obfusCKate: start
 															text = "[BattleEvent.GetRightCharacter( BattleSummaryWindow.IsPlayerAttacker )]"
 															#changed by obfusCKate: end
 															tooltip = "prowess"
@@ -1135,7 +1135,7 @@ window = {
 														}
 
 														icon = {
-														#changed by obfusCKate: start
+															#changed by obfusCKate: start
 															visible = no
 															#changed by obfusCKate: end
 															name = "prowess_icon"
@@ -1911,7 +1911,7 @@ types BattleSummary
 					text_single = {
 						name = "prowess_value"
 						###Changed by ObfusCKate: Start
-						text = "PROWESS_VALUES_BATTLESUMMARY"
+						text = "[OBFSkill( Character.GetProwess, Character )]"
 						###Changed by ObfusCKate: End
 						tooltip = "prowess"
 						size = { 22 0 }
@@ -1987,7 +1987,7 @@ types BattleSummary
 					text_single = {
 						name = "prowess_value"
 						###Changed by ObfusCKate: Start
-						text = "PROWESS_VALUES_BATTLESUMMARY"
+						text = "[OBFSkill( Character.GetProwess, Character )]"
 						###Changed by ObfusCKate: End
 						tooltip = "prowess"
 						size = { 22 0 }

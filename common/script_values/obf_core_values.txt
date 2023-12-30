@@ -1,0 +1,44 @@
+﻿##############################################
+##### Maximum skill value for each grade #####
+##############################################
+
+obf_skill_f      = 4
+obf_skill_d      = 8
+obf_skill_c      = 16
+obf_skill_b      = 24
+obf_skill_a      = 40
+obf_skill_a_plus = 64
+# SKILL_AA is 65 or above
+
+# Unused
+obf_skill_f_illusory      = -4
+obf_skill_d_illusory      = 0
+obf_skill_c_illusory      = 8
+obf_skill_b_illusory      = 16
+obf_skill_a_illusory      = 40
+obf_skill_a_plus_illusory = 64
+
+obf_skill_f_humble      = 8
+obf_skill_d_humble      = 12
+obf_skill_c_humble      = 20
+obf_skill_b_humble      = 28
+obf_skill_a_humble      = 40
+obf_skill_a_plus_humble = 64
+
+obf_skill_minus      = 10
+obf_skill_minus_plus = 20
+obf_skill_plus_plus  = 40
+
+##########################
+##### Opinion values #####
+##########################
+
+obf_opinion_abysmal   = -86
+obf_opinion_terrible  = -60
+obf_opinion_awful     = -30
+obf_opinion_poor      = -10
+obf_opinion_neutral   = 9
+obf_opinion_decent    = 29
+obf_opinion_good      = 59
+obf_opinion_very_good = 85
+# excellent is 86 or above

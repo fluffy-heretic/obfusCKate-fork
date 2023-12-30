@@ -72,8 +72,8 @@ types Miscelaneous
 		block "tooltip"
 		{
 			#Changed by ObfusCKate: Start
-			tooltip = "SKILL_ITEM_TOOLTIP_ME"
-		#Changed by ObfusCKate: End
+			tooltip = "[OBFSkillItemTooltip]"
+			#Changed by ObfusCKate: End
 		}
 
 		icon = {
@@ -108,7 +108,7 @@ types Miscelaneous
 			block "value"
 			{
 				#Changed by ObfusCKate: Start
-				text = "SKILL_VALUES_KNOWN_CHARACTER"
+				text = "[OBFSkillItemText]"
 				#Changed by ObfusCKate: End
 			}
 		}

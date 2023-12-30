@@ -1,0 +1,198 @@
+﻿OBFSkill = {
+	type = character
+	
+	text = {
+		trigger = { this = scope:target }
+		localization_key = OBF_SKILL_PLAYER
+	}
+	
+	text = {
+		trigger = {
+			OR = {
+				# Spied character
+				is_character_interaction_shown = {
+					recipient   = scope:target
+					interaction = partially_spied_3_interaction
+				}
+				# Character with relation
+				has_relation_to = scope:target
+				# Fellow Vassals
+				scope:target = {
+					AND = {
+						exists = root.liege
+						liege ?= root.liege
+						OR = {
+							is_ruler = yes
+							is_councillor = yes
+						}
+					}
+				}
+			}
+		}
+		localization_key = OBF_SKILL_KNOWN
+	}
+	
+	text = {
+		trigger = {
+			is_character_interaction_shown = {
+				recipient   = scope:target
+				interaction = humble_character_interaction
+			}
+		}
+		localization_key = OBF_SKILL_HUMBLE
+	}
+	
+	text = {
+		trigger = {
+			OR = {
+				scope:target.prestige_level >= 3
+				scope:target.highest_held_title_tier = tier_empire
+				is_character_interaction_shown         = { recipient = scope:target interaction = partially_spied_2_interaction }
+				NOT = { is_character_interaction_shown = { recipient = scope:target interaction = spy_character_interaction } }
+			}
+		}
+		localization_key = OBF_SKILL_ROUGHLY_KNOWN
+	}
+	
+	text = {
+		localization_key = SKILL_UNKNOWN
+	}
+}
+
+OBFSkillTooltip = {
+	parent = OBFSkill
+	suffix = "_TT"
+}
+
+OBFSkillKnown = {
+	type = character
+	text = {
+		trigger = { scope:skill <= obf_skill_f }
+		localization_key = SKILL_F
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_d }
+		localization_key = SKILL_D
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_c }
+		localization_key = SKILL_C
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_b }
+		localization_key = SKILL_B
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_a }
+		localization_key = SKILL_A
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_a_plus }
+		localization_key = SKILL_A_PLUS
+	}
+	text = {
+		trigger = { scope:skill > obf_skill_a_plus }
+		localization_key = SKILL_AA
+	}
+}
+
+OBFSkillKnownPlayer = {
+	parent = OBFSkillKnown
+	suffix = "_PLAYER"
+}
+
+OBFSkillHumble = {
+	type = character
+	text = {
+		trigger = { scope:skill <= obf_skill_f_humble }
+		localization_key = SKILL_F
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_d_humble }
+		localization_key = SKILL_D
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_c_humble }
+		localization_key = SKILL_C
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_b_humble }
+		localization_key = SKILL_B
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_a_humble }
+		localization_key = SKILL_A
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_a_plus_humble }
+		localization_key = SKILL_A_PLUS
+	}
+	text = {
+		trigger = { scope:skill > obf_skill_a_plus_humble }
+		localization_key = SKILL_AA
+	}
+}
+
+OBFSkillRoughlyKnown = {
+	type = character
+	text = {
+		trigger = { scope:skill <= obf_skill_minus }
+		localization_key = SKILL_MINUS
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_minus_plus }
+		localization_key = SKILL_MINUS_PLUS
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_plus_plus }
+		localization_key = SKILL_PLUS_PLUS
+	}
+	text = {
+		trigger = { scope:skill <= obf_skill_a_plus }
+		localization_key = SKILL_A_PLUS
+	}
+	text = {
+		trigger = { scope:skill > obf_skill_a_plus }
+		localization_key = SKILL_AA
+	}
+}
+
+OBFOpinion = {
+	type = character
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_abysmal } }
+		localization_key = cooltip_opinion_abysmal
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_terrible } }
+		localization_key = cooltip_opinion_terrible
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_awful } }
+		localization_key = cooltip_opinion_awful
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_poor } }
+		localization_key = cooltip_opinion_poor
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_neutral } }
+		localization_key = cooltip_opinion_neutral
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_decent } }
+		localization_key = cooltip_opinion_decent
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_good } }
+		localization_key = cooltip_opinion_good
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value <= obf_opinion_very_good } }
+		localization_key = cooltip_opinion_very_good
+	}
+	text = {
+		trigger = { reverse_opinion = { target = scope:target value > obf_opinion_very_good } }
+		localization_key = cooltip_opinion_excellent
+	}
+}

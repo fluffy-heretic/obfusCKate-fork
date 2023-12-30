@@ -655,24 +655,14 @@ window = {
 													}
 
 													text_single = {
-													#changed by obfusCKate: Start
 														name = "skill_value"
-														visible = "[Not(IllusoryWarriorCharacterIsKnown)]"
 														align = right|nobaseline
-														text = "SKILL_VALUES_KNOWN_CHARACTER"
+														#changed by obfusCKate: Start
 														default_format = "#true_white"
-														tooltip = "SKILL_ITEM_TOOLTIP_ARMY_OB"
+														text = "[OBFSkill( SkillItem.GetValue, Character )]"
+														tooltip = "[OBFSkillBreakdown]"
+														#changed by obfusCKate: End
 													}
-													text_single = {
-														name = "skill_value_deceive"
-														visible = "[IllusoryWarriorCharacterIsKnown]"
-														align = right|nobaseline
-														text = "SKILL_VALUES_ILLUSORY_WARRIOR_CHARACTER"
-														default_format = "#true_white"
-														tooltip = "SKILL_ITEM_TOOLTIP_ARMY_OB"
-													}
-													
-													#changed by obfusCKate: End
 
 													background = {
 														using = Background_Area_Dark
@@ -1869,7 +1859,6 @@ types ArmyWindow
 				name = "strength"
 				#Changed by ObfusCKate: Start
 				text = "WINDOW_ARMY_CHECK_CHARACTER"
-				
 				default_format = "#low"
 				align = left|nobaseline
 				using = Font_Size_Small
@@ -1892,12 +1881,12 @@ types ArmyWindow
 		}
 
 		army_quality_icon = {
-		#changed by obfusCKate: Start
+			#changed by obfusCKate: Start
 			visible = no
 			tooltip_enabled = no
 			#changed by obfusCKate: End
 		}
-		
+
 		expand = {
 			layoutpolicy_horizontal = expanding
 		}
