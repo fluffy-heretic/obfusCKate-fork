@@ -2194,8 +2194,8 @@ types Lists
 					name = "traits_tiny"
 					datamodel = "[TraitArrays.GetTraits]"
 					#changed by obfusCKate: Start
-										visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)10'))]"
-										#changed by obfusCKate: End
+					visible = "[And(ShowOtherTraits, GreaterThan_int32(GetDataModelSize(TraitArrays.GetTraits), '(int32)10'))]"
+					#changed by obfusCKate: End
 					flipdirection = yes
 					maxhorizontalslots = 11
 					datamodel_wrap = 11
