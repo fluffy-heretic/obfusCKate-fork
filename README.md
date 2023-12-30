@@ -1,22 +1,17 @@
-# PoD + obfusCKate compatibility patch
+# obfusCKate fork
 
-What this mod does:
+A fork of obfusCKate, designed to be easier to make compatibility patches for.
 
-- Merge all the GUI edits from both mods
-- Merge all the edits to schemes and feasts from both mods
-- Hide WoD lore buttons, resonance (from Scry the Soul), or Ventrue feeding compatibility from the character window, unless you know the character well
-- Also hide Inventory buttons unless you know the character well
-- Hide Coterie stats
+Changes:
 
-What this mod DOESN'T do:
+- skills are displayed via customloc instead of datafunctions, which makes them more readable and also more resuable by total conversions
+- refactored the vanilla GUI files so they're easier to patch when a new CK3 update comes out
+- moved some GUI elements to a separate file so they don't clog up vanilla files
+- cleaned up the error log somewhat
 
-- Add any new mechanics, like supernatural abilities to spy on other characters. This is just a compatibility patch
-- Filter POD traits when viewing acquaintances
-- Fix pre-existing bugs and error log spam from obfusCKate
+Relevant files:
 
-Compatible with the Princes of Darkness dev build (as of December 29th 2023), and obfusCKate 13.1.
-
-- Princes of Darkness dev build: https://github.com/PrincesOfDarknessMod/princesofdarknessmod-for-ck3
-- obfusCKate: https://steamcommunity.com/sharedfiles/filedetails/?id=2874007571
-
-Load this after both of the above mods.
+- `common\script_values\obf_core_values.txt`: definition of skill + opinion values
+- `common\customizable_localization\obf_core_customloc.txt`: display of those values
+- `gui\shared\obf_types.gui`: moved GUI elements
+- there are some new macros at the end of `data_binding\obf_macros.txt`
