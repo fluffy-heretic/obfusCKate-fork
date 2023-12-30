@@ -2226,8 +2226,8 @@ types Lists
 				dynamicgridbox = {
 					name = "personality_traits"
 					#changed by obfusCKate: Start
-										visible = "[ShowPersonalityTraits]"
-										#changed by obfusCKate: End
+					visible = "[ShowPersonalityTraits]"
+					#changed by obfusCKate: End
 					datamodel = "[TraitArrays.GetPersonalityTraits]"
 					flipdirection = yes
 					maxhorizontalslots = 4

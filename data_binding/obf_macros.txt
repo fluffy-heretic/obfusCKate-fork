@@ -413,9 +413,15 @@ macro = {
 }
 
 macro = {
-	description = "Generic macro for translating skill values into grades. arg1 is the int32 skill value"
+	description = "Macro for translating skill values of a character into grades. arg1 is the int32 skill value. Needs Character datacontext"
 	definition = "OBFSkill(arg1)"
 	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'skill', MakeScopeValue( IntToFixedPoint( arg1 ) ) ).AddScope( 'target', Character.MakeScope ).Custom( 'OBFSkill' )"
+}
+
+macro = {
+	description = "Generic macro for translating skill values into grades. arg1 is the CFixedPoint skill value. Works in any datacontext. Useful if the skill value was calculated via script value"
+	definition = "OBFKnownSkill(arg1)"
+	replace_with = "GuiScope.SetRoot( GetPlayer.MakeScope ).AddScope( 'skill', MakeScopeValue( arg1 ) ).Custom( 'OBFSkillKnown' )"
 }
 
 macro = {
