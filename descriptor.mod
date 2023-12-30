@@ -1,8 +1,8 @@
-version="13.1"
+version="14.0"
 tags={
 	"Gameplay"
 	"Character Interactions"
 	"Schemes"
 }
-name="obfusCKate fork"
+name="obfusCKate - Hidden Information"
 supported_version="1.11.*"
