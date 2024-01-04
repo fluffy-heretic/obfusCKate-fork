@@ -4,5 +4,5 @@ tags={
 	"Character Interactions"
 	"Schemes"
 }
-name="obfusCKate - Hidden Information"
+name="obfusCKate fork"
 supported_version="1.11.*"
